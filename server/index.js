@@ -1,9 +1,17 @@
-import express from "express";
+import app from './app.js'
+import dotenv from 'dotenv'
+import {sequelize} from './config/db.js'
 
-import indexRoutes from "./routes/index.routes.js"
+dotenv.config()
 
-const app = express();
+async function main(){
+    try {
+        await sequelize.sync()
+        app.listen(process.env.PORT)
+        console.log(`App listen on port ${process.env.PORT}`)
+    } catch (error) {
+        console.error('Unable to connect to database')
+    }
+}
 
-app.use(indexRoutes);
-
-app.listen(4000);
+main()
