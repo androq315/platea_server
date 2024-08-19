@@ -21,9 +21,9 @@ export const getCubiculo = async (req, res) => {
 
 export const postCubiculo = async (req, res) => {
     try {
-        const p = req.body
-        await Cubiculo.create({ DireccionCubiculo: c.DireccionCubiculo, FechaAperturaCubiculo: created_at , NombreCubiculo: c.NombreCubiculo, CalificacionCubiculo: p.CalificacionCubiculo, EstadoPersona: p.EstadoPersona, idRolFK: p.idRolFK })
-        res.status(200).json({ message: 'Usuario creado correctamente' })
+        const c = req.body
+        await Cubiculo.create({DireccionCubiculo: c.DireccionCubiculo, NombreCubiculo: c.NombreCubiculo, CalificacionCubiculo: c.CalificacionCubiculo, EstadoCubiculo: 1, idArrendatarioFK: c.idArrendatarioFK,idAdministradorFK: c.idAdministradorFK })
+        res.status(200).json({ message: 'Cubiculo creado correctamente' })
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el Cubiculo' + error })
     }
@@ -32,12 +32,12 @@ export const postCubiculo = async (req, res) => {
 export const putCubiculo = async (req, res) => {
     try {
         const id = req.params.id
-        const p = req.body
+        const c = req.body
         await Cubiculo.update({
-            NombrePersona: p.NombrePersona, ApellidoPersona: p.ApellidoPersona, CorreoPersona: p.CorreoPersona, ClavePersona: p.ClavePersona, EstadoPersona: p.EstadoPersona, idRolFK: p.idRolFK
+            DireccionCubiculo: c.DireccionCubiculo , NombreCubiculo: c.NombreCubiculo, CalificacionCubiculo: c.CalificacionCubiculo, EstadoCubiculo: 1, idArrendatarioFK: c.idArrendatarioFK,idArrendatarioFK: c.idArrendatarioFK
         }, {
             where: {
-                IdPersona: id
+                IdCubiculo: id
             }
         })
         res.status(200).json({ message: 'Cubiculo actualizado correctamente' })
@@ -46,21 +46,16 @@ export const putCubiculo = async (req, res) => {
     }
 }
 
-export const patchPersona = async (req, res) => {
+export const patchCubiculo = async (req, res) => {
     try {
         const id = req.params.id;
-        const p = req.body;
+        const c = req.body;
 
         const [updated] = await Cubiculo.update({
-            NombrePersona: p.NombrePersona,
-            ApellidoPersona: p.ApellidoPersona,
-            CorreoPersona: p.CorreoPersona,
-            ClavePersona: p.ClavePersona,
-            EstadoPersona: p.EstadoPersona,
-            idRolFK: p.idRolFK
+            DireccionCubiculo: c.DireccionCubiculo, NombreCubiculo: c.NombreCubiculo, CalificacionCubiculo: c.CalificacionCubiculo, EstadoCubiculo: 1, idArrendatarioFK: c.idArrendatarioFK,idArrendatarioFK: c.idArrendatarioFK
         }, {
             where: {
-                IdPersona: id
+                IdCubiculo: id
             }
         });
 
@@ -74,21 +69,21 @@ export const patchPersona = async (req, res) => {
     }
 };
 
-export const togglePersona = async (req, res) => {
+export const toggleCubiculo = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const persona = await Persona.findByPk(id);
+        const cubiculo = await Cubiculo.findByPk(id);
 
-        if (!persona) {
+        if (!cubiculo) {
             return res.status(404).json({ message: 'Cubiculo no encontrado' });
         }
 
-        const nuevoEstado = persona.EstadoPersona ? 0 : 1;
+        const nuevoEstado = cubiculo.EstadoCubiculo ? 0 : 1;
 
-        await Persona.update(
-            { EstadoPersona: nuevoEstado },
-            { where: { IdPersona: id } }
+        await Cubiculo.update(
+            { EstadoCubiculo: nuevoEstado },
+            { where: { IdCubiculo: id } }
         );
 
         res.status(200).json({ message: 'Estado del Cubiculo actualizado correctamente' });
