@@ -45,7 +45,7 @@ class PersonaController {
 				const timestamp = Date.now();
 				const uniqueFileName = `${FotoPersona.name.split('.')[0]}_${timestamp}.${FotoPersona.name.split('.').pop()}`;
 				const uploadPath = path.join(__dirname, '../uploads/img/persona_avatar/', uniqueFileName);
-				fotoPersonaUrl = `http://localhost:4000/uploads/img/persona_avatar/${uniqueFileName}`;
+				fotoPersonaUrl = `./uploads/img/persona_avatar/${uniqueFileName}`;
 
 				await FotoPersona.mv(uploadPath);
 			}
@@ -54,7 +54,7 @@ class PersonaController {
 				const timestamp = Date.now();
 				const uniqueFileName = `${bannerPersona.name.split('.')[0]}_${timestamp}.${bannerPersona.name.split('.').pop()}`;
 				const uploadPath = path.join(__dirname, '../uploads/img/banner/', uniqueFileName);
-				bannerPersonaUrl = `http://localhost:4000/uploads/img/banner/${uniqueFileName}`;
+				bannerPersonaUrl = `./uploads/img/banner/${uniqueFileName}`;
 
 				await bannerPersona.mv(uploadPath);
 			}
@@ -97,7 +97,7 @@ class PersonaController {
 					const timestamp = Date.now();
 					const uniqueFileName = `${FotoPersona.name.split('.')[0]}_${timestamp}.${FotoPersona.name.split('.').pop()}`;
 					const uploadPath = path.join(__dirname, '../uploads/img/persona_avatar/', uniqueFileName);
-					const fotoPersonaUrl = `http://localhost:4000/uploads/img/persona_avatar/${uniqueFileName}`;
+					const fotoPersonaUrl = `./uploads/img/persona_avatar/${uniqueFileName}`;
 
 					await FotoPersona.mv(uploadPath);
 
@@ -116,7 +116,7 @@ class PersonaController {
 					const timestamp = Date.now();
 					const uniqueFileName = `${bannerPersona.name.split('.')[0]}_${timestamp}.${bannerPersona.name.split('.').pop()}`;
 					const uploadPath = path.join(__dirname, '../uploads/img/banner/', uniqueFileName);
-					const bannerPersonaUrl = `http://localhost:4000/uploads/img/banner/${uniqueFileName}`;
+					const bannerPersonaUrl = `./uploads/img/banner/${uniqueFileName}`;
 
 					await bannerPersona.mv(uploadPath);
 
