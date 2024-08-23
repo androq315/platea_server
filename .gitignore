@@ -1,1 +1,11 @@
 node_modules
+
+
+/uploads/img/banner/*
+!/uploads/img/banner/.gitignore
+
+/uploads/img/persona_avatar/*
+!/uploads/img/persona_avatar/.gitignore
+
+/uploads/img/producto/*
+!/uploads/img/producto/.gitignore

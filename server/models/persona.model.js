@@ -1,9 +1,10 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/db.js';
+import bcrypt from 'bcrypt'
 
-// Definición de la clase Persona que extiende de Model
+
 class Persona extends Model {
-	// Método para crear una nueva persona
+
 	static async createPersona(persona) {
 		try {
 			return await this.create(persona);
@@ -13,7 +14,7 @@ class Persona extends Model {
 		}
 	}
 
-	// Método para obtener todas las personas
+
 	static async getPersonas() {
 		try {
 			return await this.findAll();
@@ -23,7 +24,6 @@ class Persona extends Model {
 		}
 	}
 
-	// Método para obtener una persona por su ID
 	static async getPersonaById(id) {
 		try {
 			return await this.findByPk(id);
@@ -56,6 +56,9 @@ class Persona extends Model {
 			throw error;
 		}
 	}
+	async compararClave(clave) {
+        return await bcrypt.compare(clave, this.pass);
+    }
 }
 
 // Definición del modelo Persona en Sequelize
