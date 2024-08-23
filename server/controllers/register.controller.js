@@ -16,6 +16,7 @@ export const registerPersona = async (req, res) => {
         const hashedPassword = await bcrypt.hash(ClavePersona, 10);
         console.log('Contraseña encriptada:', hashedPassword);
 
+
         const results = await sequelize.query('CALL RegisterPersona(?, ?, ?, ?, ?)', {
             replacements: [
                 NombrePersona,
