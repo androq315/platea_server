@@ -1,11 +1,11 @@
 import { Tienda } from '../models/tienda.model.js'
 
-export const getCubiculos = async (req, res) => {
+export const getTiendas = async (req, res) => {
     try {
         const tienda = await Tienda.findAll()
         res.status(200).json(tienda)
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener los Cubiculos' + error })
+        res.status(500).json({ message: 'Error al obtener los Tienda' + error })
     }
 }
 
@@ -15,7 +15,7 @@ export const getTienda = async (req, res) => {
         const tienda = await Tienda.findByPk(id)
         res.status(200).json(tienda)
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener el Cubiculo' + error })
+        res.status(500).json({ message: 'Error al obtener la Tienda' + error })
     }
 }
 
@@ -23,9 +23,9 @@ export const postTienda = async (req, res) => {
     try {
         const t = req.body
         await Tienda.create({DireccionTienda: t.DireccionTienda, NombreTienda: t.NombreTienda, CalificacionTienda: t.CalificacionTienda, EstadoTienda: 1, idArrendatarioFK: t.idArrendatarioFK, idcategoriaFK: t.idcategoriaFK })
-        res.status(200).json({ message: 'Cubiculo creado correctamente' })
+        res.status(200).json({ message: 'Tienda creada correctamente' })
     } catch (error) {
-        res.status(500).json({ message: 'Error al crear el Cubiculo' + error })
+        res.status(500).json({ message: 'Error al crear la Tienda' + error })
     }
 }
 
@@ -75,19 +75,19 @@ export const toggleTienda = async (req, res) => {
 
         const tienda = await Tienda.findByPk(id);
 
-        if (!cubiculo) {
+        if (!tienda) {
             return res.status(404).json({ message: 'Tienda encontrado' });
         }
 
         const nuevoEstado = tienda.EstadoTienda ? 0 : 1;
 
-        await Cubiculo.update(
+        await Tienda.update(
             { EstadoTienda: nuevoEstado },
-            { where: { IdCubiculo: id } }
+            { where: { IdTienda: id } }
         );
 
-        res.status(200).json({ message: 'Estado del Cubiculo actualizado correctamente' });
+        res.status(200).json({ message: 'Estado de la Tienda actualizado correctamente' });
     } catch (error) {
-        res.status(500).json({ message: 'Error al actualizar el estado del Cubiculo: ' + error });
+        res.status(500).json({ message: 'Error al actualizar el estado de la Tienda: ' + error });
     }
 };
