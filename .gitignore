@@ -1,17 +1,6 @@
-node_modules
+# Ignorar node_modules
+node_modules/
 
 
-/uploads/img/banner/*
-!/uploads/img/banner/.gitignore
-
-/uploads/img/persona_avatar/*
-!/uploads/img/persona_avatar/.gitignore
-
-/uploads/img/producto/*
-!/uploads/img/producto/.gitignore
-
-/uploads/img/tienda_banner/*
-!/uploads/img/tienda_banner/.gitignore
-
-/uploads/img/tienda_miniatura/*
-!/uploads/img/tienda_miniatura/.gitignore
+uploads/img/*
+uploads/img/**/*
