@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../config/db.js';
-import { Cubiculo } from './cubiculo.model.js'; // Asumiendo que existe un modelo Cubiculo
+import { sequelize } from '../config/db.js';// Asumiendo que existe un modelo Cubiculo
 
 class Producto extends Model {
     // Método para crear un nuevo producto
@@ -84,15 +83,14 @@ Producto.init({
     FotoProductoURL: {
         type: DataTypes.TEXT
     },
-    IdCubiculoFK: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'Cubiculo',
-            key: 'IdCubiculo'
-        }
+    IdCategoriaFK: {
+        type: DataTypes.INTEGER
+    },
+    IdTiendaFK:{
+        type: DataTypes.INTEGER
     }
-}, {
+    },
+ {
     sequelize,
     tableName: 'Producto',
     timestamps: false,

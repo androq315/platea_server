@@ -1,4 +1,4 @@
-import { Cubiculo } from '../models/cubiculo.model.js'
+import { Cubiculo } from '../models/tienda.model.js'
 
 export const getCubiculos = async (req, res) => {
     try {

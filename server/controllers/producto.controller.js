@@ -1,136 +1,84 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import fs from 'fs';
-import { Producto } from '../models/producto.model.js';
+import { Tienda } from '../models/tienda.model.js'; // Asegúrate de que el modelo Tienda esté correctamente importado
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-class ProductoController {
-    static async getProductos(req, res) {
+class TiendaController {
+    // Método para obtener todas las tiendas
+    static async getTiendas(req, res) {
         try {
-            const productos = await Producto.getProductos();
-            res.status(200).json(productos);
+            const tiendas = await Tienda.getTiendas();
+            res.status(200).json(tiendas);
         } catch (error) {
-            res.status(500).json({ message: 'Error al obtener los productos: ' + error });
+            res.status(500).json({ message: 'Error al obtener las tiendas: ' + error });
         }
     }
 
-    static async getProducto(req, res) {
+    // Método para obtener una tienda por su ID
+    static async getTienda(req, res) {
         try {
             const id = req.params.id;
-            const producto = await Producto.getProductoById(id);
-            if (producto) {
-                res.status(200).json(producto);
+            const tienda = await Tienda.getTiendaById(id);
+            if (tienda) {
+                res.status(200).json(tienda);
             } else {
-                res.status(404).json({ message: 'Producto no encontrado' });
+                res.status(404).json({ message: 'Tienda no encontrada' });
             }
         } catch (error) {
-            res.status(500).json({ message: 'Error al obtener el producto: ' + error });
+            res.status(500).json({ message: 'Error al obtener la tienda: ' + error });
         }
     }
 
-    static async postProducto(req, res) {
+    // Método para crear una nueva tienda
+    static async postTienda(req, res) {
         try {
-            if (!req.files || !req.files.FotoProducto) {
-                return res.status(400).json({ message: 'No se subió ningún archivo' });
-            }
+            const p = {
+                DireccionTienda: req.body.DireccionTienda,
+                NombreTienda: req.body.NombreTienda,
+                CalificacionTienda: req.body.CalificacionTienda,
+                EstadoTienda: req.body.EstadoTienda,
+                IdCategoriaFK: req.body.IdCategoriaFK,
+                IdArrendatarioFK: req.body.IdArrendatarioFK
+            };
 
-            const uploadedFile = req.files.FotoProducto;
-            const timestamp = Date.now();
-            const uniqueFileName = `${uploadedFile.name.split('.')[0]}_${timestamp}.${uploadedFile.name.split('.').pop()}`;
-            const uploadPath = path.join(__dirname, '../uploads/img/producto/', uniqueFileName);
-            const fotoProductoUrl = `http://localhost:4000/uploads/img/producto/${uniqueFileName}`;
-
-            uploadedFile.mv(uploadPath, async (err) => {
-                if (err) {
-                    return res.status(500).json({ message: 'Error al subir la imagen: ' + err });
-                }
-
-                const p = {
-                    NombreProducto: req.body.NombreProducto,
-                    DescripcionProducto: req.body.DescripcionProducto,
-                    StockProducto: req.body.StockProducto,
-                    PrecioProducto: req.body.PrecioProducto,
-                    FotoProducto: `uploads/img/producto/${uniqueFileName}`, // Relativa
-                    FotoProductoURL: fotoProductoUrl, // Absoluta
-                    IdCubiculoFK: req.body.IdCubiculoFK
-                };
-
-                await Producto.createProducto(p);
-                res.status(200).json({ message: 'Producto creado correctamente' });
-            });
+            await Tienda.createTienda(p);
+            res.status(200).json({ message: 'Tienda creada correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error al crear el producto: ' + error });
+            res.status(500).json({ message: 'Error al crear la tienda: ' + error });
         }
     }
 
-    static async putProducto(req, res) {
+    // Método para actualizar una tienda
+    static async putTienda(req, res) {
         try {
             const id = req.params.id;
-            const p = req.body;
-            const producto = await Producto.getProductoById(id);
+            const updated_tienda = req.body;
+            const tienda = await Tienda.getTiendaById(id);
 
-            if (!producto) {
-                return res.status(404).json({ message: 'Producto no encontrado' });
+            if (!tienda) {
+                return res.status(404).json({ message: 'Tienda no encontrada' });
             }
 
-            if (req.files && req.files.FotoProducto) {
-                const uploadedFile = req.files.FotoProducto;
-                const timestamp = Date.now();
-                const uniqueFileName = `${uploadedFile.name.split('.')[0]}_${timestamp}.${uploadedFile.name.split('.').pop()}`;
-                const uploadPath = path.join(__dirname, '../uploads/img/producto/', uniqueFileName);
-                const fotoProductoUrl = `http://localhost:4000/uploads/img/producto/${uniqueFileName}`;
-
-                uploadedFile.mv(uploadPath, async (err) => {
-                    if (err) return res.status(500).json({ message: 'Error al mover el archivo: ' + err });
-
-                    if (producto.FotoProducto) {
-                        const oldImagePath = path.join(__dirname, '..', producto.FotoProducto);
-                        if (fs.existsSync(oldImagePath)) {
-                            fs.unlinkSync(oldImagePath);
-                        }
-                    }
-
-                    const updated_producto = {
-                        NombreProducto: p.NombreProducto,
-                        DescripcionProducto: p.DescripcionProducto,
-                        StockProducto: p.StockProducto,
-                        PrecioProducto: p.PrecioProducto,
-                        FotoProducto: `uploads/img/producto/${uniqueFileName}`, // Relativa
-                        FotoProductoURL: fotoProductoUrl, // Absoluta
-                        IdCubiculoFK: p.IdCubiculoFK
-                    };
-
-                    await Producto.updateProducto(id, updated_producto);
-                    res.status(200).json({ message: 'Producto actualizado correctamente' });
-                });
-            } else {
-                const updated_producto = {
-                    NombreProducto: p.NombreProducto,
-                    DescripcionProducto: p.DescripcionProducto,
-                    StockProducto: p.StockProducto,
-                    PrecioProducto: p.PrecioProducto,
-                    IdCubiculoFK: p.IdCubiculoFK
-                };
-
-                await Producto.updateProducto(id, updated_producto);
-                res.status(200).json({ message: 'Producto actualizado correctamente' });
-            }
+            await Tienda.updateTienda(id, updated_tienda);
+            res.status(200).json({ message: 'Tienda actualizada correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error al actualizar el producto: ' + error });
+            res.status(500).json({ message: 'Error al actualizar la tienda: ' + error });
         }
     }
 
-    static async deleteProducto(req, res) {
+    // Método para eliminar una tienda
+    static async deleteTienda(req, res) {
         try {
             const id = req.params.id;
-            await Producto.deleteProducto(id);
-            res.status(200).json({ message: 'Producto eliminado correctamente' });
+            await Tienda.deleteTienda(id);
+            res.status(200).json({ message: 'Tienda eliminada correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error al eliminar el producto: ' + error });
+            res.status(500).json({ message: 'Error al eliminar la tienda: ' + error });
         }
     }
 }
 
-export default ProductoController;
+export default TiendaController;

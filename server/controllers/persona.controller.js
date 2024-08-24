@@ -70,7 +70,8 @@ class PersonaController {
 				bannerPersona: bannerPersonaUrl,
 				bannerPersonaURL: bannerPersonaUrl,
 				TelefonoPersona: req.body.TelefonoPersona,
-				idRolFK: req.body.idRolFK
+				IdCategoriaFK: req.body.IdCategoriaFK,
+				IdTiendaFK: req.body.IdTiendaFK,
 			};
 
 			await Persona.createPersona(p);

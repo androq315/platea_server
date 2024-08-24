@@ -89,6 +89,9 @@ Persona.init({
 		type: DataTypes.BOOLEAN,
 		defaultValue: false
 	},
+	TelefonoPersona: {
+		type: DataTypes.INTEGER
+	},
 	FotoPersona: {
 		type: DataTypes.TEXT
 	},
@@ -101,9 +104,7 @@ Persona.init({
 	bannerPersonaURL: {
 		type: DataTypes.TEXT
 	},
-	TelefonoPersona: {
-		type: DataTypes.INTEGER
-	},
+ 
 	idRolFK: {
 		type: DataTypes.INTEGER,
 		allowNull: false
