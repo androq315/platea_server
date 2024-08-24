@@ -83,18 +83,10 @@ Tienda.init({
         defaultValue: true
     },
     IdCategoriaFK: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Categoria', // Nombre de la tabla en la base de datos
-            key: 'IdCategoria'
-        }
+        type: DataTypes.INTEGER
     },
     IdArrendatarioFK: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Arrendatario', // Nombre de la tabla en la base de datos
-            key: 'IdArrendatario'
-        }
+        type: DataTypes.INTEGER
     }
 }, {
     sequelize,

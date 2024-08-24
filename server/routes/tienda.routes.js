@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { getCubiculos, getCubiculo, postCubiculo, putCubiculo, toggleCubiculo, patchCubiculo } from "../controllers/cubiculo.controller.js";
+import { getTienda, getTienda, postTienda, putTienda, toggleTienda, patchTienda } from "../controllers/tienda.controller.js";
 
 const router = Router()
 
-router.get('/api/cubiculo/', getCubiculos)
-router.get('/api/cubiculo/:id', getCubiculo)
-router.post('/api/cubiculo/', postCubiculo)
-router.put('/api/cubiculo/:id', putCubiculo)
-router.delete('/api/cubiculo/:id', toggleCubiculo)
-router.patch('/api/cubiculo/:id', patchCubiculo)
+router.get('/api/tienda/', getTienda)
+router.get('/api/tienda/:id', getTienda)
+router.post('/api/tienda/', postTienda)
+router.put('/api/tienda/:id', putTienda)
+router.delete('/api/tienda/:id', toggleTienda)
+router.patch('/api/tienda/:id', patchTienda)
 
 
 

@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import personaRoutes from './routes/persona.routes.js';
-import cubiculoRoutes from './routes/cubiculo.routes.js';
+import tiendaRoutes from './routes/tienda.routes.js';
 import productosRoutes from './routes/producto.routes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -27,6 +27,6 @@ app.use(cors({
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Usar las rutas de la aplicación
-app.use(personaRoutes, cubiculoRoutes, productosRoutes);
+app.use(personaRoutes, tiendaRoutes, productosRoutes);
 
 export default app;

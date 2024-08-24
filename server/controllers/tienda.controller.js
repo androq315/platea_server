@@ -1,88 +1,88 @@
-import { Cubiculo } from '../models/tienda.model.js'
+import { Tienda } from '../models/tienda.model.js'
 
 export const getCubiculos = async (req, res) => {
     try {
-        const cubiculos = await Cubiculo.findAll()
-        res.status(200).json(cubiculos)
+        const tienda = await Tienda.findAll()
+        res.status(200).json(tienda)
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los Cubiculos' + error })
     }
 }
 
-export const getCubiculo = async (req, res) => {
+export const getTienda = async (req, res) => {
     try {
         const id = req.params.id
-        const cubiculo = await Cubiculo.findByPk(id)
+        const tienda = await Tienda.findByPk(id)
         res.status(200).json(cubiculo)
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener el Cubiculo' + error })
     }
 }
 
-export const postCubiculo = async (req, res) => {
+export const postTienda = async (req, res) => {
     try {
-        const c = req.body
-        await Cubiculo.create({DireccionCubiculo: c.DireccionCubiculo, NombreCubiculo: c.NombreCubiculo, CalificacionCubiculo: c.CalificacionCubiculo, EstadoCubiculo: 1, idArrendatarioFK: c.idArrendatarioFK,idAdministradorFK: c.idAdministradorFK })
+        const t = req.body
+        await Tienda.create({DireccionTienda: t.DireccionTienda, NombreTienda: t.NombreTienda, CalificacionTienda: t.CalificacionTienda, EstadoTienda: 1, idArrendatarioFK: t.idArrendatarioFK, idcategoriaFK: t.idcategoriaFK })
         res.status(200).json({ message: 'Cubiculo creado correctamente' })
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el Cubiculo' + error })
     }
 }
 
-export const putCubiculo = async (req, res) => {
+export const putTienda = async (req, res) => {
     try {
         const id = req.params.id
-        const c = req.body
-        await Cubiculo.update({
-            DireccionCubiculo: c.DireccionCubiculo , NombreCubiculo: c.NombreCubiculo, CalificacionCubiculo: c.CalificacionCubiculo, EstadoCubiculo: 1, idArrendatarioFK: c.idArrendatarioFK,idArrendatarioFK: c.idArrendatarioFK
+        const t = req.body
+        await Tienda.update({
+            DireccionTienda: t.DireccionTienda, NombreTienda: t.NombreTienda, CalificacionTienda: t.CalificacionTienda, EstadoTienda: 1, idArrendatarioFK: t.idArrendatarioFK, idcategoriaFK: t.idcategoriaFK
         }, {
             where: {
-                IdCubiculo: id
+                IdTienda: id
             }
         })
-        res.status(200).json({ message: 'Cubiculo actualizado correctamente' })
+        res.status(200).json({ message: 'Tienda actualizada correctamente' })
     } catch (error) {
-        res.status(500).json({ message: 'Error al actualizar el Cubiculo' + error })
+        res.status(500).json({ message: 'Error al actualizar la Tienda' + error })
     }
 }
 
-export const patchCubiculo = async (req, res) => {
+export const patchTienda = async (req, res) => {
     try {
         const id = req.params.id;
-        const c = req.body;
+        const t = req.body;
 
-        const [updated] = await Cubiculo.update({
-            DireccionCubiculo: c.DireccionCubiculo, NombreCubiculo: c.NombreCubiculo, CalificacionCubiculo: c.CalificacionCubiculo, EstadoCubiculo: 1, idArrendatarioFK: c.idArrendatarioFK,idArrendatarioFK: c.idArrendatarioFK
+        const [updated] = await Tienda.update({
+            DireccionTienda: t.DireccionTienda, NombreTienda: t.NombreTienda, CalificacionTienda: t.CalificacionTienda, EstadoTienda: 1, idArrendatarioFK: t.idArrendatarioFK, idcategoriaFK: t.idcategoriaFK
         }, {
             where: {
-                IdCubiculo: id
+                IdTienda: id
             }
         });
 
         if (updated) {
-            res.status(200).json({ message: 'Cubiculo actualizado correctamente' });
+            res.status(200).json({ message: 'Tienda actualizada correctamente' });
         } else {
-            res.status(404).json({ message: 'Cubiculo no encontrado' });
+            res.status(404).json({ message: 'Tienda no encontrada' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Error al actualizar el Cubiculo: ' + error });
+        res.status(500).json({ message: 'Error al actualizar la Tienda: ' + error });
     }
 };
 
-export const toggleCubiculo = async (req, res) => {
+export const toggleTienda = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const cubiculo = await Cubiculo.findByPk(id);
+        const tienda = await Tienda.findByPk(id);
 
         if (!cubiculo) {
-            return res.status(404).json({ message: 'Cubiculo no encontrado' });
+            return res.status(404).json({ message: 'Tienda encontrado' });
         }
 
-        const nuevoEstado = cubiculo.EstadoCubiculo ? 0 : 1;
+        const nuevoEstado = tienda.EstadoTienda ? 0 : 1;
 
         await Cubiculo.update(
-            { EstadoCubiculo: nuevoEstado },
+            { EstadoTienda: nuevoEstado },
             { where: { IdCubiculo: id } }
         );
 
