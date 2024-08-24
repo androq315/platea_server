@@ -13,7 +13,7 @@ export const getTienda = async (req, res) => {
     try {
         const id = req.params.id
         const tienda = await Tienda.findByPk(id)
-        res.status(200).json(cubiculo)
+        res.status(200).json(tienda)
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener el Cubiculo' + error })
     }

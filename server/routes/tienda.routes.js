@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getTienda, getTienda, postTienda, putTienda, toggleTienda, patchTienda } from "../controllers/tienda.controller.js";
+import {getTienda, postTienda, putTienda, toggleTienda, patchTienda } from "../controllers/tienda.controller.js";
 
 const router = Router()
 
