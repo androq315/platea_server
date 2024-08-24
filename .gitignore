@@ -9,3 +9,9 @@ node_modules
 
 /uploads/img/producto/*
 !/uploads/img/producto/.gitignore
+
+/uploads/img/tienda_banner/*
+!/uploads/img/tienda_banner/.gitignore
+
+/uploads/img/tienda_miniatura/*
+!/uploads/img/tienda_miniatura/.gitignore
