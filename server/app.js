@@ -16,11 +16,7 @@ const app = express();
 
 app.use(fileUpload());
 app.use(express.json());
-app.use(cors({
-    origin: 'http://localhost:3000', // URL del frontend
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type',
-  }));
+app.use(cors());
   
 
 // Servir archivos estáticos desde la carpeta 'uploads'
