@@ -36,10 +36,9 @@ class PersonaController {
 				return res.status(400).json({ message: 'No se subió ningún archivo' });
 			}
 
-			const { FotoPersona, bannerPersona } = req.files;
+			const { FotoPersona } = req.files;
 
 			let fotoPersonaUrl = null;
-			let bannerPersonaUrl = null;
 
 			if (FotoPersona) {
 				const timestamp = Date.now();
@@ -50,14 +49,6 @@ class PersonaController {
 				await FotoPersona.mv(uploadPath);
 			}
 
-			if (bannerPersona) {
-				const timestamp = Date.now();
-				const uniqueFileName = `${bannerPersona.name.split('.')[0]}_${timestamp}.${bannerPersona.name.split('.').pop()}`;
-				const uploadPath = path.join(__dirname, '../uploads/img/banner/', uniqueFileName);
-				bannerPersonaUrl = `./uploads/img/banner/${uniqueFileName}`;
-
-				await bannerPersona.mv(uploadPath);
-			}
 
 			const p = {
 				NombrePersona: req.body.NombrePersona,
@@ -67,8 +58,6 @@ class PersonaController {
 				EstadoPersona: req.body.EstadoPersona,
 				FotoPersona: fotoPersonaUrl,
 				FotoPersonaURL: `http://localhost:4000/${fotoPersonaUrl}`,
-				bannerPersona: bannerPersonaUrl,
-				bannerPersonaURL: `http://localhost:4000/${bannerPersonaUrl}`,
 				TelefonoPersona: req.body.TelefonoPersona,
 				idRolFK: req.body.idRolFK,
 			};
@@ -91,7 +80,7 @@ class PersonaController {
 			}
 
 			if (req.files) {
-				const { FotoPersona, bannerPersona } = req.files;
+				const { FotoPersona } = req.files;
 
 				if (FotoPersona) {
 					const timestamp = Date.now();
@@ -112,24 +101,6 @@ class PersonaController {
 					p.FotoPersonaURL = `http://localhost:4000/${fotoPersonaUrl}`;
 				}
 
-				if (bannerPersona) {
-					const timestamp = Date.now();
-					const uniqueFileName = `${bannerPersona.name.split('.')[0]}_${timestamp}.${bannerPersona.name.split('.').pop()}`;
-					const uploadPath = path.join(__dirname, '../uploads/img/banner/', uniqueFileName);
-					const bannerPersonaUrl = `./uploads/img/banner/${uniqueFileName}`;
-
-					await bannerPersona.mv(uploadPath);
-
-					if (persona.bannerPersonaURL) {
-						const oldImagePath = path.join(__dirname, '..', persona.bannerPersonaURL);
-						if (fs.existsSync(oldImagePath)) {
-							fs.unlinkSync(oldImagePath);
-						}
-					}
-
-					p.bannerPersona = bannerPersonaUrl;
-					p.bannerPersonaURL = `http://localhost:4000/${bannerPersonaUrl}`;
-				}
 			}
 
 			await Persona.updatePersona(id, p);

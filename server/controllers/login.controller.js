@@ -10,7 +10,7 @@ class LoginController {
         try {
             const { CorreoPersona, ClavePersona } = req.body;
 
-            // Validación de entrada
+
             if (!CorreoPersona || !ClavePersona) {
                 return res.status(400).json({ message: "Correo y contraseña son requeridos." });
             }

@@ -98,12 +98,6 @@ Persona.init({
 	FotoPersonaURL: {
 		type: DataTypes.TEXT
 	},
-	bannerPersona: {
-		type: DataTypes.TEXT
-	},
-	bannerPersonaURL: {
-		type: DataTypes.TEXT
-	},
  
 	idRolFK: {
 		type: DataTypes.INTEGER,

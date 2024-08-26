@@ -8,9 +8,9 @@ const router = Router()
 
 // Rutas protegidas que requieren autenticación
 router.get('/api/persona/', authenticateToken, PersonaController.getPersonas)
-router.get('/api/persona/:id', authenticateToken, PersonaController.getPersona)
-router.post('/api/persona/', authenticateToken, PersonaController.postPersona)
-router.put('/api/persona/:id', authenticateToken, PersonaController.putPersona)
+router.get('/api/persona/:id', PersonaController.getPersona)
+router.post('/api/persona/', PersonaController.postPersona)
+router.put('/api/persona/:id', PersonaController.putPersona)
 router.patch('/api/persona/:id', authenticateToken, PersonaController.patchPersona)
 
 // Rutas públicas (no requieren autenticación)
