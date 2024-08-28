@@ -62,7 +62,9 @@ class TiendaController {
 			const t = {
 				DireccionTienda: req.body.DireccionTienda,
 				NombreTienda: req.body.NombreTienda,
+				DescripcionTienda:  req.body.DescripcionTienda,
 				CalificacionTienda: req.body.CalificacionTienda,
+				CiudadTienda: req.body.CiudadTienda,
 				EstadoTienda: req.body.EstadoTienda,
 				MiniaturaTienda: miniaturaTiendaUrl,
 				MiniaturaTiendaURL: `http://localhost:4000/${miniaturaTiendaUrl}`,

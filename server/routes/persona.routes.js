@@ -7,11 +7,12 @@ import authenticateToken from "../middleware/persona.middleware.js";  // Importa
 const router = Router()
 
 // Rutas protegidas que requieren autenticación
-router.get('/api/persona/', authenticateToken, PersonaController.getPersonas)
+router.get('/api/persona/',  PersonaController.getPersonas)
 router.get('/api/persona/:id', PersonaController.getPersona)
+router.get('/api/persona/tienda/:id', PersonaController.TiendaPersona)
 router.post('/api/persona/', PersonaController.postPersona)
 router.put('/api/persona/:id', PersonaController.putPersona)
-router.patch('/api/persona/:id', authenticateToken, PersonaController.patchPersona)
+router.patch('/api/persona/:id',  PersonaController.patchPersona)
 
 // Rutas públicas (no requieren autenticación)
 router.post('/api/register/', registerPersona)

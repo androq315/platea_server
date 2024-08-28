@@ -41,7 +41,7 @@ class LoginController {
             const token = jwt.sign(
                 { IdPersona: persona.IdPersona },
                 process.env.JWT_SECRET,
-                { expiresIn: "1h" }
+                { expiresIn: "24h" }
             );
 
             console.log("Token generado:", token);

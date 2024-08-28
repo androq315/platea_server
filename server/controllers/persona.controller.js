@@ -16,6 +16,21 @@ class PersonaController {
 		}
 	}
 
+	static async TiendaPersona(req, res){
+		try	{
+			const id =  req.params.id;
+			const tiendas = await Persona.TiendaPersona(id);
+			if (tiendas) {
+				res.status(200).json(tiendas);
+			} else {
+				res.status(404).json({ message: 'Persona no encontrada' });
+			}
+
+		}catch{
+			res.status(500).json({ message: 'Error al obtener la tienda de la persona'})
+		}
+	}
+
 	static async getPersona(req, res) {
 		try {
 			const id = req.params.id;
@@ -55,12 +70,16 @@ class PersonaController {
 				ApellidoPersona: req.body.ApellidoPersona,
 				CorreoPersona: req.body.CorreoPersona,
 				ClavePersona: req.body.ClavePersona,
-				EstadoPersona: req.body.EstadoPersona,
+				EstadoPersona: req.body.EstadoPersona || true,
 				FotoPersona: fotoPersonaUrl,
 				FotoPersonaURL: `http://localhost:4000/${fotoPersonaUrl}`,
 				TelefonoPersona: req.body.TelefonoPersona,
+				CiudadPersona: req.body.CiudadPersona || null,
+				DescripcionPersona: req.body.DescripcionPersona || null,
+				DireccionPersona: req.body.DireccionPersona || null,
 				idRolFK: req.body.idRolFK,
 			};
+
 
 			await Persona.createPersona(p);
 			res.status(200).json({ message: 'Persona creada correctamente' });
@@ -119,6 +138,8 @@ class PersonaController {
 			res.status(500).json({ message: 'Error al actualizar el estado de la persona: ' + error });
 		}
 	}
+
+	
 }
 
 export default PersonaController;

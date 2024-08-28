@@ -72,6 +72,14 @@ Tienda.init({
     type: DataTypes.STRING(50),
     allowNull: false
   },
+  DescripcionTienda: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  CiudadTienda:{
+    type: DataTypes.STRING(20),
+    allowNull: false
+  },
   CalificacionTienda: {
     type: DataTypes.DECIMAL(2, 1),
     defaultValue: 0.0
@@ -84,12 +92,6 @@ Tienda.init({
     type: DataTypes.TEXT
   },
   MiniaturaTiendaURL: {
-    type: DataTypes.TEXT
-  },
-  BannerTienda: {
-    type: DataTypes.TEXT
-  },
-  BannerTiendaURL: {
     type: DataTypes.TEXT
   },
   IdCategoriaFK: {
