@@ -32,14 +32,14 @@ class ProductoController {
     static async ProductosTienda(req, res) {
         try {
             const id = req.params.id;
-            const producto = await Producto.ProductosTienda(id);
-            if (producto) {
-                res.status(200).json(producto);
+            const productos = await Producto.ProductosTienda(id);
+            if (productos.length > 0) {
+                res.status(200).json(productos);
             } else {
-                res.status(404).json({ message: 'Producto no encontrado' });
+                res.status(404).json({ message: 'No se encontraron productos para esta tienda' });
             }
         } catch (error) {
-            res.status(500).json({ message: 'Error al obtener el producto: ' + error });
+            res.status(500).json({ message: 'Error al obtener los productos: ' + error });
         }
     }
 
