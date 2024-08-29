@@ -16,6 +16,19 @@ class PersonaController {
 		}
 	}
 
+	static async getPersona(req, res) {
+		try {
+			const id = req.params.id;
+			const persona = await Persona.getPersonaById(id);
+			if (persona) {
+				res.status(200).json(persona);
+			} else {
+				res.status(404).json({ message: 'Persona no encontrada' });
+			}
+		} catch (error) {
+			res.status(500).json({ message: 'Error al obtener la persona: ' + error });
+		}
+	}
 	static async TiendaPersona(req, res){
 		try	{
 			const id =  req.params.id;
@@ -31,29 +44,16 @@ class PersonaController {
 		}
 	}
 
-	static async getPersona(req, res) {
-		try {
-			const id = req.params.id;
-			const persona = await Persona.getPersonaById(id);
-			if (persona) {
-				res.status(200).json(persona);
-			} else {
-				res.status(404).json({ message: 'Persona no encontrada' });
-			}
-		} catch (error) {
-			res.status(500).json({ message: 'Error al obtener la persona: ' + error });
-		}
-	}
-
 	static async postPersona(req, res) {
 		try {
 			if (!req.files) {
 				return res.status(400).json({ message: 'No se subió ningún archivo' });
 			}
 
-			const { FotoPersona } = req.files;
+			const { FotoPersona, bannerPersona } = req.files;
 
 			let fotoPersonaUrl = null;
+			let bannerPersonaUrl = null;
 
 			if (FotoPersona) {
 				const timestamp = Date.now();
@@ -64,22 +64,28 @@ class PersonaController {
 				await FotoPersona.mv(uploadPath);
 			}
 
+			if (bannerPersona) {
+				const timestamp = Date.now();
+				const uniqueFileName = `${bannerPersona.name.split('.')[0]}_${timestamp}.${bannerPersona.name.split('.').pop()}`;
+				const uploadPath = path.join(__dirname, '../uploads/img/banner/', uniqueFileName);
+				bannerPersonaUrl = `./uploads/img/banner/${uniqueFileName}`;
+
+				await bannerPersona.mv(uploadPath);
+			}
 
 			const p = {
 				NombrePersona: req.body.NombrePersona,
 				ApellidoPersona: req.body.ApellidoPersona,
 				CorreoPersona: req.body.CorreoPersona,
 				ClavePersona: req.body.ClavePersona,
-				EstadoPersona: req.body.EstadoPersona || true,
+				EstadoPersona: req.body.EstadoPersona,
 				FotoPersona: fotoPersonaUrl,
 				FotoPersonaURL: `http://localhost:4000/${fotoPersonaUrl}`,
+				bannerPersona: bannerPersonaUrl,
+				bannerPersonaURL: `http://localhost:4000/${bannerPersonaUrl}`,
 				TelefonoPersona: req.body.TelefonoPersona,
-				CiudadPersona: req.body.CiudadPersona || null,
-				DescripcionPersona: req.body.DescripcionPersona || null,
-				DireccionPersona: req.body.DireccionPersona || null,
 				idRolFK: req.body.idRolFK,
 			};
-
 
 			await Persona.createPersona(p);
 			res.status(200).json({ message: 'Persona creada correctamente' });
@@ -99,7 +105,7 @@ class PersonaController {
 			}
 
 			if (req.files) {
-				const { FotoPersona } = req.files;
+				const { FotoPersona, bannerPersona } = req.files;
 
 				if (FotoPersona) {
 					const timestamp = Date.now();
@@ -120,6 +126,24 @@ class PersonaController {
 					p.FotoPersonaURL = `http://localhost:4000/${fotoPersonaUrl}`;
 				}
 
+				if (bannerPersona) {
+					const timestamp = Date.now();
+					const uniqueFileName = `${bannerPersona.name.split('.')[0]}_${timestamp}.${bannerPersona.name.split('.').pop()}`;
+					const uploadPath = path.join(__dirname, '../uploads/img/banner/', uniqueFileName);
+					const bannerPersonaUrl = `./uploads/img/banner/${uniqueFileName}`;
+
+					await bannerPersona.mv(uploadPath);
+
+					if (persona.bannerPersonaURL) {
+						const oldImagePath = path.join(__dirname, '..', persona.bannerPersonaURL);
+						if (fs.existsSync(oldImagePath)) {
+							fs.unlinkSync(oldImagePath);
+						}
+					}
+
+					p.bannerPersona = bannerPersonaUrl;
+					p.bannerPersonaURL = `http://localhost:4000/${bannerPersonaUrl}`;
+				}
 			}
 
 			await Persona.updatePersona(id, p);
@@ -138,8 +162,6 @@ class PersonaController {
 			res.status(500).json({ message: 'Error al actualizar el estado de la persona: ' + error });
 		}
 	}
-
-	
 }
 
 export default PersonaController;
