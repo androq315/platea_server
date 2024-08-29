@@ -53,6 +53,15 @@ class Producto extends Model {
             throw error;
         }
     }
+    static async ProductosTienda(id) {
+        try {
+            const tiendas = await sequelize.query(`CALL ObtenerProductosTienda(${id})`);
+            return tiendas;
+        } catch (error) {
+            console.error(`F :c: ${error}`);
+            throw error;
+        }
+    }
 }
 
 // Definición del modelo Producto en Sequelize
@@ -86,15 +95,15 @@ Producto.init({
     IdCategoriaFK: {
         type: DataTypes.INTEGER
     },
-    IdTiendaFK:{
+    IdTiendaFK: {
         type: DataTypes.INTEGER
     }
-    },
- {
-    sequelize,
-    tableName: 'Producto',
-    timestamps: false,
-    underscored: false,
-});
+},
+    {
+        sequelize,
+        tableName: 'Producto',
+        timestamps: false,
+        underscored: false,
+    });
 
 export { Producto };

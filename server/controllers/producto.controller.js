@@ -29,6 +29,20 @@ class ProductoController {
         }
     }
 
+    static async ProductosTienda(req, res) {
+        try {
+            const id = req.params.id;
+            const producto = await Producto.ProductosTienda(id);
+            if (producto) {
+                res.status(200).json(producto);
+            } else {
+                res.status(404).json({ message: 'Producto no encontrado' });
+            }
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener el producto: ' + error });
+        }
+    }
+
     static async postProducto(req, res) {
         try {
             if (!req.files || !req.files.FotoProducto) {
