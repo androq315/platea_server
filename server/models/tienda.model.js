@@ -94,6 +94,12 @@ Tienda.init({
   MiniaturaTiendaURL: {
     type: DataTypes.TEXT
   },
+  BannerTienda: {
+    type: DataTypes.TEXT
+  },
+  BannerTiendaURL: {
+    type: DataTypes.TEXT
+  },
   IdCategoriaFK: {
     type: DataTypes.INTEGER,
 
