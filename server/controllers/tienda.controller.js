@@ -62,7 +62,7 @@ class TiendaController {
 			const t = {
 				DireccionTienda: req.body.DireccionTienda,
 				NombreTienda: req.body.NombreTienda,
-				DescripcionTienda:  req.body.DescripcionTienda,
+				DescripcionTienda: req.body.DescripcionTienda,
 				CalificacionTienda: req.body.CalificacionTienda,
 				CiudadTienda: req.body.CiudadTienda,
 				EstadoTienda: req.body.EstadoTienda,
@@ -149,6 +149,45 @@ class TiendaController {
 			res.status(500).json({ message: 'Error al actualizar el estado de la tienda: ' + error });
 		}
 	}
+
+
+	// ... otras funciones
+
+	static async comprarTienda(req, res) {
+		try {
+			const {
+				IdPersona,
+				NombreTienda,
+				DireccionTienda,
+				CiudadTienda,
+				DescripcionTienda,
+				IdCategoriaFK,
+			} = req.body;
+	
+			// Definir las fechas de arrendatario
+			const FechaInicioArrendatario = new Date();
+			const FechaExpiracionArrendatario = new Date(FechaInicioArrendatario);
+			FechaExpiracionArrendatario.setMonth(FechaInicioArrendatario.getMonth() + 2);
+	
+			const tienda = {
+				IdPersona,
+				NombreTienda,
+				DireccionTienda,
+				CiudadTienda,
+				DescripcionTienda,
+				IdCategoriaFK,
+				FechaInicioArrendatario,
+				FechaExpiracionArrendatario,
+			};
+	
+			await Tienda.comprarTienda(tienda);
+			res.status(200).json({ message: 'Tienda creada exitosamente.' });
+		} catch (error) {
+			res.status(500).json({ message: 'Error al crear la tienda: ' + error });
+		}
+	}	
 }
+
+
 
 export default TiendaController;

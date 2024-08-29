@@ -12,6 +12,42 @@ class Tienda extends Model {
     }
   }
 
+  static async comprarTienda(tienda) {
+    const {
+      IdPersona,
+      NombreTienda,
+      DireccionTienda,
+      CiudadTienda,
+      DescripcionTienda,
+      IdCategoriaFK,
+      FechaInicioArrendatario,
+      FechaExpiracionArrendatario
+    } = tienda;
+  
+    try {
+      return await sequelize.query(
+        `CALL CrearTienda(:IdPersona, :NombreTienda, :DireccionTienda, :CiudadTienda, :DescripcionTienda, :IdCategoriaFK, :FechaInicioArrendatario, :FechaExpiracionArrendatario)`,
+        {
+          replacements: {
+            IdPersona,
+            NombreTienda,
+            DireccionTienda,
+            CiudadTienda,
+            DescripcionTienda,
+            IdCategoriaFK,
+            FechaInicioArrendatario: FechaInicioArrendatario || null,
+            FechaExpiracionArrendatario: FechaExpiracionArrendatario || null,
+          },
+          type: sequelize.QueryTypes.RAW,
+        }
+      );
+    } catch (error) {
+      console.error(`Unable to create tienda: ${error}`);
+      throw error;
+    }
+  }
+  
+
   static async getTiendas() {
     try {
       return await this.findAll();

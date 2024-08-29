@@ -7,6 +7,7 @@ const router = Router();
 router.get('/api/tienda/', TiendaController.getTiendas);
 router.get('/api/tienda/:id', TiendaController.getTienda);
 router.post('/api/tienda/', TiendaController.postTienda);
+router.post('/api/tienda/persona/', TiendaController.comprarTienda);
 router.put('/api/tienda/:id', TiendaController.putTienda);
 router.patch('/api/tienda/:id', TiendaController.patchTienda);
 
