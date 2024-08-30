@@ -113,7 +113,68 @@ class Tienda extends Model {
       throw error;
     }
   }
+  static async obtenerTiendasDeModa() {
+    try {
+      const [results] = await sequelize.query('CALL ObtenerTiendasDeModa();');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeModa: ${error}`);
+      throw error;
+    }
+  }
+
+  static async obtenerTiendasDeElectrodomesticos() {
+    try {
+      const [results] = await sequelize.query('CALL ObtenerTiendasDeElectrodomesticos();');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeElectrodomesticos: ${error}`);
+      throw error;
+    }
+  }
+
+  static async obtenerTiendasDeHogar() {
+    try {
+      const [results] = await sequelize.query('CALL ObtenerTiendasDeHogar();');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeHogar: ${error}`);
+      throw error;
+    }
+  }
+
+  static async obtenerTiendasDeDeportes() {
+    try {
+      const [results] = await sequelize.query('CALL ObtenerTiendasDeDeportes();');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeDeportes: ${error}`);
+      throw error;
+    }
+  }
+
+  static async obtenerTiendasDeJuguetes() {
+    try {
+      const [results] = await sequelize.query('CALL ObtenerTiendasDeJuguetes();');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeJuguetes: ${error}`);
+      throw error;
+    }
+  }
+
+  static async obtenerTiendasDeBelleza() {
+    try {
+      const [results] = await sequelize.query('CALL ObtenerTiendasDeBelleza();');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeBelleza: ${error}`);
+      throw error;
+    }
+  }
 }
+
+
 
 // Definición del modelo Tienda en Sequelize
 Tienda.init({
