@@ -165,8 +165,8 @@ class Tienda extends Model {
 
   static async obtenerTiendasDeBelleza() {
     try {
-      const [results] = await sequelize.query('CALL ObtenerTiendasDeBelleza();');
-      return results;
+      const  tiendas = await sequelize.query('CALL ObtenerTiendasDeBelleza();');
+      return tiendas;
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeBelleza: ${error}`);
       throw error;
