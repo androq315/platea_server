@@ -83,6 +83,72 @@ class TiendaController {
 			res.status(500).json({ message: 'Error al obtener tiendas de belleza: ' + error });
 		}
 	}
+	static async putTienda(req, res) {
+		try {
+		  const id = req.params.id;
+		  const tienda = await Tienda.getTiendaById(id);
+	
+		  if (!tienda) {
+			return res.status(404).json({ message: 'Tienda no encontrada' });
+		  }
+	
+		  const { MiniaturaTienda, BannerTienda } = req.files || {};
+	
+		  const t = {
+			DireccionTienda: req.body.DireccionTienda,
+			NombreTienda: req.body.NombreTienda,
+			DescripcionTienda: req.body.DescripcionTienda,
+			CiudadTienda: req.body.CiudadTienda,
+			TelefonoTienda: req.body.TelefonoTienda,
+			IdCategoriaFK: req.body.IdCategoriaFK,
+		  };
+	
+		  if (MiniaturaTienda) {
+			const timestamp = Date.now();
+			const uniqueFileName = `${MiniaturaTienda.name.split('.')[0]}_${timestamp}.${MiniaturaTienda.name.split('.').pop()}`;
+			const uploadPath = path.join(__dirname, '../uploads/img/tienda_miniatura/', uniqueFileName);
+			const miniaturaTiendaUrl = `./uploads/img/tienda_miniatura/${uniqueFileName}`;
+	
+			await MiniaturaTienda.mv(uploadPath);
+	
+			// Eliminar la imagen anterior si existe
+			if (tienda.MiniaturaTiendaURL) {
+			  const oldImagePath = path.join(__dirname, tienda.MiniaturaTiendaURL);
+			  fs.unlink(oldImagePath, (err) => {
+				if (err) console.error(err);
+			  });
+			}
+	
+			t.MiniaturaTiendaURL = miniaturaTiendaUrl;
+		  }
+	
+		  if (BannerTienda) {
+			const timestamp = Date.now();
+			const uniqueFileName = `${BannerTienda.name.split('.')[0]}_${timestamp}.${BannerTienda.name.split('.').pop()}`;
+			const uploadPath = path.join(__dirname, '../uploads/img/tienda_banner/', uniqueFileName);
+			const bannerTiendaUrl = `./uploads/img/tienda_banner/${uniqueFileName}`;
+	
+			await BannerTienda.mv(uploadPath);
+	
+			// Eliminar la imagen anterior si existe
+			if (tienda.BannerTiendaURL) {
+			  const oldImagePath = path.join(__dirname, tienda.BannerTiendaURL);
+			  fs.unlink(oldImagePath, (err) => {
+				if (err) console.error(err);
+			  });
+			}
+	
+			t.BannerTiendaURL = bannerTiendaUrl;
+		  }
+	
+		  await Tienda.updateTienda(id, t);
+	
+		  res.json({ message: 'Tienda actualizada correctamente' });
+		} catch (error) {
+		  console.error(error);
+		  res.status(500).json({ message: 'Error al actualizar la tienda' });
+		}
+	  }
 
 	static async postTienda(req, res) {
 	try {
