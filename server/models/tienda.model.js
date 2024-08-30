@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
 class Tienda extends Model {
-  
+
   static async createTienda(tienda) {
     try {
       return await this.create(tienda);
@@ -20,13 +20,34 @@ class Tienda extends Model {
       CiudadTienda,
       DescripcionTienda,
       IdCategoriaFK,
+      MiniaturaTienda,
+      MiniaturaTiendaURL,
+      BannerTienda,
+      BannerTiendaURL,
       FechaInicioArrendatario,
       FechaExpiracionArrendatario
     } = tienda;
-  
+
+    // Establecer la fecha de inicio y expiración si no están proporcionadas
+    const fechaInicio = FechaInicioArrendatario || new Date();
+    const fechaExpiracion = FechaExpiracionArrendatario || new Date(new Date().setMonth(new Date().getMonth() + 2));
+
     try {
       return await sequelize.query(
-        `CALL CrearTienda(:IdPersona, :NombreTienda, :DireccionTienda, :CiudadTienda, :DescripcionTienda, :IdCategoriaFK, :FechaInicioArrendatario, :FechaExpiracionArrendatario)`,
+        `CALL CrearTienda(
+          :IdPersona,
+          :NombreTienda,
+          :DireccionTienda,
+          :CiudadTienda,
+          :DescripcionTienda,
+          :IdCategoriaFK,
+          :MiniaturaTienda,
+          :MiniaturaTiendaURL,
+          :BannerTienda,
+          :BannerTiendaURL,
+          :FechaInicioArrendatario,
+          :FechaExpiracionArrendatario
+        )`,
         {
           replacements: {
             IdPersona,
@@ -35,8 +56,12 @@ class Tienda extends Model {
             CiudadTienda,
             DescripcionTienda,
             IdCategoriaFK,
-            FechaInicioArrendatario: FechaInicioArrendatario || null,
-            FechaExpiracionArrendatario: FechaExpiracionArrendatario || null,
+            MiniaturaTienda,
+            MiniaturaTiendaURL,
+            BannerTienda,
+            BannerTiendaURL,
+            FechaInicioArrendatario: fechaInicio,
+            FechaExpiracionArrendatario: fechaExpiracion,
           },
           type: sequelize.QueryTypes.RAW,
         }
@@ -46,7 +71,8 @@ class Tienda extends Model {
       throw error;
     }
   }
-  
+
+
 
   static async getTiendas() {
     try {
@@ -112,7 +138,7 @@ Tienda.init({
     type: DataTypes.TEXT,
     allowNull: false
   },
-  CiudadTienda:{
+  CiudadTienda: {
     type: DataTypes.STRING(20),
     allowNull: false
   },
