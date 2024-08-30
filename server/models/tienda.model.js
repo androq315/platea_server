@@ -72,8 +72,6 @@ class Tienda extends Model {
     }
   }
 
-
-
   static async getTiendas() {
     try {
       return await this.findAll();
@@ -113,9 +111,10 @@ class Tienda extends Model {
       throw error;
     }
   }
+
   static async obtenerTiendasDeModa() {
     try {
-      const [results] = await sequelize.query('CALL ObtenerTiendasDeModa();');
+      const [results] = await sequelize.query('SELECT * FROM Moda;');
       return results;
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeModa: ${error}`);
@@ -125,7 +124,7 @@ class Tienda extends Model {
 
   static async obtenerTiendasDeElectrodomesticos() {
     try {
-      const [results] = await sequelize.query('CALL ObtenerTiendasDeElectrodomesticos();');
+      const [results] = await sequelize.query('SELECT * FROM Electrodomesticos;');
       return results;
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeElectrodomesticos: ${error}`);
@@ -135,7 +134,7 @@ class Tienda extends Model {
 
   static async obtenerTiendasDeHogar() {
     try {
-      const [results] = await sequelize.query('CALL ObtenerTiendasDeHogar();');
+      const [results] = await sequelize.query('SELECT * FROM Hogar;');
       return results;
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeHogar: ${error}`);
@@ -145,7 +144,7 @@ class Tienda extends Model {
 
   static async obtenerTiendasDeDeportes() {
     try {
-      const [results] = await sequelize.query('CALL ObtenerTiendasDeDeportes();');
+      const [results] = await sequelize.query('SELECT * FROM Deportes;');
       return results;
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeDeportes: ${error}`);
@@ -155,7 +154,7 @@ class Tienda extends Model {
 
   static async obtenerTiendasDeJuguetes() {
     try {
-      const [results] = await sequelize.query('CALL ObtenerTiendasDeJuguetes();');
+      const [results] = await sequelize.query('SELECT * FROM Juguetes;');
       return results;
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeJuguetes: ${error}`);
@@ -165,16 +164,34 @@ class Tienda extends Model {
 
   static async obtenerTiendasDeBelleza() {
     try {
-      const  tiendas = await sequelize.query('CALL ObtenerTiendasDeBelleza();');
-      return tiendas;
+      const [results] = await sequelize.query('SELECT * FROM Belleza;');
+      return results;
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeBelleza: ${error}`);
       throw error;
     }
   }
+
+  static async listarTop4Productos() {
+    try {
+      const [results] = await sequelize.query('SELECT * FROM Top4Productos;');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ListarTop4Productos: ${error}`);
+      throw error;
+    }
+  }
+
+  static async listarTop4Tiendas() {
+    try {
+      const [results] = await sequelize.query('SELECT * FROM Top4Tiendas;');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ListarTop4Tiendas: ${error}`);
+      throw error;
+    }
+  }
 }
-
-
 
 // Definición del modelo Tienda en Sequelize
 Tienda.init({
@@ -225,11 +242,9 @@ Tienda.init({
   },
   IdCategoriaFK: {
     type: DataTypes.INTEGER,
-
   },
   IdArrendatarioFK: {
     type: DataTypes.INTEGER,
-
   }
 }, {
   sequelize,
