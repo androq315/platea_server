@@ -62,6 +62,15 @@ class Producto extends Model {
             throw error;
         }
     }
+    static async ProductosTop() {
+        try {
+            const [tiendas] = await sequelize.query(`SELECT * FROM platea.top4productos`);
+            return tiendas;
+        } catch (error) {
+            console.error(`F :c: ${error}`);
+            throw error;
+        }
+    }
 }
 
 // Definición del modelo Producto en Sequelize

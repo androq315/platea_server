@@ -279,70 +279,86 @@ class TiendaController {
 	}
 }
 
-	static async comprarTienda(req, res) {
+// Asegúrate de que esto esté importado
+
+static async comprarTienda(req, res) {
+    try {
+      if (!req.files) {
+        return res.status(400).json({ message: 'No se subió ningún archivo' });
+      }
+
+      const { MiniaturaTienda, BannerTienda } = req.files;
+
+      let miniaturaTiendaUrl = null;
+      let bannerTiendaUrl = null;
+
+      if (MiniaturaTienda) {
+        const timestamp = Date.now();
+        const uniqueFileName = `${MiniaturaTienda.name.split('.')[0]}_${timestamp}.${MiniaturaTienda.name.split('.').pop()}`;
+        const uploadPath = path.join(__dirname, '../uploads/img/tienda_miniatura/', uniqueFileName);
+        miniaturaTiendaUrl = `uploads/img/tienda_miniatura/${uniqueFileName}`; // URL relativa
+
+        await MiniaturaTienda.mv(uploadPath);
+      }
+
+      if (BannerTienda) {
+        const timestamp = Date.now();
+        const uniqueFileName = `${BannerTienda.name.split('.')[0]}_${timestamp}.${BannerTienda.name.split('.').pop()}`;
+        const uploadPath = path.join(__dirname, '../uploads/img/tienda_banner/', uniqueFileName);
+        bannerTiendaUrl = `uploads/img/tienda_banner/${uniqueFileName}`; // URL relativa
+
+        await BannerTienda.mv(uploadPath);
+      }
+
+      const {
+        IdPersona,
+        NombreTienda,
+        DireccionTienda,
+        CiudadTienda,
+        DescripcionTienda,
+        IdCategoriaFK
+      } = req.body;
+
+      // Definir las fechas de arrendatario
+      const FechaInicioArrendatario = new Date();
+      const FechaExpiracionArrendatario = new Date(FechaInicioArrendatario);
+      FechaExpiracionArrendatario.setMonth(FechaInicioArrendatario.getMonth() + 2);
+
+      const tienda = {
+        IdPersona,
+        NombreTienda,
+        DireccionTienda,
+        CiudadTienda,
+        DescripcionTienda,
+        IdCategoriaFK,
+        MiniaturaTienda: miniaturaTiendaUrl,
+        MiniaturaTiendaURL: `http://localhost:4000/${miniaturaTiendaUrl}`,
+        BannerTienda: bannerTiendaUrl,
+        BannerTiendaURL: `http://localhost:4000/${bannerTiendaUrl}`,
+        FechaInicioArrendatario,
+        FechaExpiracionArrendatario
+      };
+
+      // Llama al método comprarTienda y recibe el ID de la tienda
+      const idTiendaCreada = await Tienda.comprarTienda(tienda);
+
+      // Devuelve el ID en formato JSON
+      res.status(200).json({ idTienda: idTiendaCreada });
+    } catch (error) {
+      console.error(`Error al crear la tienda: ${error}`);
+      res.status(500).json({ message: 'Error al crear la tienda: ' + error.message });
+    }
+  }
+
+static async ProductosDestacados(req, res) {
 	try {
-		if (!req.files) {
-			return res.status(400).json({ message: 'No se subió ningún archivo' });
-		}
-
-		const { MiniaturaTienda, BannerTienda } = req.files;
-
-		let miniaturaTiendaUrl = null;
-		let bannerTiendaUrl = null;
-
-		if (MiniaturaTienda) {
-			const timestamp = Date.now();
-			const uniqueFileName = `${MiniaturaTienda.name.split('.')[0]}_${timestamp}.${MiniaturaTienda.name.split('.').pop()}`;
-			const uploadPath = path.join(__dirname, '../uploads/img/tienda_miniatura/', uniqueFileName);
-			miniaturaTiendaUrl = `./uploads/img/tienda_miniatura/${uniqueFileName}`;
-
-			await MiniaturaTienda.mv(uploadPath);
-		}
-
-		if (BannerTienda) {
-			const timestamp = Date.now();
-			const uniqueFileName = `${BannerTienda.name.split('.')[0]}_${timestamp}.${BannerTienda.name.split('.').pop()}`;
-			const uploadPath = path.join(__dirname, '../uploads/img/tienda_banner/', uniqueFileName);
-			bannerTiendaUrl = `./uploads/img/tienda_banner/${uniqueFileName}`;
-
-			await BannerTienda.mv(uploadPath);
-		}
-
-		const {
-			IdPersona,
-			NombreTienda,
-			DireccionTienda,
-			CiudadTienda,
-			DescripcionTienda,
-			IdCategoriaFK,
-		} = req.body;
-
-		// Definir las fechas de arrendatario
-		const FechaInicioArrendatario = new Date();
-		const FechaExpiracionArrendatario = new Date(FechaInicioArrendatario);
-		FechaExpiracionArrendatario.setMonth(FechaInicioArrendatario.getMonth() + 2);
-
-		const tienda = {
-			IdPersona,
-			NombreTienda,
-			DireccionTienda,
-			CiudadTienda,
-			DescripcionTienda,
-			IdCategoriaFK,
-			MiniaturaTienda: miniaturaTiendaUrl,
-			MiniaturaTiendaURL: `http://localhost:4000/${miniaturaTiendaUrl}`,
-			BannerTienda: bannerTiendaUrl,
-			BannerTiendaURL: `http://localhost:4000/${bannerTiendaUrl}`,
-			FechaInicioArrendatario,
-			FechaExpiracionArrendatario,
-		};
-
-		await Tienda.comprarTienda(tienda);
-		res.status(200).json({ message: 'Tienda creada exitosamente.' });
+		const tiendas = await Tienda.listarTop4Tiendas();
+		res.status(200).json(tiendas);
 	} catch (error) {
-		res.status(500).json({ message: 'Error al crear la tienda: ' + error });
+		res.status(500).json({ message: 'Error al obtener los productos destacados: ' + error });
 	}
-}
+}  
+
 }
 
 export default TiendaController;

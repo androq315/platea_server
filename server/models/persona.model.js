@@ -65,7 +65,10 @@ class Persona extends Model {
   async compararClave(clave) {
     return await bcrypt.compare(clave, this.ClavePersona);
   }
+
 }
+
+
 
 // Definición del modelo Persona en Sequelize
 Persona.init({

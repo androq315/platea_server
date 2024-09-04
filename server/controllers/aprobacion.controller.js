@@ -1,0 +1,48 @@
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+import fs from 'fs';
+import { Aprobacion } from '../models/aprobacion.model.js';
+
+
+class AprobacionController{
+
+  static async getAprobacion(req, res) {
+		try {
+			const id = req.params.id;
+			const aprobacion = await Aprobacion.getComentarios(id);
+			if (aprobacion) {
+				res.status(200).json(aprobacion);
+			} else {
+				res.status(404).json({ message: 'Aprobacion no encontrada' });
+			}
+		} catch (error) {
+			res.status(500).json({ message: 'Error al obtener la Aprobacion: ' + error });
+		}
+	}
+
+    static async CrearComentario(req, res) {
+        try {
+          
+    
+          const {ComentarioAprobacion, CalificacionAprobacion, IdPersonaFK, IdProductoFK
+          } = req.body;
+    
+
+          const aprobacion = { ComentarioAprobacion, CalificacionAprobacion, IdPersonaFK, IdProductoFK
+          };
+    
+
+            await Aprobacion.CrearComentario(aprobacion);
+            res.status(500).json({ message: 'Bien al crear la aprobacion: '});
+        } catch (error) {
+          console.error(`Error al crear la aprobacion: ${error}`);
+          res.status(500).json({ message: 'Error al crear la aprobacion: ' + error.message });
+        }
+      }
+
+    
+
+}
+
+
+export default AprobacionController;

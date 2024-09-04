@@ -11,7 +11,6 @@ class Tienda extends Model {
       throw error;
     }
   }
-
   static async comprarTienda(tienda) {
     const {
       IdPersona,
@@ -27,13 +26,14 @@ class Tienda extends Model {
       FechaInicioArrendatario,
       FechaExpiracionArrendatario
     } = tienda;
-
+    
     // Establecer la fecha de inicio y expiración si no están proporcionadas
     const fechaInicio = FechaInicioArrendatario || new Date();
     const fechaExpiracion = FechaExpiracionArrendatario || new Date(new Date().setMonth(new Date().getMonth() + 2));
-
+    
     try {
-      return await sequelize.query(
+      // Llamar al procedimiento almacenado
+      const result = await sequelize.query(
         `CALL CrearTienda(
           :IdPersona,
           :NombreTienda,
@@ -46,7 +46,8 @@ class Tienda extends Model {
           :BannerTienda,
           :BannerTiendaURL,
           :FechaInicioArrendatario,
-          :FechaExpiracionArrendatario
+          :FechaExpiracionArrendatario,
+          @p_IdTienda
         )`,
         {
           replacements: {
@@ -61,20 +62,29 @@ class Tienda extends Model {
             BannerTienda,
             BannerTiendaURL,
             FechaInicioArrendatario: fechaInicio,
-            FechaExpiracionArrendatario: fechaExpiracion,
+            FechaExpiracionArrendatario: fechaExpiracion
           },
-          type: sequelize.QueryTypes.RAW,
+          type: sequelize.QueryTypes.RAW
         }
       );
+
+      // Recuperar el parámetro de salida
+      const [resultSet] = await sequelize.query(`SELECT @p_IdTienda AS IdTienda;`);
+      const IdTienda = resultSet[0].IdTienda;
+
+      return IdTienda;
     } catch (error) {
       console.error(`Unable to create tienda: ${error}`);
       throw error;
     }
   }
 
+
+
   static async getTiendas() {
     try {
-      return await this.findAll();
+    const [results]  = await sequelize.query(`SELECT * FROM platea.vertienda;`);
+    return results;
     } catch (error) {
       console.error(`Unable to find all tiendas: ${error}`);
       throw error;
@@ -191,6 +201,8 @@ class Tienda extends Model {
       throw error;
     }
   }
+
+
 }
 
 // Definición del modelo Tienda en Sequelize

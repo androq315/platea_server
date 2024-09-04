@@ -4,6 +4,7 @@ import ProductoController from "../controllers/producto.controller.js";
 const router = Router()
 
 router.get('/api/producto/', ProductoController.getProductos)
+router.get('/api/productosdestacados/', ProductoController.ProductosDestacados)
 router.get('/api/tienda/producto/:id', ProductoController.ProductosTienda)
 router.get('/api/producto/:id', ProductoController.getProducto)
 

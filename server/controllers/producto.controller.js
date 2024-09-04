@@ -145,6 +145,15 @@ class ProductoController {
             res.status(500).json({ message: 'Error al eliminar el producto: ' + error });
         }
     }
+
+    static async ProductosDestacados(req, res) {
+        try {
+            const productos = await Producto.ProductosTop();
+            res.status(200).json(productos);
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener los productos destacados: ' + error });
+        }
+    }  
 }
 
 export default ProductoController;
