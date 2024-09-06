@@ -1,31 +1,33 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
-
 class Aprobacion extends Model {
 
   static async getComentarios(id) {
-    try { 
-      const results = await sequelize.query(`call platea.Mostrarcomentarios(${id});`);
-      return results;
+    try {
+      const [results, metadata] = await sequelize.query(
+        `CALL platea.Mostrarcomentarios(:id);`,
+        {
+          replacements: { id },
+          type: sequelize.QueryTypes.SELECT
+        }
+      );
+      return results; // Asegúrate de que results es un array de comentarios
     } catch (error) {
-      console.error(`Unable to find all tiendas: ${error}`);
+      console.error(`Unable to find comments: ${error}`);
       throw error;
     }
   }
 
-
   static async CrearComentario(tienda) {
-    const { ComentarioAprobacion, CalificacionAprobacion, IdPersonaFK, IdProductoFK
-    } = tienda;
+    const { ComentarioAprobacion, CalificacionAprobacion, IdPersonaFK, IdProductoFK } = tienda;
 
     try {
       // Llamar al procedimiento almacenado
       await sequelize.query(
-        `CALL crearComentario( :ComentarioAprobacion, :CalificacionAprobacion, :IdPersonaFK, :IdProductoFK)`,
+        `CALL crearComentario(:ComentarioAprobacion, :CalificacionAprobacion, :IdPersonaFK, :IdProductoFK)`,
         {
-          replacements: {ComentarioAprobacion, CalificacionAprobacion, IdPersonaFK, IdProductoFK
-          },
+          replacements: { ComentarioAprobacion, CalificacionAprobacion, IdPersonaFK, IdProductoFK },
           type: sequelize.QueryTypes.RAW
         }
       );
@@ -34,8 +36,6 @@ class Aprobacion extends Model {
       throw error;
     }
   }
-
-  
 
 }
 
