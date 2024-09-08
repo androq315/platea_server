@@ -127,7 +127,13 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Moda',NULL),(2,'Electrodometicos',NULL),(3,'Hogar',NULL),(4,'Deportes',NULL),(5,'Juguetes',NULL),(6,'Belleza',NULL);
+INSERT INTO `categoria` VALUES (1,'Moda',NULL),(2,'Electrodometicos',NULL),(3,'Hogar',NULL),(4,'Deportes',NULL),(5,'Juguetes',NULL),(6,'Belleza',NULL),
+(7, 'Electrónica', NULL),
+(8, 'Libros', NULL),
+(9, 'Comida', NULL),
+(10, 'Salud', NULL),
+(11, 'Oficina', NULL),
+(12, 'Jardín', NULL);
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
