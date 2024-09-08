@@ -90,11 +90,12 @@ DROP TABLE IF EXISTS `carrito`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `carrito` (
   `IdCarrito` int(11) NOT NULL AUTO_INCREMENT,
-  `IdClienteFK` int(11) DEFAULT NULL,
+  `IdPersonaFK` int(11) DEFAULT NULL,
+  fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`IdCarrito`),
-  KEY `FK_Cliente_Carrito` (`IdClienteFK`),
-  CONSTRAINT `FK_Cliente_Carrito` FOREIGN KEY (`IdClienteFK`) REFERENCES `cliente` (`IdCliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `FK_Persona_Carrito` (`IdPersonaFK`),
+  CONSTRAINT `FK_Persona_Carrito` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1022,7 +1023,6 @@ create procedure Mostrarcomentarios (
 end//
 
 
-delimiter ;
 
 
 
