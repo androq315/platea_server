@@ -5,6 +5,8 @@ import personaRoutes from './routes/persona.routes.js';
 import tiendaRoutes from './routes/tienda.routes.js';
 import productosRoutes from './routes/producto.routes.js';
 import aprobacionRoutes  from './routes/aprobacion.routes.js';
+import carritoRoutes from  './routes/carrito.routes.js';
+
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -25,6 +27,6 @@ app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Usar las rutas de la aplicación
-app.use(personaRoutes, tiendaRoutes, productosRoutes, aprobacionRoutes);
+app.use(personaRoutes, tiendaRoutes, productosRoutes, aprobacionRoutes, carritoRoutes);
 
 export default app;
