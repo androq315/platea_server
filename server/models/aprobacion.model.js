@@ -18,7 +18,6 @@ class Aprobacion extends Model {
       throw error;
     }
   }
-
   static async CrearComentario(tienda) {
     const { ComentarioAprobacion, CalificacionAprobacion, IdPersonaFK, IdProductoFK } = tienda;
 
