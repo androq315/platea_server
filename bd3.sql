@@ -115,7 +115,7 @@ CREATE TABLE `carrito` (
   PRIMARY KEY (`IdCarrito`),
   KEY `FK_Persona_Carrito` (`IdPersonaFK`),
   CONSTRAINT `FK_Persona_Carrito` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +124,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (17,NULL,'2024-09-08 18:08:58');
+INSERT INTO `carrito` VALUES (17,NULL,'2024-09-08 18:08:58'),(18,17,'2024-09-09 15:52:30');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,6 +257,7 @@ CREATE TABLE `detallecarrito` (
 
 LOCK TABLES `detallecarrito` WRITE;
 /*!40000 ALTER TABLE `detallecarrito` DISABLE KEYS */;
+INSERT INTO `detallecarrito` VALUES (17,6,1),(18,6,1),(18,8,1),(18,14,1),(18,16,1),(18,23,1),(18,25,1);
 /*!40000 ALTER TABLE `detallecarrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -525,7 +526,7 @@ CREATE TABLE `persona` (
   UNIQUE KEY `CorreoPersona` (`CorreoPersona`),
   KEY `FK_Rol_Persona` (`idRolFK`),
   CONSTRAINT `FK_Rol_Persona` FOREIGN KEY (`idRolFK`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -534,7 +535,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (13,'Alexix  Johan','Orostegui Audor','aorostegui2@gmail.com',NULL,NULL,'','$2b$10$kDang2qvBQKTzpbV3nIRQOsMrB.bXF9HT1AG5hCz/fLJ.4vl5RQx6',1,'2147483647',NULL,NULL,NULL,NULL,3),(14,'Anyi','Mendivelso','Camila@gmail.com',NULL,NULL,'','$2b$10$Ml/1qtHLuiWJKUkHCShFg.S4Boq.Jgh1yYZcL7LphGzVZlPOZxNa2',1,'2147483647',NULL,NULL,NULL,NULL,3),(15,'Andres','suarez','androq315@gmail.com',NULL,NULL,'','$2b$10$4j4lEQ0BrwmTRsHidgMMbe9ILGToMZs8S6dxaFPlMeo/nM3F8a6kq',1,'2147483647',NULL,NULL,NULL,NULL,3),(16,'Danner','Arias','danner@gmail.com',NULL,NULL,'','$2b$10$TP6q4LfZbt/dluHpDhyJMu6tURzTwwLQZwkbcDVPF3Y0FQ6pmRzDC',1,'2147483647',NULL,NULL,NULL,NULL,3);
+INSERT INTO `persona` VALUES (13,'Alexix  Johan','Orostegui Audor','aorostegui2@gmail.com',NULL,NULL,'','$2b$10$kDang2qvBQKTzpbV3nIRQOsMrB.bXF9HT1AG5hCz/fLJ.4vl5RQx6',1,'2147483647',NULL,NULL,NULL,NULL,3),(14,'Anyi','Mendivelso','Camila@gmail.com',NULL,NULL,'','$2b$10$Ml/1qtHLuiWJKUkHCShFg.S4Boq.Jgh1yYZcL7LphGzVZlPOZxNa2',1,'2147483647',NULL,NULL,NULL,NULL,3),(15,'Andres','suarez','androq315@gmail.com',NULL,NULL,'','$2b$10$4j4lEQ0BrwmTRsHidgMMbe9ILGToMZs8S6dxaFPlMeo/nM3F8a6kq',1,'2147483647',NULL,NULL,NULL,NULL,3),(16,'Danner','Arias','danner@gmail.com',NULL,NULL,'','$2b$10$TP6q4LfZbt/dluHpDhyJMu6tURzTwwLQZwkbcDVPF3Y0FQ6pmRzDC',1,'2147483647',NULL,NULL,NULL,NULL,3),(17,'Andres','Meza','anuellAA@info.co','null','hol;a','','$2b$10$HIfxlvhdCpOkB/Y13/mxK.Qp4qGUg54ym0qGCsAzPmLatxEvymA72',1,'2147483647','./uploads/img/persona_avatar/descarga_1725838696142.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1725838696142.jpeg','./uploads/img/banner/gatito_1725838696145.gif','http://localhost:4000/./uploads/img/banner/gatito_1725838696145.gif',3);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -702,6 +703,44 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'platea'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `AgregarProductoCarrito` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarProductoCarrito`(IN usuario_Id INT, IN producto_id INT)
+BEGIN
+    DECLARE Id INT;
+    
+    -- Verifica si el usuario ya tiene un carrito
+    SELECT IdCarrito INTO Id
+    FROM carrito
+    WHERE IdPersonaFK = usuario_Id
+    ORDER BY fecha_creacion DESC
+    LIMIT 1;
+
+    -- Si no hay carrito, crea uno nuevo
+    IF Id IS NULL THEN
+        INSERT INTO Carrito (IdPersonaFK, fecha_creacion)
+        VALUES (usuario_Id, NOW());
+        
+        -- Obtén el ID del nuevo carrito
+        SELECT LAST_INSERT_ID() INTO Id;
+    END IF;
+
+	INSERT INTO detallecarrito (IdCarritoFK, IdProductoFK) VALUES
+    (Id,producto_id);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `crearComentario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -855,20 +894,20 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductosCarrito`(IN usuarioId INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductosCarrito`(IN usuario_Id INT)
 BEGIN
     DECLARE Id INT;
     
     -- Verifica si el usuario ya tiene un carrito
     SELECT IdCarrito INTO Id
     FROM carrito
-    WHERE IdPersonaFK = usuarioId
+    WHERE IdPersonaFK = usuario_Id
     ORDER BY fecha_creacion DESC
     LIMIT 1;
 
     -- Si no hay carrito, crea uno nuevo
     IF Id IS NULL THEN
-        INSERT INTO Carrito (IdCarrito, fecha_creacion)
+        INSERT INTO Carrito (IdPersonaFK, fecha_creacion)
         VALUES (usuarioId, NOW());
         
         -- Obtén el ID del nuevo carrito
@@ -1169,4 +1208,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-08 18:33:09
+-- Dump completed on 2024-09-09 18:12:01
