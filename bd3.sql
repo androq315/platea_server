@@ -4,6 +4,10 @@
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.4.32-MariaDB
 
+drop database if exists platea;
+create database platea;
+use platea;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -870,16 +874,23 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Mostrarcomentarios`(
-    in A_IdProductoFK int
+DELIMITER //
 
-)
-begin
-	select*from Aprobacion where IdProductoFK = A_IdProductoFK;
+CREATE PROCEDURE Mostrarcomentarios(IN productoId INT)
+BEGIN
+    SELECT 
+        p.NombrePersona,          -- Nombre de la persona que hizo el comentario
+        a.FechaAprobacion,        -- Fecha en que el comentario fue hecho
+        a.ComentarioAprobacion,   -- Texto del comentario
+        p.FotoPersonaURL          -- URL de la foto de perfil
+    FROM Aprobacion a
+    JOIN Persona p ON a.IdPersonaFK = p.IdPersona  -- Une la tabla Aprobacion con Persona para obtener el nombre de la persona y la foto
+    WHERE a.IdProductoFK = productoId;  -- Filtra los comentarios para el producto específico
+END //
 
-end ;;
 DELIMITER ;
+
+
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
