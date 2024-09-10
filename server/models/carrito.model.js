@@ -37,7 +37,7 @@ class Carrito extends Model {
             IdPersonaFK,
             IdProductoFK
           },
-          type: sequelize.QueryTypes.RAW // Ajusta esto según sea necesario
+          type: sequelize.QueryTypes.INSERT // Ajusta esto según sea necesario
         }
       );
     } catch (error) {
@@ -46,7 +46,46 @@ class Carrito extends Model {
     }
   }
   
+  static async ActualizarCantidad(producto) {
+    const {
+      IdPersonaFK,
+      IdProductoFK,
+      Cantidad
+    } = producto;
   
+    try {
+      // Llamar al procedimiento almacenado
+      const result = await sequelize.query(
+        `call platea.ActualizarCantidad(
+          :IdPersonaFK,
+          :IdProductoFK,
+          :Cantidad);`,
+        {
+          replacements: {
+            IdPersonaFK,
+            IdProductoFK,
+            Cantidad
+          },
+          type: sequelize.QueryTypes.INSERT // Ajusta esto según sea necesario
+        }
+      );
+    } catch (error) {
+      console.error(`Unable to add product to cart: ${error}`);
+      throw error;
+    }
+  }
+
+  static async deleteProducto(id) {
+    try {
+
+      const result = await sequelize.query(
+        `call platea.EliminarProducto(${id});`,
+    ); 
+    } catch (error) {
+      console.error(`Unable to find comments: ${error}`);
+      throw error;
+    }
+  }
 
 }
 

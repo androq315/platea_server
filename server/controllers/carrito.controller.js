@@ -35,7 +35,39 @@ class CarritoController {
             res.status(500).json({ message: 'Error al agregar el producto al carrito: ' + error.message });
         }
     }
+    static async ActualizarCantidad(req, res) {
+        try {
+            const {IdPersonaFK,  IdProductoFK ,Cantidad} = req.body; 
+    
+            const producto = {
+                IdPersonaFK,
+                IdProductoFK,
+                Cantidad
+            };
+            const resultado = await Carrito.ActualizarCantidad(producto);
+    
+            // Devuelve el resultado en formato JSON
+            res.status(200).json({ message: 'Producto agregado al carrito exitosamente', resultado });
+        } catch (error) {
+            console.error(`Error al agregar el producto al carrito: ${error}`);
+            res.status(500).json({ message: 'Error al agregar el producto al carrito: ' + error.message });
+        }
+    }
 
+    static async DeleteProducto(req, res) {
+        try {
+            const id = req.params.id;
+            const carrito = await Carrito.deleteProducto(id);
+    
+            // Devuelve el resultado en formato JSON
+            res.status(200).json({ message: 'Producto agregado al carrito exitosamente', carrito });
+        } catch (error) {
+            console.error(`Error al agregar el producto al carrito: ${error}`);
+            res.status(500).json({ message: 'Error al agregar el producto al carrito: ' + error.message });
+        }
+    }
+
+    
 
 }
 
