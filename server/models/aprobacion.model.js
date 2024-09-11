@@ -50,8 +50,12 @@ Aprobacion.init({
     allowNull: false
   },
   CalificacionAprobacion: {
-    type: DataTypes.DECIMAL(2, 1),
-    allowNull: false
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 1,
+      max: 5
+    }
   },
   FechaAprobacion: {
     type: DataTypes.DATE,
