@@ -4,6 +4,10 @@
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.4.32-MariaDB
 
+drop database if exists platea;
+create database platea;
+use platea;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -241,16 +245,14 @@ DROP TABLE IF EXISTS `detallecarrito`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `detallecarrito` (
-  `IdDetalleCarrito` int(11) NOT NULL AUTO_INCREMENT,
   `IdCarritoFK` int(11) NOT NULL,
   `IdProductoFK` int(11) NOT NULL,
   `Cantidad` int(11) DEFAULT 1,
-  PRIMARY KEY (`IdDetalleCarrito`),
+  PRIMARY KEY (`IdCarritoFK`,`IdProductoFK`),
   KEY `FK_Producto_DetalleCarrito` (`IdProductoFK`),
-  KEY `FK_Carrito_DetalleCarrito` (`IdCarritoFK`),
   CONSTRAINT `FK_Carrito_DetalleCarrito` FOREIGN KEY (`IdCarritoFK`) REFERENCES `carrito` (`IdCarrito`),
   CONSTRAINT `FK_Producto_DetalleCarrito` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,7 +261,7 @@ CREATE TABLE `detallecarrito` (
 
 LOCK TABLES `detallecarrito` WRITE;
 /*!40000 ALTER TABLE `detallecarrito` DISABLE KEYS */;
-INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,3);
+INSERT INTO `detallecarrito` VALUES (17,6,1),(18,6,1),(18,8,1),(18,14,1),(18,16,1),(18,23,1),(18,25,1);
 /*!40000 ALTER TABLE `detallecarrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -705,40 +707,6 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'platea'
 --
-/*!50003 DROP PROCEDURE IF EXISTS `ActualizarCantidad` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ActualizarCantidad`(
-    IN p_IdPersona INT,
-    IN p_IdProducto INT,
-    IN p_NuevaCantidad INT
-)
-BEGIN
-	DECLARE Id INT;
-    
-    -- Verifica si el usuario ya tiene un carrito
-    SELECT IdCarrito INTO Id
-    FROM carrito
-    WHERE IdPersonaFK = p_IdPersona
-    ORDER BY fecha_creacion DESC
-    LIMIT 1;
-
-    UPDATE detallecarrito
-    SET Cantidad = p_NuevaCantidad
-    WHERE IdCarritoFK = Id AND IdProductoFK = p_IdProducto;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `AgregarProductoCarrito` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -897,29 +865,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `EliminarProducto` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `EliminarProducto`(
-    IN Id INT
-)
-BEGIN
-
-    DELETE FROM detallecarrito
-    WHERE IdDetalleCarrito = Id ;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Mostrarcomentarios` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -929,16 +874,24 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Mostrarcomentarios`(
-    in A_IdProductoFK int
+DELIMITER //
 
-)
-begin
-	select*from Aprobacion where IdProductoFK = A_IdProductoFK;
+CREATE PROCEDURE Mostrarcomentarios(IN productoId INT)
+BEGIN
+    SELECT 
+        p.NombrePersona,          -- Nombre de la persona que hizo el comentario
+        a.FechaAprobacion,        -- Fecha en que el comentario fue hecho
+        a.ComentarioAprobacion,   -- Texto del comentario
+        p.FotoPersonaURL, 
+        a.CalificacionAprobacion-- URL de la foto de perfil
+    FROM Aprobacion a
+    JOIN Persona p ON a.IdPersonaFK = p.IdPersona  -- Une la tabla Aprobacion con Persona para obtener el nombre de la persona y la foto
+    WHERE a.IdProductoFK = productoId;  -- Filtra los comentarios para el producto específico
+END //
 
-end ;;
 DELIMITER ;
+
+
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
@@ -974,7 +927,7 @@ BEGIN
     END IF;
 
     -- Lista los productos del carrito
-    SELECT dc.IdDetalleCarrito, p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , dc.cantidad, t.NombreTienda
+    SELECT p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , dc.cantidad, t.NombreTienda
     FROM detallecarrito dc
     JOIN producto p ON dc.IdProductoFK = p.IdProducto
     JOIN tienda t ON t.IdTienda = p.IdTiendaFK
@@ -1267,4 +1220,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-09 23:38:53
+-- Dump completed on 2024-09-09 18:12:01
