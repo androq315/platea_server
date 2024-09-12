@@ -43,6 +43,21 @@ class ProductoController {
         }
     }
 
+    static async getProductosPorCategoria(req, res) {
+        try {
+            const idCategoria = req.params.idCategoria;
+            const productos = await Producto.getProductosPorCategoria(idCategoria);
+            if (productos.length > 0) {
+                res.status(200).json(productos);
+            } else {
+                res.status(404).json({ message: 'No se encontraron productos para esta categoría' });
+            }
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener los productos por categoría: ' + error });
+        }
+    }
+    
+
     static async postProducto(req, res) {
         try {
             if (!req.files || !req.files.FotoProducto) {
