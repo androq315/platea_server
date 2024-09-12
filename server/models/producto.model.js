@@ -25,9 +25,10 @@ class Producto extends Model {
     // Método para obtener un producto por su ID
     static async getProductoById(id) {
         try {
-            return await this.findByPk(id);
+            const tiendas = await sequelize.query(`CALL GetProductoById(${id})`);
+            return tiendas;
         } catch (error) {
-            console.error(`Unable to find producto by id: ${error}`);
+            console.error(`F :c: ${error}`);
             throw error;
         }
     }
