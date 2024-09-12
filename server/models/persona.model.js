@@ -90,17 +90,9 @@ Persona.init({
     allowNull: false,
     unique: true
   },
-  CiudadPersona: {
-    type: DataTypes.STRING(50),
-    allowNull: true
-  },
   DescripcionPersona: {
     type: DataTypes.TEXT,
     allowNull: true
-  },
-  DireccionPersona: {
-    type: DataTypes.TEXT,
-    allowNull: false
   },
   ClavePersona: {
     type: DataTypes.TEXT,
