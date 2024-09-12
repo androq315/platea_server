@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-
+import { sequelize } from '../config/db.js';
 import { Pedido } from '../models/pedido.model.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,54 +8,78 @@ const __dirname = dirname(__filename);
 
 class PedidoController {
     static async Compra(req, res) {
-        const { idPersona, idDireccion, metodoPago, productos } = req.body;
+        const { idPersonaFK, Direccion, metodoPago, Ciudad } = req.body;
 
-    try {
-        // Iniciar una transacción
-        const resultado = await sequelize.transaction(async (t) => {
-            // Crear el pedido
-            const pedido = await Pedido.create({
-                IdPersona: idPersona,
-                IdDireccion: idDireccion,
-                MetodoPago: metodoPago,
-                EstadoPedido: 'Pendiente',
-                Total: productos.reduce((total, prod) => total + prod.PrecioUnitario * prod.Cantidad, 0)
-            }, { transaction: t });
-
-            // Crear las entradas en PedidoProducto
-            for (const prod of productos) {
-                await PedidoProducto.create({
-                    IdPedidoFK: pedido.IdPedido,
-                    IdProductoFK: prod.IdProductoFK,
-                    Cantidad: prod.Cantidad,
-                    PrecioUnitario: prod.PrecioUnitario
-                }, { transaction: t });
-            }
-
-            return pedido;
-        });
-
-        res.status(201).json(resultado);
-    } catch (error) {
-        console.error('Error al realizar la compra:', error);
-        res.status(500).json({ error: 'Error al realizar la compra' });
-    }
-    }
-
-    static async DeleteProducto(req, res) {
         try {
-            const id = req.params.id;
-            const carrito = await Carrito.deleteProducto(id);
-    
-            // Devuelve el resultado en formato JSON
-            res.status(200).json({ message: 'Producto agregado al carrito exitosamente', carrito });
+            // Iniciar una transacción
+            const resultado = await sequelize.transaction(async (t) => {
+                // Llamar al procedimiento almacenado para crear el pedido
+                await sequelize.query(
+                  `CALL CrearPedido(
+                      :IdPersonaFK,
+                      :Direccion,
+                      :Ciudad,
+                      :MetodoPago,
+                      @p_IdPedido
+                  )`,
+                  {
+                    replacements: {
+                      IdPersonaFK: idPersonaFK,
+                      Direccion: Direccion,
+                      Ciudad: Ciudad,
+                      MetodoPago: metodoPago
+                    },
+                    type: sequelize.QueryTypes.RAW,
+                    transaction: t
+                  }
+                );
+            
+                // Obtener el ID del pedido recién creado
+                const [resultSet] = await sequelize.query(`SELECT @p_IdPedido AS IdPedido;`, {
+                  type: sequelize.QueryTypes.SELECT,
+                  transaction: t
+                });
+            
+                const pedidoId = resultSet[0].IdPedido;
+            
+                // Llamar al procedimiento almacenado para insertar los productos y calcular el total
+                const totalPedido = await PedidoProducto.createPedidoProducto(pedidoId, idPersonaFK);
+            
+                // Actualizar el total del pedido
+                await sequelize.query(
+                    `UPDATE Pedido SET Total = :totalPedido WHERE IdPedido = :pedidoId`,
+                    {
+                      replacements: {
+                        totalPedido,
+                        pedidoId
+                      },
+                      transaction: t,
+                    }
+                );
+            
+                // Eliminar los productos del carrito
+                await CarritoProducto.destroy({
+                    where: { IdPersonaFK: idPersonaFK },
+                    transaction: t,
+                });
+            
+                // Retornar el pedido
+                const pedidoFinal = await Pedido.findOne({
+                    where: { IdPedido: pedidoId },
+                    transaction: t,
+                });
+            
+                return pedidoFinal;
+            });
+            
         } catch (error) {
-            console.error(`Error al agregar el producto al carrito: ${error}`);
-            res.status(500).json({ message: 'Error al agregar el producto al carrito: ' + error.message });
+            console.error('Error al realizar la compra:', error);
+            res.status(500).json({ error: 'Error al realizar la compra' });
         }
     }
 
-    
+
+
 
 }
 

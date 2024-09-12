@@ -6,7 +6,7 @@ import tiendaRoutes from './routes/tienda.routes.js';
 import productosRoutes from './routes/producto.routes.js';
 import aprobacionRoutes  from './routes/aprobacion.routes.js';
 import carritoRoutes from  './routes/carrito.routes.js';
-import pedidoRoutes from  './routes/carrito.routes.js';
+import pedidoRoutes from  './routes/pedido.routes.js';
 
 
 import path from 'path';
