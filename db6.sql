@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: platea
 -- ------------------------------------------------------
@@ -700,10 +700,6 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping events for database 'platea'
---
-
---
 -- Dumping routines for database 'platea'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `ActualizarCantidad` */;
@@ -937,8 +933,8 @@ BEGIN
         p.NombrePersona,          -- Nombre de la persona que hizo el comentario
         a.FechaAprobacion,        -- Fecha en que el comentario fue hecho
         a.ComentarioAprobacion,   -- Texto del comentario
-        p.FotoPersonaURL,         -- URL de la foto de perfil
-        a.CalificacionAprobacion  -- Calificación del comentario
+        p.FotoPersonaURL, 
+        a.CalificacionAprobacion-- URL de la foto de perfil
     FROM Aprobacion a
     JOIN Persona p ON a.IdPersonaFK = p.IdPersona  -- Une la tabla Aprobacion con Persona para obtener el nombre de la persona y la foto
     WHERE a.IdProductoFK = productoId;  -- Filtra los comentarios para el producto específico
@@ -1272,4 +1268,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-11 18:17:15
+-- Dump completed on 2024-09-11 19:06:06
