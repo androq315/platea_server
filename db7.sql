@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: platea
 -- ------------------------------------------------------
@@ -34,7 +34,7 @@ CREATE TABLE `aprobacion` (
   KEY `FK_Producto_Calificacion` (`IdProductoFK`),
   CONSTRAINT `FK_Persona_Aprobacion` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`),
   CONSTRAINT `FK_Producto_Calificacion` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `aprobacion` (
 
 LOCK TABLES `aprobacion` WRITE;
 /*!40000 ALTER TABLE `aprobacion` DISABLE KEYS */;
-INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL);
+INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'hola',5.0,'2024-09-12 00:52:27',17,14),(9,'dwadawd',5.0,'2024-09-12 01:10:00',17,15),(10,'wsadwsdwadasd',0.0,'2024-09-12 01:40:27',17,15);
 /*!40000 ALTER TABLE `aprobacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -700,6 +700,10 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Dumping events for database 'platea'
+--
+
+--
 -- Dumping routines for database 'platea'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `ActualizarCantidad` */;
@@ -911,6 +915,40 @@ BEGIN
 
     DELETE FROM detallecarrito
     WHERE IdDetalleCarrito = Id ;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetProductoById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProductoById`(IN p_IdProducto INT)
+BEGIN
+    SELECT 
+        p.IdProducto, 
+        p.NombreProducto, 
+        p.DescripcionProducto, 
+        p.FotoProducto, 
+        p.FotoProductoURL, 
+        AVG(a.CalificacionAprobacion) AS PromedioCalificacion, 
+        p.PrecioProducto,
+        p.IdCategoriaFK,
+        p.IdTiendaFK
+    FROM 
+        producto p
+    JOIN 
+        aprobacion a ON p.IdProducto = a.IdProductoFK
+    WHERE 
+        p.IdProducto = p_IdProducto;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1268,4 +1306,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-11 19:06:06
+-- Dump completed on 2024-09-11 20:53:41
