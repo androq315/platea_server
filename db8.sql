@@ -43,7 +43,7 @@ CREATE TABLE `aprobacion` (
 
 LOCK TABLES `aprobacion` WRITE;
 /*!40000 ALTER TABLE `aprobacion` DISABLE KEYS */;
-INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'hola',5.0,'2024-09-12 00:52:27',17,14),(9,'dwadawd',5.0,'2024-09-12 01:10:00',17,15),(10,'wsadwsdwadasd',0.0,'2024-09-12 01:40:27',17,15);
+INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'awdwadawd',4.0,'2024-09-12 05:16:51',18,15),(9,'awjkdhkuawd',4.0,'2024-09-12 05:17:30',18,16),(10,'wdadawdawd',5.0,'2024-09-12 05:20:10',18,17);
 /*!40000 ALTER TABLE `aprobacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,34 +179,6 @@ CREATE TABLE `cliente` (
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `compra`
---
-
-DROP TABLE IF EXISTS `compra`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `compra` (
-  `IdCompra` int(11) NOT NULL AUTO_INCREMENT,
-  `FechaHoraCompra` datetime DEFAULT current_timestamp(),
-  `TotalCompra` decimal(10,2) NOT NULL,
-  `EntregaCompra` tinyint(1) DEFAULT 0,
-  `IdCarritoFK` int(11) DEFAULT NULL,
-  PRIMARY KEY (`IdCompra`),
-  KEY `FK_Carrito_Compra` (`IdCarritoFK`),
-  CONSTRAINT `FK_Carrito_Compra` FOREIGN KEY (`IdCarritoFK`) REFERENCES `carrito` (`IdCarrito`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `compra`
---
-
-LOCK TABLES `compra` WRITE;
-/*!40000 ALTER TABLE `compra` DISABLE KEYS */;
-/*!40000 ALTER TABLE `compra` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -374,32 +346,6 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `inventario`
---
-
-DROP TABLE IF EXISTS `inventario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `inventario` (
-  `IdInventario` int(11) NOT NULL AUTO_INCREMENT,
-  `IdProductoFK` int(11) DEFAULT NULL,
-  `CantidadDisponible` int(11) DEFAULT NULL,
-  PRIMARY KEY (`IdInventario`),
-  KEY `FK_Producto_Inventario` (`IdProductoFK`),
-  CONSTRAINT `FK_Producto_Inventario` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `inventario`
---
-
-LOCK TABLES `inventario` WRITE;
-/*!40000 ALTER TABLE `inventario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inventario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Temporary view structure for view `juguetes`
 --
 
@@ -450,34 +396,6 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `notificacion`
---
-
-DROP TABLE IF EXISTS `notificacion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `notificacion` (
-  `IdNotificacion` int(11) NOT NULL AUTO_INCREMENT,
-  `MensajeNotificacion` text NOT NULL,
-  `FechaNotificacion` datetime DEFAULT current_timestamp(),
-  `Leida` tinyint(1) DEFAULT 0,
-  `IdPersonaFK` int(11) DEFAULT NULL,
-  PRIMARY KEY (`IdNotificacion`),
-  KEY `FK_Persona_Notificacion` (`IdPersonaFK`),
-  CONSTRAINT `FK_Persona_Notificacion` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `notificacion`
---
-
-LOCK TABLES `notificacion` WRITE;
-/*!40000 ALTER TABLE `notificacion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `notificacion` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pago`
 --
 
@@ -503,6 +421,67 @@ LOCK TABLES `pago` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pedido`
+--
+
+DROP TABLE IF EXISTS `pedido`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pedido` (
+  `IdPedido` int(11) NOT NULL AUTO_INCREMENT,
+  `IdPersonaFK` int(11) NOT NULL,
+  `Direccion` varchar(50) DEFAULT NULL,
+  `Ciudad` varchar(50) DEFAULT NULL,
+  `FechaPedido` datetime DEFAULT current_timestamp(),
+  `MetodoPago` varchar(50) NOT NULL,
+  `EstadoPedido` enum('Pendiente','Enviado','Entregado','Cancelado','En Proceso') DEFAULT 'Pendiente',
+  `Total` decimal(10,2) NOT NULL,
+  `FechaEnvio` datetime DEFAULT NULL,
+  `FechaEntrega` datetime DEFAULT NULL,
+  PRIMARY KEY (`IdPedido`),
+  KEY `IdPersonaFK` (`IdPersonaFK`),
+  CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pedido`
+--
+
+LOCK TABLES `pedido` WRITE;
+/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pedidoproducto`
+--
+
+DROP TABLE IF EXISTS `pedidoproducto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pedidoproducto` (
+  `IdPedidoFK` int(11) NOT NULL,
+  `IdProductoFK` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  `PrecioUnitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`IdPedidoFK`,`IdProductoFK`),
+  KEY `IdProductoFK` (`IdProductoFK`),
+  CONSTRAINT `pedidoproducto_ibfk_1` FOREIGN KEY (`IdPedidoFK`) REFERENCES `pedido` (`IdPedido`) ON DELETE CASCADE,
+  CONSTRAINT `pedidoproducto_ibfk_2` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pedidoproducto`
+--
+
+LOCK TABLES `pedidoproducto` WRITE;
+/*!40000 ALTER TABLE `pedidoproducto` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedidoproducto` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `persona`
 --
 
@@ -514,9 +493,7 @@ CREATE TABLE `persona` (
   `NombrePersona` varchar(50) NOT NULL,
   `ApellidoPersona` varchar(50) NOT NULL,
   `CorreoPersona` varchar(50) NOT NULL,
-  `CiudadPersona` varchar(50) DEFAULT NULL,
   `DescripcionPersona` text DEFAULT NULL,
-  `DireccionPersona` text NOT NULL,
   `ClavePersona` text NOT NULL,
   `EstadoPersona` tinyint(1) DEFAULT 1,
   `TelefonoPersona` varchar(15) DEFAULT NULL,
@@ -529,7 +506,7 @@ CREATE TABLE `persona` (
   UNIQUE KEY `CorreoPersona` (`CorreoPersona`),
   KEY `FK_Rol_Persona` (`idRolFK`),
   CONSTRAINT `FK_Rol_Persona` FOREIGN KEY (`idRolFK`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -538,7 +515,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (13,'Alexix  Johan','Orostegui Audor','aorostegui2@gmail.com',NULL,NULL,'','$2b$10$kDang2qvBQKTzpbV3nIRQOsMrB.bXF9HT1AG5hCz/fLJ.4vl5RQx6',1,'2147483647',NULL,NULL,NULL,NULL,3),(14,'Anyi','Mendivelso','Camila@gmail.com',NULL,NULL,'','$2b$10$Ml/1qtHLuiWJKUkHCShFg.S4Boq.Jgh1yYZcL7LphGzVZlPOZxNa2',1,'2147483647',NULL,NULL,NULL,NULL,3),(15,'Andres','suarez','androq315@gmail.com',NULL,NULL,'','$2b$10$4j4lEQ0BrwmTRsHidgMMbe9ILGToMZs8S6dxaFPlMeo/nM3F8a6kq',1,'2147483647',NULL,NULL,NULL,NULL,3),(16,'Danner','Arias','danner@gmail.com',NULL,NULL,'','$2b$10$TP6q4LfZbt/dluHpDhyJMu6tURzTwwLQZwkbcDVPF3Y0FQ6pmRzDC',1,'2147483647',NULL,NULL,NULL,NULL,3),(17,'Andres','Meza','anuellAA@info.co','null','hol;a','','$2b$10$HIfxlvhdCpOkB/Y13/mxK.Qp4qGUg54ym0qGCsAzPmLatxEvymA72',1,'2147483647','./uploads/img/persona_avatar/descarga_1725838696142.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1725838696142.jpeg','./uploads/img/banner/gatito_1725838696145.gif','http://localhost:4000/./uploads/img/banner/gatito_1725838696145.gif',3);
+INSERT INTO `persona` VALUES (18,'Andres','Meza','anuellAA@info.co','null','$2b$10$z1GHAkTfkq/ILiqwveKLaey5kxi9oBocB2o6RKXuTbDkwI0H7n7hW',1,'2147483647','./uploads/img/persona_avatar/descarga_1726117361070.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726117361070.jpeg','./uploads/img/banner/gatito_1726117361072.gif','http://localhost:4000/./uploads/img/banner/gatito_1726117361072.gif',3);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -698,10 +675,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `BannerTienda`,
  1 AS `BannerTiendaURL`*/;
 SET character_set_client = @saved_cs_client;
-
---
--- Dumping events for database 'platea'
---
 
 --
 -- Dumping routines for database 'platea'
@@ -939,16 +912,25 @@ BEGIN
         p.DescripcionProducto, 
         p.FotoProducto, 
         p.FotoProductoURL, 
-        AVG(a.CalificacionAprobacion) AS PromedioCalificacion, 
+        COALESCE(AVG(a.CalificacionAprobacion), 0) AS PromedioCalificacion, 
         p.PrecioProducto,
         p.IdCategoriaFK,
         p.IdTiendaFK
     FROM 
         producto p
-    JOIN 
+    LEFT JOIN 
         aprobacion a ON p.IdProducto = a.IdProductoFK
     WHERE 
-        p.IdProducto = p_IdProducto;
+        p.IdProducto = p_IdProducto
+    GROUP BY
+        p.IdProducto, 
+        p.NombreProducto, 
+        p.DescripcionProducto, 
+        p.FotoProducto, 
+        p.FotoProductoURL, 
+        p.PrecioProducto,
+        p.IdCategoriaFK,
+        p.IdTiendaFK;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1306,4 +1288,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-11 20:53:41
+-- Dump completed on 2024-09-12  0:23:08
