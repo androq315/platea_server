@@ -33,6 +33,20 @@ class Producto extends Model {
         }
     }
 
+    static async getProductosPorCategoria(idCategoria) {
+        try {
+            const productos = await this.findAll({ 
+                where: { IdCategoriaFK: idCategoria }
+            });
+            return productos;
+        } catch (error) {
+            console.error(`Unable to find productos by categoria: ${error}`);
+            throw error;
+        }
+    }
+
+    
+
     // Método para actualizar un producto
     static async updateProducto(id, updated_producto) {
         try {
