@@ -5,6 +5,7 @@ const router = Router()
 
 
 router.post('/api/pedido/', PedidoController.Compra)
+router.post('/api/prueba/', PedidoController.prueba)
 
 
 

@@ -7,80 +7,126 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 class PedidoController {
-    static async Compra(req, res) {
-        const { idPersonaFK, Direccion, metodoPago, Ciudad } = req.body;
+  static async Compra(req, res) {
+    const { idPersonaFK, Direccion, metodoPago, Ciudad } = req.body;
 
-        try {
-            // Iniciar una transacción
-            const resultado = await sequelize.transaction(async (t) => {
-                // Llamar al procedimiento almacenado para crear el pedido
-                await sequelize.query(
-                  `CALL CrearPedido(
+    try {
+      // Iniciar una transacción
+      const [hola] = await sequelize.transaction(async (t) => {
+        // Llamar al procedimiento almacenado para crear el pedido
+        const resultSet = await sequelize.query(
+          `CALL CrearPedido(
                       :IdPersonaFK,
                       :Direccion,
                       :Ciudad,
-                      :MetodoPago,
-                      @p_IdPedido
+                      :MetodoPago
                   )`,
-                  {
-                    replacements: {
-                      IdPersonaFK: idPersonaFK,
-                      Direccion: Direccion,
-                      Ciudad: Ciudad,
-                      MetodoPago: metodoPago
-                    },
-                    type: sequelize.QueryTypes.RAW,
-                    transaction: t
-                  }
-                );
-            
-                // Obtener el ID del pedido recién creado
-                const [resultSet] = await sequelize.query(`SELECT @p_IdPedido AS IdPedido;`, {
-                  type: sequelize.QueryTypes.SELECT,
-                  transaction: t
-                });
-            
-                const pedidoId = resultSet[0].IdPedido;
-            
-                // Llamar al procedimiento almacenado para insertar los productos y calcular el total
-                const totalPedido = await PedidoProducto.createPedidoProducto(pedidoId, idPersonaFK);
-            
-                // Actualizar el total del pedido
-                await sequelize.query(
-                    `UPDATE Pedido SET Total = :totalPedido WHERE IdPedido = :pedidoId`,
-                    {
-                      replacements: {
-                        totalPedido,
-                        pedidoId
-                      },
-                      transaction: t,
-                    }
-                );
-            
-                // Eliminar los productos del carrito
-                await CarritoProducto.destroy({
-                    where: { IdPersonaFK: idPersonaFK },
-                    transaction: t,
-                });
-            
-                // Retornar el pedido
-                const pedidoFinal = await Pedido.findOne({
-                    where: { IdPedido: pedidoId },
-                    transaction: t,
-                });
-            
-                return pedidoFinal;
-            });
-            
-        } catch (error) {
-            console.error('Error al realizar la compra:', error);
-            res.status(500).json({ error: 'Error al realizar la compra' });
-        }
-    }
+          {
+            replacements: {
+              IdPersonaFK: idPersonaFK,
+              Direccion: Direccion,
+              Ciudad: Ciudad,
+              MetodoPago: metodoPago
+            },
+            type: sequelize.QueryTypes.RAW,
+            transaction: t
+          }
+        );
 
+        const pedidoId = resultSet[0].IdPedidoCreado;
+        console.log("pedidoId: ", pedidoId)
+
+        const resultSet2 = await sequelize.query(
+          `CALL MigrarCarritoAPedido(
+              :IdPersonaFK,
+              :IdPedidoFK
+          )`,
+          {
+            replacements: {
+              IdPersonaFK: idPersonaFK,
+              IdPedidoFK: pedidoId
+            },
+            type: sequelize.QueryTypes.RAW,
+            transaction: t
+          }
+        );
+
+        // Depura el resultado para entender su estructura
+        const result = resultSet2[0];
+        const resultado = result.Total
+        console.log("precio: ", resultado)
+        await sequelize.query(
+          `UPDATE Pedido SET Total = :totalPedido WHERE IdPedido = :pedidoId`,
+          {
+            replacements: {
+              totalPedido: resultado,
+              pedidoId: pedidoId
+
+            },
+            transaction: t,
+          }
+        );
+        // Retornar el pedido
+        const pedidoFinal = await sequelize.query(
+          `CALL platea.VerPedido(:pedidoId)`,
+          {
+            replacements: { pedidoId: pedidoId },
+            transaction: t,
+            type: sequelize.QueryTypes.SELECT
+          }
+        );
+
+        return pedidoFinal;
+
+      });
+      res.status(200).json(hola);
+    } catch (error) {
+      console.error('Error al realizar la compra:', error);
+      res.status(500).json({ error: 'Error al realizar la compra' });
+    }
+  }
+
+  static async prueba(req, res) {
+    const { idPersonaFK, Direccion, metodoPago, Ciudad } = req.body;
+
+    try {
+      // Iniciar una transacción
+
+        // Llamar al procedimiento almacenado para crear el pedido
+        const resultSet = await sequelize.query(
+          `CALL CrearPedido(
+                      :IdPersonaFK,
+                      :Direccion,
+                      :Ciudad,
+                      :MetodoPago
+                  )`,
+          {
+            replacements: {
+              IdPersonaFK: idPersonaFK,
+              Direccion: Direccion,
+              Ciudad: Ciudad,
+              MetodoPago: metodoPago
+            },
+            type: sequelize.QueryTypes.RAW,
+          }
+        );
+
+        const pedidoId = resultSet[0].IdPedidoCreado;
+        console.log("pedidoId: ", pedidoId)
+        res.status(500).json(pedidoId);
+      } catch (error) {
+        console.error('Error al realizar la prueba:', error);
+        res.status(500).json({ error: 'Error al realizar la compra' });
+      }
+  }
 
 
 
 }
+
+
+
+
+
 
 export default PedidoController;
