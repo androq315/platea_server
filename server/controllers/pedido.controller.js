@@ -12,7 +12,6 @@ class PedidoController {
 
 
     try {
-      // Iniciar una transacción
       const [hola] = await sequelize.transaction(async (t) => {
         const p = {
           IdPersonaFK: req.body.IdPersonaFK,
@@ -36,7 +35,7 @@ class PedidoController {
 
       res.status(200).json(hola);
     } catch (error) {
-      console.error('Error al realizar la compra:', error);
+      console.error("Error al crear el pedido:", error);
       res.status(500).json({ error: 'Error al realizar la compra' });
     }
   }
