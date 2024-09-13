@@ -5,6 +5,8 @@ const router = Router()
 
 
 router.post('/api/pedido/', PedidoController.Compra)
+router.get('/api/pedido/:id', PedidoController.GetProductosPedido)
+router.post('/api/confirmarpedido/', PedidoController.ConfirmarCompra)
 
 
 

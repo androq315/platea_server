@@ -82,6 +82,17 @@ class Pedido extends Model {
       throw error;
     }
   }
+  static async StockProductoPedido(Id) {
+    try {
+      await sequelize.query(
+        `call platea.ActualizarStockProductoPedido(${Id});`,
+
+      );
+    } catch (error) {
+      console.error(`Unable to create pedidoProducto: ${error}`);
+      throw error;
+    }
+  }
   static async GetPedido(id) {
     try {
       const pedidoFinal = await sequelize.query(`CALL platea.VerPedido(${id})`);
@@ -91,7 +102,26 @@ class Pedido extends Model {
       throw error;
     }
   }
+  static async GetProductosPedido(id) {
+    try {
+      const pedidoFinal = await sequelize.query(`CALL platea.ObtenerProductoPedido(${id})`);
+      return pedidoFinal
+    } catch (error) {
+      console.error(`Unable to create pedidoProducto: ${error}`);
+      throw error;
+    }
+  }
+  static async VaciarCarrito(id) {
+    try {
+      const pedidoFinal = await sequelize.query(`CALL platea.vaciarcarrito(${id})`);
+      return pedidoFinal
+    } catch (error) {
+      console.error(`Unable to create pedidoProducto: ${error}`);
+      throw error;
+    }
+  }
 }
+
 
 
 
