@@ -194,7 +194,7 @@ class Tienda extends Model {
 
   static async listarTop4Tiendas() {
     try {
-      const [results] = await sequelize.query('SELECT * FROM Top4Tiendas;');
+      const [results] = await sequelize.query('SELECT * FROM top4tiendas;');
       return results;
     } catch (error) {
       console.error(`Unable to execute ListarTop4Tiendas: ${error}`);

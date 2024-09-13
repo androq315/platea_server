@@ -5,6 +5,7 @@ import TiendaController from "../controllers/tienda.controller.js";
 const router = Router();
 
 router.get('/api/tienda/', TiendaController.getTiendas);
+router.get('/api/tiendastop/', TiendaController.TiendasDestacadas);
 router.post('/api/tienda/', TiendaController.postTienda);
 router.post('/api/tienda/persona/', TiendaController.comprarTienda);
 router.put('/api/tienda/:id', TiendaController.putTienda);

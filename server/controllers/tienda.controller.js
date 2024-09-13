@@ -350,7 +350,7 @@ static async comprarTienda(req, res) {
     }
   }
 
-static async ProductosDestacados(req, res) {
+static async TiendasDestacadas(req, res) {
 	try {
 		const tiendas = await Tienda.listarTop4Tiendas();
 		res.status(200).json(tiendas);
@@ -358,6 +358,9 @@ static async ProductosDestacados(req, res) {
 		res.status(500).json({ message: 'Error al obtener los productos destacados: ' + error });
 	}
 }  
+
+
+
 
 }
 
