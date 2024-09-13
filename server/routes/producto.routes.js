@@ -8,7 +8,9 @@ router.get('/api/productosdestacados/', ProductoController.ProductosDestacados)
 router.get('/api/tienda/producto/:id', ProductoController.ProductosTienda)
 router.get('/api/producto/:id', ProductoController.getProducto)
 
-router.get('/api/producto/categoria/:idCategoria', ProductoController.getProductosPorCategoria) // Nueva ruta
+
+router.get('/api/productos-similares/:id', ProductoController.getProductosSimilares);
+
 
 
 
