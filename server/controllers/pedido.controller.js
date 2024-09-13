@@ -9,28 +9,30 @@ const __dirname = dirname(__filename);
 class PedidoController {
   static async Compra(req, res) {
     const { idPersonaFK, Direccion, Ciudad } = req.body;
-
+    
+    if (!idPersonaFK) {
+      return res.status(400).json({ error: "El campo idPersonaFK es requerido." });
+    }
+    console.log("Datos recibidos en el backend:", req.body); 
     try {
-      // Iniciar una transacción
       const [hola] = await sequelize.transaction(async (t) => {
-        // Llamar al procedimiento almacenado para crear el pedido
         const resultSet = await sequelize.query(
           `CALL CrearPedido(
-                      :IdPersonaFK,
-                      :Direccion,
-                      :Ciudad
+                      :p_IdPersonaFK,
+                      :p_Direccion,
+                      :p_Ciudad
                   )`,
           {
             replacements: {
-              IdPersonaFK: idPersonaFK,
-              Direccion: Direccion,
-              Ciudad: Ciudad
+              p_IdPersonaFK: idPersonaFK, 
+              p_Direccion: Direccion,     
+              p_Ciudad: Ciudad            
             },
             type: sequelize.QueryTypes.RAW,
             transaction: t
           }
         );
-
+        console.log("Resultado del procedimiento:", resultSet);
         const pedidoId = resultSet[0].IdPedidoCreado;
 
         const resultSet2 = await sequelize.query(
@@ -47,22 +49,22 @@ class PedidoController {
             transaction: t
           }
         );
-        // Depura el resultado para entender su estructura
+
         const result = resultSet2[0];
-        const resultado = result.Total
-        console.log("precio: ", resultado)
+        const resultado = result.Total;
+        console.log("precio: ", resultado);
+
         await sequelize.query(
           `UPDATE Pedido SET Total = :totalPedido WHERE IdPedido = :pedidoId`,
           {
             replacements: {
               totalPedido: resultado,
               pedidoId: pedidoId
-
             },
-            transaction: t,
+            transaction: t
           }
         );
-        // Retornar el pedido
+
         const pedidoFinal = await sequelize.query(
           `CALL platea.VerPedido(:pedidoId)`,
           {
@@ -73,11 +75,11 @@ class PedidoController {
         );
 
         return pedidoFinal;
-
       });
+
       res.status(200).json(hola);
     } catch (error) {
-      console.error('Error al realizar la compra:', error);
+      console.error("Error al crear el pedido:", error);
       res.status(500).json({ error: 'Error al realizar la compra' });
     }
   }
