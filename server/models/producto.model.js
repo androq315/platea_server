@@ -35,11 +35,13 @@ class Producto extends Model {
 
     static async obtenerProductosSimilares(idProducto) {
         try {
-            const productosSimilares = await sequelize.query(`CALL ObtenerProductosSimilares(:idProducto)`, {
+            const resultSet2 = await sequelize.query(`CALL ObtenerProductosSimilares(:idProducto)`, {
                 replacements: { idProducto },
                 type: sequelize.QueryTypes.SELECT
             });
-            return productosSimilares;
+            const [result] = resultSet2[0];
+            console.log(result)
+            return result;
         } catch (error) {
             console.error(`Unable to fetch similar products: ${error}`);
             throw error;

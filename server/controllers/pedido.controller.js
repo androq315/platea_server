@@ -47,7 +47,6 @@ class PedidoController {
             transaction: t
           }
         );
-
         // Depura el resultado para entender su estructura
         const result = resultSet2[0];
         const resultado = result.Total
