@@ -34,7 +34,7 @@ CREATE TABLE `aprobacion` (
   KEY `FK_Producto_Calificacion` (`IdProductoFK`),
   CONSTRAINT `FK_Persona_Aprobacion` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`),
   CONSTRAINT `FK_Producto_Calificacion` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `aprobacion` (
 
 LOCK TABLES `aprobacion` WRITE;
 /*!40000 ALTER TABLE `aprobacion` DISABLE KEYS */;
-INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'awdwadawd',4.0,'2024-09-12 05:16:51',18,15),(9,'awjkdhkuawd',4.0,'2024-09-12 05:17:30',18,16),(10,'wdadawdawd',5.0,'2024-09-12 05:20:10',18,17);
+INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'awdwadawd',4.0,'2024-09-12 05:16:51',18,15),(9,'awjkdhkuawd',4.0,'2024-09-12 05:17:30',18,16),(10,'wdadawdawd',5.0,'2024-09-12 05:20:10',18,17),(11,'hola',5.0,'2024-09-13 09:56:20',18,7),(12,'dwadawd',5.0,'2024-09-13 09:56:34',18,31),(13,'dwadawdawd',5.0,'2024-09-13 09:56:59',18,23);
 /*!40000 ALTER TABLE `aprobacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,6 +553,22 @@ INSERT INTO `producto` VALUES (6,'rey silente','¡Presentamos al Rey Silente, la
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `promedio_calificacion_tienda`
+--
+
+DROP TABLE IF EXISTS `promedio_calificacion_tienda`;
+/*!50001 DROP VIEW IF EXISTS `promedio_calificacion_tienda`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `promedio_calificacion_tienda` AS SELECT 
+ 1 AS `IdTienda`,
+ 1 AS `NombreTienda`,
+ 1 AS `MiniaturaTiendaURL`,
+ 1 AS `DescripcionTienda`,
+ 1 AS `PromedioCalificacion`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `rol`
 --
 
@@ -645,10 +661,9 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50001 CREATE VIEW `top4tiendas` AS SELECT 
  1 AS `IdTienda`,
  1 AS `NombreTienda`,
- 1 AS `CalificacionTienda`,
- 1 AS `DireccionTienda`,
- 1 AS `CiudadTienda`,
- 1 AS `MiniaturaTiendaURL`*/;
+ 1 AS `PromedioCalificacion`,
+ 1 AS `MiniaturaTiendaURL`,
+ 1 AS `DescripcionTienda`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -673,10 +688,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `BannerTienda`,
  1 AS `BannerTiendaURL`*/;
 SET character_set_client = @saved_cs_client;
-
---
--- Dumping events for database 'platea'
---
 
 --
 -- Dumping routines for database 'platea'
@@ -709,6 +720,61 @@ BEGIN
     UPDATE detallecarrito
     SET Cantidad = p_NuevaCantidad
     WHERE IdCarritoFK = Id AND IdProductoFK = p_IdProducto;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ActualizarStockProductoPedido` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ActualizarStockProductoPedido`(IN p_IdPedido INT)
+BEGIN
+    -- Declarar variables para el producto y cantidad
+    DECLARE v_IdProducto INT;
+    DECLARE v_Cantidad INT;
+    DECLARE done INT DEFAULT 0;
+
+    -- Declarar el cursor para obtener todos los productos y cantidades del pedido
+    DECLARE cur CURSOR FOR 
+    SELECT p.IdProducto, dc.Cantidad
+    FROM detallecarrito dc
+    JOIN producto p ON dc.IdProductoFK = p.IdProducto
+    JOIN carrito c ON c.IdCarrito = dc.IdCarritoFK
+    WHERE c.IdCarrito = p_IdPedido;
+
+    -- Declarar un manejador para el final de los datos del cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    -- Abrir el cursor
+    OPEN cur;
+
+    -- Loop para leer cada producto y actualizar su stock
+    leer_loop: LOOP
+        -- Obtener el producto y la cantidad
+        FETCH cur INTO v_IdProducto, v_Cantidad;
+
+        -- Si no hay más filas, salir del loop
+        IF done THEN
+            LEAVE leer_loop;
+        END IF;
+
+        -- Actualizar el stock del producto restando la cantidad del pedido
+        UPDATE producto 
+        SET StockProducto = StockProducto - v_Cantidad
+        WHERE IdProducto = v_IdProducto;
+    END LOOP;
+
+    -- Cerrar el cursor
+    CLOSE cur;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1038,6 +1104,30 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ObtenerProductoPedido` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductoPedido`(IN p_IdPedido INT)
+BEGIN
+    SELECT p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , pp.cantidad
+    FROM pedidoproducto pp
+    JOIN producto p ON pp.IdProductoFK = p.IdProducto
+    JOIN pedido p2 ON p2.IdPedido = pp.IdPedidoFK
+    WHERE p2.IdPedido = p_IdPedido;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ObtenerProductosCarrito` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1221,6 +1311,33 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `vaciarcarrito` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `vaciarcarrito`(IN p_IdPersona INT)
+BEGIN
+    declare Id int;
+    -- Verifica si el usuario ya tiene un carrito
+    SELECT IdCarrito INTO Id
+    FROM carrito
+    WHERE IdPersonaFK = p_IdPersona
+    ORDER BY fecha_creacion DESC
+    LIMIT 1;
+	
+    delete from detallecarrito where IdCarritoFK = Id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `VerPedido` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1352,6 +1469,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `promedio_calificacion_tienda`
+--
+
+/*!50001 DROP VIEW IF EXISTS `promedio_calificacion_tienda`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `promedio_calificacion_tienda` AS select `t`.`IdTienda` AS `IdTienda`,`t`.`NombreTienda` AS `NombreTienda`,`t`.`MiniaturaTiendaURL` AS `MiniaturaTiendaURL`,`t`.`DescripcionTienda` AS `DescripcionTienda`,avg(`a`.`CalificacionAprobacion`) AS `PromedioCalificacion` from ((`tienda` `t` join `producto` `p` on(`t`.`IdTienda` = `p`.`IdTiendaFK`)) join `aprobacion` `a` on(`p`.`IdProducto` = `a`.`IdProductoFK`)) group by `t`.`IdTienda`,`t`.`NombreTienda` order by avg(`a`.`CalificacionAprobacion`) desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `top4productos`
 --
 
@@ -1377,12 +1512,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `top4tiendas` AS select `tienda`.`IdTienda` AS `IdTienda`,`tienda`.`NombreTienda` AS `NombreTienda`,`tienda`.`CalificacionTienda` AS `CalificacionTienda`,`tienda`.`DireccionTienda` AS `DireccionTienda`,`tienda`.`CiudadTienda` AS `CiudadTienda`,`tienda`.`MiniaturaTiendaURL` AS `MiniaturaTiendaURL` from `tienda` order by `tienda`.`CalificacionTienda` desc limit 4 */;
+/*!50001 VIEW `top4tiendas` AS select `promedio_calificacion_tienda`.`IdTienda` AS `IdTienda`,`promedio_calificacion_tienda`.`NombreTienda` AS `NombreTienda`,`promedio_calificacion_tienda`.`PromedioCalificacion` AS `PromedioCalificacion`,`promedio_calificacion_tienda`.`MiniaturaTiendaURL` AS `MiniaturaTiendaURL`,`promedio_calificacion_tienda`.`DescripcionTienda` AS `DescripcionTienda` from `promedio_calificacion_tienda` order by `promedio_calificacion_tienda`.`PromedioCalificacion` desc limit 4 */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1414,4 +1549,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-12 19:43:31
+-- Dump completed on 2024-09-13  5:10:31
