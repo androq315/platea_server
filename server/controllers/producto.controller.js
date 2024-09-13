@@ -43,20 +43,30 @@ class ProductoController {
         }
     }
 
-    static async getProductosPorCategoria(req, res) {
+    static async getProductosSimilares(req, res) {
         try {
-            const idCategoria = req.params.idCategoria;
-            const productos = await Producto.getProductosPorCategoria(idCategoria);
-            if (productos.length > 0) {
-                res.status(200).json(productos);
+            const id = parseInt(req.params.id, 10);
+    
+            // Validar que el id sea un número y esté definido
+            if (!id || isNaN(id)) {
+                return res.status(400).json({ message: 'ID de producto no válido' });
+            }
+    
+            // Obtener productos similares usando el modelo
+            const productosSimilares = await Producto.obtenerProductosSimilares(id);
+    
+            // Verificar si se encontraron productos similares
+            if (productosSimilares.length > 0) {
+                res.status(200).json(productosSimilares);
             } else {
-                res.status(404).json({ message: 'No se encontraron productos para esta categoría' });
+                res.status(404).json({ message: 'No se encontraron productos similares' }); // Cambiado a 404
             }
         } catch (error) {
-            res.status(500).json({ message: 'Error al obtener los productos por categoría: ' + error });
+            console.error('Error al obtener productos similares:', error);
+            res.status(500).json({ message: 'Error al obtener productos similares: ' + error.message });
         }
     }
-    
+   
 
     static async postProducto(req, res) {
         try {

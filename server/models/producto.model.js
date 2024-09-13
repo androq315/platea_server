@@ -33,19 +33,20 @@ class Producto extends Model {
         }
     }
 
-    static async getProductosPorCategoria(idCategoria) {
+    static async obtenerProductosSimilares(idProducto) {
         try {
-            const productos = await this.findAll({ 
-                where: { IdCategoriaFK: idCategoria }
+            const productosSimilares = await sequelize.query(`CALL ObtenerProductosSimilares(:idProducto)`, {
+                replacements: { idProducto },
+                type: sequelize.QueryTypes.SELECT
             });
-            return productos;
+            return productosSimilares;
         } catch (error) {
-            console.error(`Unable to find productos by categoria: ${error}`);
+            console.error(`Unable to fetch similar products: ${error}`);
             throw error;
         }
     }
-
-    
+      
+      
 
     // Método para actualizar un producto
     static async updateProducto(id, updated_producto) {
