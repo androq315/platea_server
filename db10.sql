@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: platea
 -- ------------------------------------------------------
@@ -433,7 +433,6 @@ CREATE TABLE `pedido` (
   `Direccion` varchar(50) DEFAULT NULL,
   `Ciudad` varchar(50) DEFAULT NULL,
   `FechaPedido` datetime DEFAULT current_timestamp(),
-  `MetodoPago` varchar(50) NOT NULL,
   `EstadoPedido` enum('Pendiente','Enviado','Entregado','Cancelado','En Proceso') DEFAULT 'Pendiente',
   `Total` decimal(10,2) NOT NULL,
   `FechaEnvio` datetime DEFAULT NULL,
@@ -464,7 +463,6 @@ CREATE TABLE `pedidoproducto` (
   `IdPedidoFK` int(11) NOT NULL,
   `IdProductoFK` int(11) NOT NULL,
   `Cantidad` int(11) NOT NULL,
-  `PrecioUnitario` decimal(10,2) NOT NULL,
   PRIMARY KEY (`IdPedidoFK`,`IdProductoFK`),
   KEY `IdProductoFK` (`IdProductoFK`),
   CONSTRAINT `pedidoproducto_ibfk_1` FOREIGN KEY (`IdPedidoFK`) REFERENCES `pedido` (`IdPedido`) ON DELETE CASCADE,
@@ -677,6 +675,10 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Dumping events for database 'platea'
+--
+
+--
 -- Dumping routines for database 'platea'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `ActualizarCantidad` */;
@@ -773,6 +775,34 @@ begin
     (A_ComentarioAprobacion,A_CalificacionAprobacion,A_IdPersonaFK,A_IdProductoFK);
 
 end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `CrearPedido` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CrearPedido`(
+    IN p_IdPersonaFK INT,
+    IN p_Direccion VARCHAR(50),
+    IN p_Ciudad VARCHAR(50)
+
+)
+BEGIN
+    INSERT INTO Pedido (IdPersonaFK, Direccion, Ciudad, Total)
+    VALUES (p_IdPersonaFK, p_Direccion, p_Ciudad, 0);
+    
+    -- Retornar el ID del pedido recién creado
+    SELECT LAST_INSERT_ID() AS IdPedidoCreado;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -937,6 +967,50 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `MigrarCarritoAPedido` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `MigrarCarritoAPedido`(IN p_IdPersona INT, IN p_IdPedido INT)
+BEGIN
+
+	DECLARE Id INT;
+    DECLARE total INT;
+    
+    -- Verifica si el usuario ya tiene un carrito
+    SELECT IdCarrito INTO Id
+    FROM carrito
+    WHERE IdPersonaFK = p_IdPersona
+    ORDER BY fecha_creacion DESC
+    LIMIT 1;
+    -- Insertar todos los productos del carrito a la tabla pedidoproducto
+    INSERT IGNORE  INTO pedidoproducto (IdPedidoFK, IdProductoFK, Cantidad)
+    SELECT p_IdPedido, dc.IdProductoFK, dc.Cantidad
+    FROM detallecarrito dc
+    WHERE dc.IdCarritoFK = Id;
+	
+    SELECT SUM(p.PrecioProducto * dc.Cantidad) AS Total
+    FROM detallecarrito dc
+    INNER JOIN producto p ON p.IdProducto = dc.IdProductoFK
+    WHERE dc.IdCarritoFK = Id ;
+    -- Opcional: después de migrar, puedes eliminar los productos del carrito si lo deseas
+    -- DELETE FROM detallecarrito WHERE IdCarritoFK = p_IdCarrito;
+
+    -- También podrías eliminar el carrito si lo deseas
+    -- DELETE FROM carrito WHERE IdCarrito = p_IdCarrito;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Mostrarcomentarios` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1001,6 +1075,37 @@ BEGIN
     JOIN tienda t ON t.IdTienda = p.IdTiendaFK
     JOIN carrito c ON c.IdCarrito = dc.IdCarritoFK
     WHERE c.IdCarrito = Id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ObtenerProductosSimilares` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductosSimilares`(IN p_IdProducto INT)
+BEGIN
+    -- Declara una variable para almacenar la categoría del producto
+    DECLARE v_IdCategoria INT;
+
+    -- Obtiene la categoría del producto dado
+    SELECT IdCategoriaFK INTO v_IdCategoria
+    FROM producto
+    WHERE IdProducto = p_IdProducto;
+
+    -- Selecciona los productos que pertenecen a la misma categoría
+    SELECT IdProducto, NombreProducto, DescripcionProducto, StockProducto, PrecioProducto, FotoProducto, FotoProductoURL
+    FROM producto
+    WHERE IdCategoriaFK = v_IdCategoria
+      AND IdProducto <> p_IdProducto; -- Excluye el producto original
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1110,6 +1215,27 @@ BEGIN
         NULL,          -- Valor predeterminado para bannerPersonaURL
         3              -- Valor predeterminado para idRolFK
     );
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `VerPedido` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VerPedido`(
+	in __idPedido INT
+)
+BEGIN
+    SELECT * FROM platea.pedido where IdPedido = __idPedido;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1288,4 +1414,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-12 15:05:32
+-- Dump completed on 2024-09-12 19:43:31

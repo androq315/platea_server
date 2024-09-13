@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 
 class PedidoController {
   static async Compra(req, res) {
-    const { idPersonaFK, Direccion, metodoPago, Ciudad } = req.body;
+    const { idPersonaFK, Direccion, Ciudad } = req.body;
 
     try {
       // Iniciar una transacción
@@ -18,15 +18,13 @@ class PedidoController {
           `CALL CrearPedido(
                       :IdPersonaFK,
                       :Direccion,
-                      :Ciudad,
-                      :MetodoPago
+                      :Ciudad
                   )`,
           {
             replacements: {
               IdPersonaFK: idPersonaFK,
               Direccion: Direccion,
-              Ciudad: Ciudad,
-              MetodoPago: metodoPago
+              Ciudad: Ciudad
             },
             type: sequelize.QueryTypes.RAW,
             transaction: t
@@ -34,7 +32,6 @@ class PedidoController {
         );
 
         const pedidoId = resultSet[0].IdPedidoCreado;
-        console.log("pedidoId: ", pedidoId)
 
         const resultSet2 = await sequelize.query(
           `CALL MigrarCarritoAPedido(
@@ -87,7 +84,7 @@ class PedidoController {
   }
 
   static async prueba(req, res) {
-    const { idPersonaFK, Direccion, metodoPago, Ciudad } = req.body;
+    const { idPersonaFK, Direccion, Ciudad } = req.body;
 
     try {
       // Iniciar una transacción
