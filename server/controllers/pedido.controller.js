@@ -8,73 +8,32 @@ const __dirname = dirname(__filename);
 
 class PedidoController {
   static async Compra(req, res) {
-    const { idPersonaFK, Direccion, Ciudad } = req.body;
+    
+
 
     try {
       // Iniciar una transacción
       const [hola] = await sequelize.transaction(async (t) => {
-        // Llamar al procedimiento almacenado para crear el pedido
-        const resultSet = await sequelize.query(
-          `CALL CrearPedido(
-                      :IdPersonaFK,
-                      :Direccion,
-                      :Ciudad
-                  )`,
-          {
-            replacements: {
-              IdPersonaFK: idPersonaFK,
-              Direccion: Direccion,
-              Ciudad: Ciudad
-            },
-            type: sequelize.QueryTypes.RAW,
-            transaction: t
-          }
-        );
+        const p = {
+          IdPersonaFK: req.body.IdPersonaFK,
+          Direccion: req.body.Direccion,
+          Ciudad: req.body.Ciudad
+        }
+        
+        const pedidoId = await Pedido.createPedido(p)
+        const precioTotal = await Pedido.createPedidoProducto(pedidoId, req.body.IdPersonaFK)
+        
 
-        const pedidoId = resultSet[0].IdPedidoCreado;
+        console.log("precio: ", precioTotal);
 
-        const resultSet2 = await sequelize.query(
-          `CALL MigrarCarritoAPedido(
-              :IdPersonaFK,
-              :IdPedidoFK
-          )`,
-          {
-            replacements: {
-              IdPersonaFK: idPersonaFK,
-              IdPedidoFK: pedidoId
-            },
-            type: sequelize.QueryTypes.RAW,
-            transaction: t
-          }
-        );
-        // Depura el resultado para entender su estructura
-        const result = resultSet2[0];
-        const resultado = result.Total
-        console.log("precio: ", resultado)
-        await sequelize.query(
-          `UPDATE Pedido SET Total = :totalPedido WHERE IdPedido = :pedidoId`,
-          {
-            replacements: {
-              totalPedido: resultado,
-              pedidoId: pedidoId
+        await Pedido.actualizarPrecio(precioTotal, pedidoId)
 
-            },
-            transaction: t,
-          }
-        );
-        // Retornar el pedido
-        const pedidoFinal = await sequelize.query(
-          `CALL platea.VerPedido(:pedidoId)`,
-          {
-            replacements: { pedidoId: pedidoId },
-            transaction: t,
-            type: sequelize.QueryTypes.SELECT
-          }
-        );
+
+        const pedidoFinal = await Pedido.GetPedido(pedidoId)
 
         return pedidoFinal;
-
       });
+
       res.status(200).json(hola);
     } catch (error) {
       console.error('Error al realizar la compra:', error);
@@ -82,47 +41,7 @@ class PedidoController {
     }
   }
 
-  static async prueba(req, res) {
-    const { idPersonaFK, Direccion, Ciudad } = req.body;
-
-    try {
-      // Iniciar una transacción
-
-        // Llamar al procedimiento almacenado para crear el pedido
-        const resultSet = await sequelize.query(
-          `CALL CrearPedido(
-                      :IdPersonaFK,
-                      :Direccion,
-                      :Ciudad,
-                      :MetodoPago
-                  )`,
-          {
-            replacements: {
-              IdPersonaFK: idPersonaFK,
-              Direccion: Direccion,
-              Ciudad: Ciudad,
-              MetodoPago: metodoPago
-            },
-            type: sequelize.QueryTypes.RAW,
-          }
-        );
-
-        const pedidoId = resultSet[0].IdPedidoCreado;
-        console.log("pedidoId: ", pedidoId)
-        res.status(500).json(pedidoId);
-      } catch (error) {
-        console.error('Error al realizar la prueba:', error);
-        res.status(500).json({ error: 'Error al realizar la compra' });
-      }
-  }
-
-
-
+  
 }
-
-
-
-
-
 
 export default PedidoController;

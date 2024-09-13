@@ -8,34 +8,29 @@ class Pedido extends Model {
       IdPersonaFK,
       Direccion,
       Ciudad,
-      MetodoPago
     } = pedido;
 
     try {
       // Llamar al procedimiento almacenado para crear el pedido
-      const result = await sequelize.query(
+      const resultSet = await sequelize.query(
         `CALL CrearPedido(
-              :IdPersonaFK,
-              :Direccion,
-              :Ciudad,
-              :MetodoPago
-            )`,
+                    :IdPersonaFK,
+                    :Direccion,
+                    :Ciudad
+                )`,
         {
           replacements: {
-            IdPersonaFK,
-            Direccion,
-            Ciudad,
-            MetodoPago
+            IdPersonaFK: IdPersonaFK,
+            Direccion: Direccion,
+            Ciudad: Ciudad
           },
-          type: sequelize.QueryTypes.RAW
+          type: sequelize.QueryTypes.RAW,
         }
       );
+      const result = resultSet[0];
+      const resultado = result.IdPedidoCreado;
 
-      // Recuperar el parámetro de salida con el Id del pedido recién creado
-      const [resultSet] = result
-      const IdPedido = resultSet[0].IdPedido;
-
-      return IdPedido;
+      return resultado;
     } catch (error) {
       console.error(`Unable to create pedido: ${error}`);
       throw error;
@@ -44,7 +39,7 @@ class Pedido extends Model {
   static async createPedidoProducto(idPedido, idPersona) {
     try {
       // Llamar al procedimiento almacenado
-      const [resultSet] = await sequelize.query(
+      const resultSet = await sequelize.query(
         `CALL MigrarCarritoAPedido(
               :IdPersonaFK,
               :IdPedidoFK
@@ -61,9 +56,36 @@ class Pedido extends Model {
       );
 
       // Recuperar el total del pedido
-      const totalPedido = resultSet[0].Total;
+      const result = resultSet[0];
+      const resultado = result.Total;
 
-      return totalPedido;
+      return resultado;
+    } catch (error) {
+      console.error(`Unable to create pedidoProducto: ${error}`);
+      throw error;
+    }
+  }
+
+  static async actualizarPrecio(resultado, pedidoId) {
+    try {
+      await sequelize.query(
+        `UPDATE Pedido SET Total = :totalPedido WHERE IdPedido = :pedidoId`,
+        {
+          replacements: {
+            totalPedido: resultado,
+            pedidoId: pedidoId
+          }
+        }
+      );
+    } catch (error) {
+      console.error(`Unable to create pedidoProducto: ${error}`);
+      throw error;
+    }
+  }
+  static async GetPedido(id) {
+    try {
+      const pedidoFinal = await sequelize.query(`CALL platea.VerPedido(${id})`);
+      return pedidoFinal
     } catch (error) {
       console.error(`Unable to create pedidoProducto: ${error}`);
       throw error;
