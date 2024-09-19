@@ -14,7 +14,10 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP DATABASE IF EXISTS PLATEA;
+CREATE DATABASE PLATEA;
 
+USE PLATEA;
 --
 -- Table structure for table `aprobacion`
 --
@@ -34,7 +37,7 @@ CREATE TABLE `aprobacion` (
   KEY `FK_Producto_Calificacion` (`IdProductoFK`),
   CONSTRAINT `FK_Persona_Aprobacion` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`),
   CONSTRAINT `FK_Producto_Calificacion` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +46,7 @@ CREATE TABLE `aprobacion` (
 
 LOCK TABLES `aprobacion` WRITE;
 /*!40000 ALTER TABLE `aprobacion` DISABLE KEYS */;
-INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'awdwadawd',4.0,'2024-09-12 05:16:51',18,15),(9,'awjkdhkuawd',4.0,'2024-09-12 05:17:30',18,16),(10,'wdadawdawd',5.0,'2024-09-12 05:20:10',18,17),(11,'hola',5.0,'2024-09-13 09:56:20',18,7),(12,'dwadawd',5.0,'2024-09-13 09:56:34',18,31),(13,'dwadawdawd',5.0,'2024-09-13 09:56:59',18,23);
+INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'awdwadawd',4.0,'2024-09-12 05:16:51',18,15),(9,'awjkdhkuawd',4.0,'2024-09-12 05:17:30',18,16),(10,'wdadawdawd',5.0,'2024-09-12 05:20:10',18,17);
 /*!40000 ALTER TABLE `aprobacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -492,7 +495,7 @@ CREATE TABLE `persona` (
   `ApellidoPersona` varchar(50) NOT NULL,
   `CorreoPersona` varchar(50) NOT NULL,
   `DescripcionPersona` text DEFAULT NULL,
-  `ClavePersona` text NOT NULL,
+  `ClavePersona` blob NOT NULL,
   `EstadoPersona` tinyint(1) DEFAULT 1,
   `TelefonoPersona` varchar(15) DEFAULT NULL,
   `FotoPersona` text DEFAULT NULL,
@@ -504,7 +507,7 @@ CREATE TABLE `persona` (
   UNIQUE KEY `CorreoPersona` (`CorreoPersona`),
   KEY `FK_Rol_Persona` (`idRolFK`),
   CONSTRAINT `FK_Rol_Persona` FOREIGN KEY (`idRolFK`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -513,9 +516,51 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (18,'Andres','Meza','anuellAA@info.co','null','$2b$10$z1GHAkTfkq/ILiqwveKLaey5kxi9oBocB2o6RKXuTbDkwI0H7n7hW',1,'2147483647','./uploads/img/persona_avatar/descarga_1726117361070.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726117361070.jpeg','./uploads/img/banner/gatito_1726117361072.gif','http://localhost:4000/./uploads/img/banner/gatito_1726117361072.gif',3),(19,'Alexix  Johan','Orostegui Audor','aorostegui2@gmail.com',NULL,'$2b$10$DYDNGiIPiyX5gd7Emag/1uF2TzwwZP/G9U0FiI4EwwKLVE36U9/7e',1,'2147483647',NULL,NULL,NULL,NULL,3);
+INSERT INTO `persona` VALUES (20,'CARLOS','CAREMONDA','carlos@info.com',NULL,_binary '1\�;\�\�xT�-\��7`:*\�\n*\� \�)GU\�O����\r-\��\Z\�\�\��ҍ�\�ŉ\��|io���e�/',1,'123123123',NULL,NULL,NULL,NULL,3);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER Mayusculas_Before_Insert
+BEFORE INSERT ON persona
+FOR EACH ROW
+BEGIN
+  SET NEW.NombrePersona = UPPER(NEW.NombrePersona);
+  SET NEW.ApellidoPersona = UPPER(NEW.ApellidoPersona);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER Mayusculas_Before_Update
+BEFORE UPDATE ON persona
+FOR EACH ROW
+BEGIN
+  SET NEW.NombrePersona = UPPER(NEW.NombrePersona);
+  SET NEW.ApellidoPersona = UPPER(NEW.ApellidoPersona);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `producto`
@@ -551,22 +596,6 @@ LOCK TABLES `producto` WRITE;
 INSERT INTO `producto` VALUES (6,'rey silente','¡Presentamos al Rey Silente, la figura suprema de los Necrones en Warhammer 40K! Este impresionante modelo captura a Szarekh en todo su poder, sentado en su trono y flanqueado por sus fieles Triarcas. Perfecto para cualquier coleccionista o jugador que desee comandar la galaxia.\r\n',1,750.00,'uploads/img/producto/rey_1725009352229.jpg','http://localhost:4000/uploads/img/producto/rey_1725009352229.jpg',5,30),(7,'caballero del caos','¡Conoce al Caballero del Caos de Warhammer 40K! Este imponente modelo representa a un titánico Caballero al servicio de las fuerzas del Caos, con detalles siniestros y una apariencia amenazante que destaca en cualquier ejército. Equipado con armas devastadoras y adornado con iconografía caótica, es una pieza clave para los seguidores del Caos que buscan dominar el campo de batalla.\r\n',11,350.00,'uploads/img/producto/caballero_1725009396947.jpg','http://localhost:4000/uploads/img/producto/caballero_1725009396947.jpg',5,30),(8,'ultra marine','¡Presentamos al Ultramarine! Este modelo de Warhammer 40K captura la esencia de los famosos Marines Espaciales de los Ultramarines, conocidos por su disciplina y valentía. Perfecto para completar tu ejército o para cualquier colección, este soldado está detallado con el icónico esquema de color azul y el símbolo de los Ultramarines.\r\n\r\n',1,50.00,'uploads/img/producto/marine_1725009458032.jpg','http://localhost:4000/uploads/img/producto/marine_1725009458032.jpg',5,30),(9,'fulgrim ','¡Conoce a Fulgrim, Príncipe Demonio de Warhammer 40K! Este impresionante modelo representa a Fulgrim, el Primarca caído de los Emperadores Hijos, transformado en un temible Príncipe Demonio del Caos. Con su diseño detallado y su aura de decadencia, es una figura central para cualquier ejército del Caos y un desafío formidable en el campo de batalla.\r\n',12,450.00,'uploads/img/producto/fulgrim_1725009514488.jpg','http://localhost:4000/uploads/img/producto/fulgrim_1725009514488.jpg',5,30),(10,'rylanor','¡Conoce a Rylanor, el Despertado, de los Hijos del Emperador! Este modelo representa a uno de los legendarios Guerreros de los Emperadores Hijos, despertado de su largo letargo para unirse a la batalla. Con una estética impresionante y una historia rica en el lore de Warhammer 40K, Rylanor encarna la fuerza y el honor de su legión',122,120.00,'uploads/img/producto/raylanor_1725009551908.jpg','http://localhost:4000/uploads/img/producto/raylanor_1725009551908.jpg',5,30),(11,'Lion El\'Jonson','¡Descubre a Lion El\'Jonson, el Primarca de los Ángeles Oscuros en Warhammer 40K! Este modelo representa al legendario líder de los Ángeles Oscuros, conocido por su habilidad en la batalla y su presencia imponente. Con su armadura detallada y su espada de energía, Lion El\'Jonson es una figura clave para cualquier ejército de los Ángeles Oscuros y un símbolo de la fuerza de su legión.\r\n',1,120.00,'uploads/img/producto/lion_1725009606156.jpg','http://localhost:4000/uploads/img/producto/lion_1725009606156.jpg',5,30),(12,'Trazin el Infinito','¡Descubre a Trazin el Infinito, el inmortal Señor de la Colección de los Necrones en Warhammer 40K! Este modelo captura al enigmático y poderoso Necron, conocido por su obsesión con la recolección de artefactos y secretos del universo. Equipado con su icónica vara y una armadura intricada, Trazin el Infinito es una pieza clave para cualquier ejército Necron y un símbolo de su misterio y poder interminable.\r\n',4,150.00,'uploads/img/producto/trazin_1725009643824.jpg','http://localhost:4000/uploads/img/producto/trazin_1725009643824.jpg',5,30),(13,'Ghazghkull Mag Uruk Thraka','¡Conoce a Ghazghkull Mag Uruk Thraka, el legendario Warboss Orko en Warhammer 40K! Este modelo representa al temido líder de los Orkos, conocido por su increíble poder y habilidad para liderar a sus huestes en la batalla. Con su impresionante armadura de guerra, su icónico kustom mega-blasta y su presencia imponente, Ghazghkull es un pilar central en cualquier ejército Orko y una figura clave en la lucha por la dominación del universo.\r\n',16,180.00,'uploads/img/producto/mag_1725009686389.jpg','http://localhost:4000/uploads/img/producto/mag_1725009686389.jpg',5,30),(14,'Blazer Clásico','¡Eleva tu estilo con nuestro Blazer Clásico! Este blazer es la combinación perfecta de elegancia y versatilidad, ideal para cualquier ocasión, ya sea en el trabajo o en eventos formales. Confeccionado en tela de alta calidad, presenta un corte impecable, solapas de muesca y un ajuste cómodo. Disponible en una variedad de colores sofisticados, es una prenda esencial para el guardarropa de cualquier persona que busque un toque de distinción y profesionalismo en su vestimenta.\r\n',145,220.00,'uploads/img/producto/blazer_1725009740549.jpg','http://localhost:4000/uploads/img/producto/blazer_1725009740549.jpg',1,27),(15,'Gaban Elegante','¡Mantente abrigado y a la moda con nuestro Gaban Elegante! Este gaban es perfecto para climas fríos, ofreciendo un diseño sofisticado y funcional. Confeccionado en tejido de alta calidad, cuenta con un corte moderno, cuello alto y botones detallados que aportan un toque de distinción. Ideal para ocasiones formales o para añadir un toque elegante a tu atuendo diario, este gaban es una pieza clave para tu armario durante la temporada de frío.\r\n',56,320.00,'uploads/img/producto/gaban_1725009778264.jpg','http://localhost:4000/uploads/img/producto/gaban_1725009778264.jpg',1,27),(16,'Abrigo de Lana Refinado','¡Añade un toque de sofisticación a tu guardarropa con nuestro Abrigo de Lana Refinado! Confeccionado en lana de alta calidad, este abrigo ofrece una calidez excepcional y un ajuste elegante. Su diseño clásico incluye un corte entallado, botones forrados y un cuello de solapa, ideal para combinar con cualquier atuendo formal o casual. Perfecto para enfrentar el frío con estilo, este abrigo es una inversión en elegancia y confort durante la temporada de invierno.\r\n',12,450.00,'uploads/img/producto/abrigo_1725009814020.jpg','http://localhost:4000/uploads/img/producto/abrigo_1725009814020.jpg',1,27),(17,'Gaban Clásico para Hombre','¡Mantén el estilo y el confort con nuestro Gaban Clásico para Hombre! Este gaban, confeccionado en un tejido de lana premium, ofrece una combinación perfecta de elegancia y funcionalidad. Con un corte ajustado y sofisticado, presenta un cuello alto y botones elegantes que brindan una protección adicional contra el frío. Ideal para ocasiones formales o para añadir un toque refinado a tu atuendo diario, este gaban es esencial para cualquier armario masculino durante la temporada de frío.\r\n',78,350.00,'uploads/img/producto/gaban clasico_1725009859808.jpg','http://localhost:4000/uploads/img/producto/gaban clasico_1725009859808.jpg',1,27),(18,'Chaqueta Corta de Viento','¡Prepárate para cualquier aventura con nuestra Chaqueta Corta de Viento! Diseñada para ofrecer protección contra el viento y la lluvia ligera, esta chaqueta está confeccionada en un material ligero y resistente al agua. Su corte moderno y ajustado proporciona un estilo dinámico, mientras que la capucha ajustable y los bolsillos funcionales añaden comodidad y practicidad. Ideal para actividades al aire libre o para un look casual en días ventosos, esta chaqueta es tu compañera perfecta para el clima cambiante.\r\n',12,180.00,'uploads/img/producto/corta_1725009898515.jpg','http://localhost:4000/uploads/img/producto/corta_1725009898515.jpg',1,27),(19,'Ropa Infantil Divertida y Cómoda','¡Haz que cada día sea una aventura con nuestra Ropa Infantil Divertida y Cómoda! Nuestra colección está diseñada pensando en la comodidad y el estilo de los más pequeños. Ofrecemos una variedad de prendas, desde coloridos conjuntos y camisetas con estampados alegres hasta pantalones y chaquetas resistentes y prácticos. Con tejidos suaves y duraderos, nuestras prendas garantizan libertad de movimiento y facilidad de uso para que los niños puedan jugar y explorar con total libertad. Perfecta para cualquier ocasión, nuestra ropa infantil combina funcionalidad con diversión.\r\n',1,80.00,'uploads/img/producto/niÃ±o_1725010133032.jpg','http://localhost:4000/uploads/img/producto/niÃ±o_1725010133032.jpg',1,27),(20,'Blazer Slim para Hombre','¡Añade un toque de sofisticación a tu vestuario con nuestro Blazer Slim para Hombre! Este blazer, con un corte ajustado y moderno, está diseñado para realzar tu figura y proporcionar un look elegante y contemporáneo. Confeccionado en tejido de alta calidad, ofrece un acabado impecable y un ajuste cómodo. Ideal para eventos formales, reuniones de trabajo o una salida nocturna, su diseño versátil se adapta a cualquier ocasión. Disponible en una gama de colores clásicos, este blazer es una pieza esencial para cualquier armario masculino.\r\n',56,250.00,'uploads/img/producto/slim_1725010173632.jpg','http://localhost:4000/uploads/img/producto/slim_1725010173632.jpg',1,27),(21,'Saco de Vestir para Hombre La Martina','¡Eleva tu estilo con el Saco de Vestir para Hombre La Martina! Con un diseño sofisticado y un corte impecable, este saco de vestir está confeccionado en tejidos de alta calidad que garantizan un ajuste cómodo y elegante. Ideal para ocasiones formales y eventos especiales, su diseño clásico incluye solapas de muesca y detalles refinados que realzan cualquier atuendo. Disponible en colores neutros y versátiles, es la elección perfecta para el hombre moderno que busca combinar estilo y distinción en cada ocasión.\r\n\r\n',21,320.00,'uploads/img/producto/saco_1725010236615.jpg','http://localhost:4000/uploads/img/producto/saco_1725010236615.jpg',1,27),(22,'Hamburguesa Artesanal','¡Deléitate con nuestra Hamburguesa Artesanal! Preparada con ingredientes frescos y de alta calidad, esta hamburguesa ofrece un sabor auténtico y una textura jugosa que resalta la artesanía detrás de cada bocado. Con una carne de res seleccionada, cocida a la perfección y acompañada de pan artesanal, vegetales frescos y salsas caseras, cada hamburguesa está diseñada para brindar una experiencia gastronómica única. Personaliza tu hamburguesa con una variedad de ingredientes adicionales y disfruta de un plato que celebra la calidad y el sabor.\r\n\r\n',50,150.00,'uploads/img/producto/comer_1725010333957.jpg','http://localhost:4000/uploads/img/producto/comer_1725010333957.jpg',9,28),(23,' Perro Caliente Clásico','¡Disfruta del sabor inconfundible de nuestro Perro Caliente Clásico! Preparado con una salchicha jugosa y cocida a la perfección, este perro caliente está servido en un pan suave y fresco. Complementado con tus condimentos favoritos, como mostaza, ketchup, cebolla crujiente y relish, es el bocadillo perfecto para cualquier ocasión. Ideal para un almuerzo rápido o una merienda informal, nuestro perro caliente combina simplicidad y sabor en cada bocado.\r\n',34,45.00,'uploads/img/producto/perroc_1725010385955.jpg','http://localhost:4000/uploads/img/producto/perroc_1725010385955.jpg',9,28),(24,'Donas Gourmet','¡Déjate seducir por nuestras Donas Gourmet! Elaboradas con recetas artesanales, estas donas ofrecen una experiencia dulce y deliciosa en cada bocado. Disponibles en una variedad de sabores, desde glaseado clásico hasta combinaciones innovadoras, cada dona está hecha con ingredientes frescos y de alta calidad. Perfectas para acompañar tu café matutino o como un capricho dulce durante el día, nuestras donas son el toque perfecto para cualquier ocasión.',45,25.00,'uploads/img/producto/donas_1725010490693.jpg','http://localhost:4000/uploads/img/producto/donas_1725010490693.jpg',9,28),(25,'Empanadas Caseras','¡Saborea nuestras Empanadas Caseras, el auténtico sabor en cada bocado! Hechas con una masa crujiente y dorada, estas empanadas están rellenas con ingredientes frescos y de alta calidad, como carne jugosa, pollo tierno o una mezcla deliciosa de vegetales y quesos. Perfectas para un aperitivo, un almuerzo rápido o una cena informal, nuestras empanadas ofrecen un equilibrio perfecto entre sabor y textura. Ven y disfruta de este clásico delicioso y reconfortante.\r\n',35,20.00,'uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 01_1725010536040.jpg','http://localhost:4000/uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 01_1725010536040.jpg',9,28),(26,' Salchipapa Sabrosa','¡Descubre nuestra Salchipapa Sabrosa, una combinación irresistible de papas fritas crujientes y salchichas jugosas! Cada porción presenta papas recién fritas y doradas, acompañadas de salchichas de alta calidad, cocidas a la perfección. Puedes personalizar tu salchipapa con una variedad de salsas y condimentos, como ketchup, mayonesa, mostaza o salsa picante, para un toque adicional de sabor. Ideal para compartir con amigos o disfrutar como una comida rápida y deliciosa, nuestra salchipapa es un clásico que siempre satisface.\r\n',67,30.00,'uploads/img/producto/salchipapa_1725010594259.jpg','http://localhost:4000/uploads/img/producto/salchipapa_1725010594259.jpg',9,28),(29,'Poppy, La Perrita Que Mueve La Cola','\r\n¡Conoce a Poppy, La Perrita Que Mueve La Cola, el juguete perfecto para tu amigo peludo! Diseñada para proporcionar horas de diversión, Poppy tiene un mecanismo interno que hace que su cola se mueva y suena con diferentes melodías, manteniendo a tu mascota entretenida y activa. Hecha de materiales resistentes y seguros, este juguete es ideal para fomentar el ejercicio y el juego interactivo. ¡Asegúrate de que tu mascota tenga su propia Poppy para una experiencia de juego divertida y estimulante!\r\n',13,50.00,'uploads/img/producto/pero_1725010815942.jpg','http://localhost:4000/uploads/img/producto/pero_1725010815942.jpg',5,29),(31,'Muñeca Baby Alive Bebidas de Frutas Manzana 30 cm','¡Descubre la magia de la Muñeca Baby Alive Bebidas de Frutas Manzana de 30 cm! Esta encantadora muñeca está lista para jugar y simular la hora del té con su botella de jugo de manzana y su funcionalidad de bebida. Con una apariencia realista y una actitud adorable, Baby Alive puede \"beber\" su jugo y tener una experiencia interactiva que encantará a los más pequeños. Perfecta para juegos de simulación y cuidado, esta muñeca fomenta la imaginación y el juego creativo.\r\n',1,85.00,'uploads/img/producto/MUÃECA_1725011017473.jpg','http://localhost:4000/uploads/img/producto/MUÃECA_1725011017473.jpg',5,29),(32,'Set City Ultimate Garage','¡Prepárate para una aventura emocionante con el Set City Ultimate Garage! Este impresionante set de garaje de la ciudad ofrece un mundo de diversión con múltiples niveles, estaciones de servicio, y una pista de carreras increíble. Equipado con rampas, ascensores y varios accesorios, el Ultimate Garage permite a los niños crear sus propias historias de acción y aventura mientras juegan con sus coches y camiones favoritos. Ideal para fomentar la creatividad y el juego interactivo, este set es perfecto para pequeños entusiastas de los vehículos y constructores en ciernes.\r\n',24,250.00,'uploads/img/producto/CARROS_1725011075634.jpg','http://localhost:4000/uploads/img/producto/CARROS_1725011075634.jpg',5,29),(33,'Juego Laboratorio de Ciencia - Clementoni','¡Explora el fascinante mundo de la ciencia con el Juego Laboratorio de Ciencia - Clementoni! Este completo set ofrece a los jóvenes científicos una variedad de experimentos y actividades educativas que estimulan la curiosidad y el aprendizaje. Incluye herramientas y materiales seguros para realizar experimentos como mezclas químicas, reacciones y proyectos divertidos. Con instrucciones claras y fáciles de seguir, el laboratorio permite a los niños desarrollar habilidades científicas mientras se divierten descubriendo los secretos de la ciencia. Ideal para fomentar el interés en la investigación y la experimentación desde una edad temprana.\r\n',56,120.00,'uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 02_1725011157776.jpg','http://localhost:4000/uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 02_1725011157776.jpg',5,29),(34,' Figura Spawn Mortal Kombat 11 Articulada de 18 cm','¡Añade a tu colección la increíble Figura Spawn Mortal Kombat 11! Esta figura articulada de 18 cm captura la esencia del icónico personaje de Mortal Kombat con un nivel impresionante de detalle. Diseñada con múltiples puntos de articulación, permite poseer y exhibir a Spawn en una variedad de posiciones dinámicas. Incluye accesorios exclusivos que realzan su apariencia, como su capa característica y armas emblemáticas, para una experiencia de colección completa. Perfecta para fanáticos y coleccionistas de Mortal Kombat, esta figura es una pieza imprescindible para cualquier estante de figuras.\r\n',7,150.00,'uploads/img/producto/FIGUA_1725011242330.jpg','http://localhost:4000/uploads/img/producto/FIGUA_1725011242330.jpg',5,29),(35,' Star Wars The Child Baby Yoda The Mandalorian con','¡Sumérgete en el universo de Star Wars con la adorable figura de Baby Yoda de The Mandalorian! Este detallado juguete de 12 pulgadas captura la ternura y el encanto del icónico personaje con una alta calidad de acabado. Incluye 4 accesorios exclusivos que permiten recrear momentos memorables de la serie, como su manta y su cúpula de transporte. Con una construcción robusta y detalles precisos, esta figura es perfecta para coleccionistas y fanáticos de todas las edades. ¡No te pierdas la oportunidad de tener a este pequeño y querido personaje en tu colección!\r\n',456,120.00,'uploads/img/producto/BABY_1725011334387.jpg','http://localhost:4000/uploads/img/producto/BABY_1725011334387.jpg',5,29),(36,'Figura de Acción Buzz Lightyear | Soriana','\r\n¡Haz que la aventura despegue con la Figura de Acción Buzz Lightyear! Basada en el querido personaje de Toy Story, esta figura de acción presenta a Buzz Lightyear en toda su gloria espacial con detalles auténticos y accesorios interactivos. Con una altura aproximada de 15 cm, Buzz está equipado con alas extensibles, un casco removible y una variedad de articulaciones que permiten múltiples poses y movimientos. Ideal para recrear emocionantes escenas del espacio o para exhibir en tu colección, esta figura captura la esencia del intrépido guardián estelar. Perfecta para fans de todas las edades.\r\n',1,75.00,'uploads/img/producto/BUZZ_1725011717323.jpg','http://localhost:4000/uploads/img/producto/BUZZ_1725011717323.jpg',5,29);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary view structure for view `promedio_calificacion_tienda`
---
-
-DROP TABLE IF EXISTS `promedio_calificacion_tienda`;
-/*!50001 DROP VIEW IF EXISTS `promedio_calificacion_tienda`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `promedio_calificacion_tienda` AS SELECT 
- 1 AS `IdTienda`,
- 1 AS `NombreTienda`,
- 1 AS `MiniaturaTiendaURL`,
- 1 AS `DescripcionTienda`,
- 1 AS `PromedioCalificacion`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `rol`
@@ -661,9 +690,10 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50001 CREATE VIEW `top4tiendas` AS SELECT 
  1 AS `IdTienda`,
  1 AS `NombreTienda`,
- 1 AS `PromedioCalificacion`,
- 1 AS `MiniaturaTiendaURL`,
- 1 AS `DescripcionTienda`*/;
+ 1 AS `CalificacionTienda`,
+ 1 AS `DireccionTienda`,
+ 1 AS `CiudadTienda`,
+ 1 AS `MiniaturaTiendaURL`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -688,6 +718,10 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `BannerTienda`,
  1 AS `BannerTiendaURL`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping events for database 'platea'
+--
 
 --
 -- Dumping routines for database 'platea'
@@ -720,61 +754,6 @@ BEGIN
     UPDATE detallecarrito
     SET Cantidad = p_NuevaCantidad
     WHERE IdCarritoFK = Id AND IdProductoFK = p_IdProducto;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ActualizarStockProductoPedido` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ActualizarStockProductoPedido`(IN p_IdPedido INT)
-BEGIN
-    -- Declarar variables para el producto y cantidad
-    DECLARE v_IdProducto INT;
-    DECLARE v_Cantidad INT;
-    DECLARE done INT DEFAULT 0;
-
-    -- Declarar el cursor para obtener todos los productos y cantidades del pedido
-    DECLARE cur CURSOR FOR 
-    SELECT p.IdProducto, dc.Cantidad
-    FROM detallecarrito dc
-    JOIN producto p ON dc.IdProductoFK = p.IdProducto
-    JOIN carrito c ON c.IdCarrito = dc.IdCarritoFK
-    WHERE c.IdCarrito = p_IdPedido;
-
-    -- Declarar un manejador para el final de los datos del cursor
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
-    -- Abrir el cursor
-    OPEN cur;
-
-    -- Loop para leer cada producto y actualizar su stock
-    leer_loop: LOOP
-        -- Obtener el producto y la cantidad
-        FETCH cur INTO v_IdProducto, v_Cantidad;
-
-        -- Si no hay más filas, salir del loop
-        IF done THEN
-            LEAVE leer_loop;
-        END IF;
-
-        -- Actualizar el stock del producto restando la cantidad del pedido
-        UPDATE producto 
-        SET StockProducto = StockProducto - v_Cantidad
-        WHERE IdProducto = v_IdProducto;
-    END LOOP;
-
-    -- Cerrar el cursor
-    CLOSE cur;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -819,6 +798,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `CLAVE` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CLAVE`(IN _correo INt, IN CLAVE_SECRETA TEXT)
+BEGIN
+	SELECT cast(aes_decrypt(ClavePersona, CLAVE_SECRETA)as char) FROM persona WHERE CorreoPersona = _correo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `crearComentario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -841,34 +839,6 @@ begin
     (A_ComentarioAprobacion,A_CalificacionAprobacion,A_IdPersonaFK,A_IdProductoFK);
 
 end ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `CrearPedido` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `CrearPedido`(
-    IN p_IdPersonaFK INT,
-    IN p_Direccion VARCHAR(50),
-    IN p_Ciudad VARCHAR(50)
-
-)
-BEGIN
-    INSERT INTO Pedido (IdPersonaFK, Direccion, Ciudad, Total)
-    VALUES (p_IdPersonaFK, p_Direccion, p_Ciudad, 0);
-    
-    -- Retornar el ID del pedido recién creado
-    SELECT LAST_INSERT_ID() AS IdPedidoCreado;
-END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1033,50 +1003,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `MigrarCarritoAPedido` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `MigrarCarritoAPedido`(IN p_IdPersona INT, IN p_IdPedido INT)
-BEGIN
-
-	DECLARE Id INT;
-    DECLARE total INT;
-    
-    -- Verifica si el usuario ya tiene un carrito
-    SELECT IdCarrito INTO Id
-    FROM carrito
-    WHERE IdPersonaFK = p_IdPersona
-    ORDER BY fecha_creacion DESC
-    LIMIT 1;
-    -- Insertar todos los productos del carrito a la tabla pedidoproducto
-    INSERT IGNORE  INTO pedidoproducto (IdPedidoFK, IdProductoFK, Cantidad)
-    SELECT p_IdPedido, dc.IdProductoFK, dc.Cantidad
-    FROM detallecarrito dc
-    WHERE dc.IdCarritoFK = Id;
-	
-    SELECT SUM(p.PrecioProducto * dc.Cantidad) AS Total
-    FROM detallecarrito dc
-    INNER JOIN producto p ON p.IdProducto = dc.IdProductoFK
-    WHERE dc.IdCarritoFK = Id ;
-    -- Opcional: después de migrar, puedes eliminar los productos del carrito si lo deseas
-    -- DELETE FROM detallecarrito WHERE IdCarritoFK = p_IdCarrito;
-
-    -- También podrías eliminar el carrito si lo deseas
-    -- DELETE FROM carrito WHERE IdCarrito = p_IdCarrito;
-
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Mostrarcomentarios` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1098,30 +1024,6 @@ BEGIN
     FROM Aprobacion a
     JOIN Persona p ON a.IdPersonaFK = p.IdPersona  -- Une la tabla Aprobacion con Persona para obtener el nombre de la persona y la foto
     WHERE a.IdProductoFK = productoId;  -- Filtra los comentarios para el producto específico
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ObtenerProductoPedido` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductoPedido`(IN p_IdPedido INT)
-BEGIN
-    SELECT p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , pp.cantidad
-    FROM pedidoproducto pp
-    JOIN producto p ON pp.IdProductoFK = p.IdProducto
-    JOIN pedido p2 ON p2.IdPedido = pp.IdPedidoFK
-    WHERE p2.IdPedido = p_IdPedido;
-
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1165,37 +1067,6 @@ BEGIN
     JOIN tienda t ON t.IdTienda = p.IdTiendaFK
     JOIN carrito c ON c.IdCarrito = dc.IdCarritoFK
     WHERE c.IdCarrito = Id;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ObtenerProductosSimilares` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductosSimilares`(IN p_IdProducto INT)
-BEGIN
-    -- Declara una variable para almacenar la categoría del producto
-    DECLARE v_IdCategoria INT;
-
-    -- Obtiene la categoría del producto dado
-    SELECT IdCategoriaFK INTO v_IdCategoria
-    FROM producto
-    WHERE IdProducto = p_IdProducto;
-
-    -- Selecciona los productos que pertenecen a la misma categoría
-    SELECT IdProducto, NombreProducto, DescripcionProducto, StockProducto, PrecioProducto, FotoProducto, FotoProductoURL
-    FROM producto
-    WHERE IdCategoriaFK = v_IdCategoria
-      AND IdProducto <> p_IdProducto; -- Excluye el producto original
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1276,8 +1147,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `RegisterPersona`(
     IN p_NombrePersona VARCHAR(20),
     IN p_ApellidoPersona VARCHAR(20),
     IN p_CorreoPersona VARCHAR(30),
-    IN p_ClavePersona VARCHAR(255), -- Se recomienda usar VARCHAR(255) para contraseñas encriptadas
-    IN p_TelefonoPersona INT
+    IN p_ClavePersona VARCHAR(255),
+    IN p_TelefonoPersona INT,
+    IN claveSecreta TEXT
 )
 BEGIN
     INSERT INTO Persona (
@@ -1296,7 +1168,7 @@ BEGIN
         p_NombrePersona,
         p_ApellidoPersona,
         p_CorreoPersona,
-        p_ClavePersona,
+        aes_encrypt(p_ClavePersona,claveSecreta),
         p_TelefonoPersona,
         TRUE,          -- Valor predeterminado para EstadoPersona
         NULL,          -- Valor predeterminado para FotoPersona
@@ -1305,54 +1177,6 @@ BEGIN
         NULL,          -- Valor predeterminado para bannerPersonaURL
         3              -- Valor predeterminado para idRolFK
     );
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `vaciarcarrito` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `vaciarcarrito`(IN p_IdPersona INT)
-BEGIN
-    declare Id int;
-    -- Verifica si el usuario ya tiene un carrito
-    SELECT IdCarrito INTO Id
-    FROM carrito
-    WHERE IdPersonaFK = p_IdPersona
-    ORDER BY fecha_creacion DESC
-    LIMIT 1;
-	
-    delete from detallecarrito where IdCarritoFK = Id;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `VerPedido` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `VerPedido`(
-	in __idPedido INT
-)
-BEGIN
-    SELECT * FROM platea.pedido where IdPedido = __idPedido;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1469,24 +1293,6 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `promedio_calificacion_tienda`
---
-
-/*!50001 DROP VIEW IF EXISTS `promedio_calificacion_tienda`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `promedio_calificacion_tienda` AS select `t`.`IdTienda` AS `IdTienda`,`t`.`NombreTienda` AS `NombreTienda`,`t`.`MiniaturaTiendaURL` AS `MiniaturaTiendaURL`,`t`.`DescripcionTienda` AS `DescripcionTienda`,avg(`a`.`CalificacionAprobacion`) AS `PromedioCalificacion` from ((`tienda` `t` join `producto` `p` on(`t`.`IdTienda` = `p`.`IdTiendaFK`)) join `aprobacion` `a` on(`p`.`IdProducto` = `a`.`IdProductoFK`)) group by `t`.`IdTienda`,`t`.`NombreTienda` order by avg(`a`.`CalificacionAprobacion`) desc */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
 -- Final view structure for view `top4productos`
 --
 
@@ -1512,12 +1318,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `top4tiendas` AS select `promedio_calificacion_tienda`.`IdTienda` AS `IdTienda`,`promedio_calificacion_tienda`.`NombreTienda` AS `NombreTienda`,`promedio_calificacion_tienda`.`PromedioCalificacion` AS `PromedioCalificacion`,`promedio_calificacion_tienda`.`MiniaturaTiendaURL` AS `MiniaturaTiendaURL`,`promedio_calificacion_tienda`.`DescripcionTienda` AS `DescripcionTienda` from `promedio_calificacion_tienda` order by `promedio_calificacion_tienda`.`PromedioCalificacion` desc limit 4 */;
+/*!50001 VIEW `top4tiendas` AS select `tienda`.`IdTienda` AS `IdTienda`,`tienda`.`NombreTienda` AS `NombreTienda`,`tienda`.`CalificacionTienda` AS `CalificacionTienda`,`tienda`.`DireccionTienda` AS `DireccionTienda`,`tienda`.`CiudadTienda` AS `CiudadTienda`,`tienda`.`MiniaturaTiendaURL` AS `MiniaturaTiendaURL` from `tienda` order by `tienda`.`CalificacionTienda` desc limit 4 */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1549,4 +1355,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-13  5:10:31
+-- Dump completed on 2024-09-19 15:48:53
