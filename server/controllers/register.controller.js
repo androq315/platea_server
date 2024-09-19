@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import { sequelize } from '../config/db.js';
-
 // Controlador para registrar usuarios
 export const registerPersona = async (req, res) => {
     try {
@@ -17,19 +16,20 @@ export const registerPersona = async (req, res) => {
         console.log('Contraseña encriptada:', hashedPassword);
 
 
-        const results = await sequelize.query('CALL RegisterPersona(?, ?, ?, ?, ?)', {
+        await sequelize.query('CALL RegisterPersona(?, ?, ?, ?, ?, ?)', {
             replacements: [
                 NombrePersona,
                 ApellidoPersona,
                 CorreoPersona,
                 hashedPassword,
-                TelefonoPersona
+                TelefonoPersona,
+                process.env.DB_CLAVE
             ],
         });
 
-        console.log('Resultado del procedimiento almacenado:', results);
+        
 
-        res.status(201).json({ message: 'Usuario creado correctamente', data: results });
+        res.status(201).json({ message: 'Usuario creado correctamente'});
     } catch (error) {
         console.error('Error al crear el usuario:', error);
         res.status(500).json({ message: 'Error al crear el usuario: ' + error.message });

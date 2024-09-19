@@ -2,7 +2,7 @@ import { Persona } from "../models/persona.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-
+import { sequelize } from '../config/db.js';
 dotenv.config(); // Asegúrate de que las variables de entorno estén cargadas
 
 class LoginController {
@@ -19,7 +19,7 @@ class LoginController {
             console.log("Clave recibida:", ClavePersona);
 
             // Búsqueda del usuario por correo electrónico
-            const persona = await Persona.findOne({ where: { CorreoPersona }});
+            const persona = await Persona.findOne({ where: { CorreoPersona } });
 
             if (!persona) {
                 console.log("Usuario no encontrado.");
@@ -28,9 +28,17 @@ class LoginController {
 
             console.log("Usuario encontrado:", persona);
 
-            // Comparar la contraseña ingresada con la contraseña encriptada
-            const isMatch = await bcrypt.compare(ClavePersona, persona.ClavePersona);
+            const Clave = await sequelize.query(`call platea.CLAVE('${CorreoPersona}', '${process.env.DB_CLAVE}');`);
+            console.log("clave", Clave);
+
+            const nombreClave = Object.keys(Clave[0])[0];
+            console.log('Nombre de la clave:', nombreClave);
+            // Extraer el valor de la clave
+            const claveEncriptada = Clave[0][nombreClave];
+            console.log("claveEncriptada: ", claveEncriptada);
+            const isMatch = await bcrypt.compare(ClavePersona, claveEncriptada);
             console.log("¿La contraseña coincide?:", isMatch);
+
 
             if (!isMatch) {
                 console.log("Contraseña incorrecta.");
