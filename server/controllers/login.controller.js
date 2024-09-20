@@ -10,7 +10,6 @@ class LoginController {
         try {
             const { CorreoPersona, ClavePersona } = req.body;
 
-
             if (!CorreoPersona || !ClavePersona) {
                 return res.status(400).json({ message: "Correo y contraseña son requeridos." });
             }
@@ -39,19 +38,20 @@ class LoginController {
             const isMatch = await bcrypt.compare(ClavePersona, claveEncriptada);
             console.log("¿La contraseña coincide?:", isMatch);
 
-
             if (!isMatch) {
                 console.log("Contraseña incorrecta.");
                 return res.status(401).json({ message: "Credenciales incorrectas." });
             }
 
-            // Generar token JWT
+            // Generar token JWT con IdPersona y idRolFK
             const token = jwt.sign(
-                { IdPersona: persona.IdPersona },
+                { 
+                    IdPersona: persona.IdPersona, 
+                    idRolFK: persona.idRolFK // Incluyendo el rol en el token
+                },
                 process.env.JWT_SECRET,
                 { expiresIn: "24h" }
             );
-
             console.log("Token generado:", token);
 
             return res.status(200).json({
@@ -67,6 +67,7 @@ class LoginController {
                     bannerPersona: persona.bannerPersona,
                     bannerPersonaURL: persona.bannerPersonaURL,
                     TelefonoPersona: persona.TelefonoPersona,
+                    idRolFK: persona.idRolFK // También se incluye en la respuesta
                 },
             });
 
