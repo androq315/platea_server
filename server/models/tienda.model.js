@@ -93,7 +93,8 @@ class Tienda extends Model {
 
   static async getTiendaById(id) {
     try {
-      return await this.findByPk(id);
+      const [result] = await sequelize.query(`call platea.verTienda(${id});`);
+      return result
     } catch (error) {
       console.error(`Unable to find tienda by id: ${error}`);
       throw error;
@@ -202,7 +203,15 @@ class Tienda extends Model {
     }
   }
 
-
+  static async obtenerTiendaporCategoria() {
+    try {
+      const [results] = await sequelize.query('SELECT * FROM Belleza;');
+      return results;
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeBelleza: ${error}`);
+      throw error;
+    }
+  }
 }
 
 // Definición del modelo Tienda en Sequelize
