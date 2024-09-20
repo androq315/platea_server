@@ -510,10 +510,9 @@ CREATE TABLE `persona` (
 --
 -- Dumping data for table `persona`
 --
-
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (23,'Andres','suarez','anuellAAA@info.co',NULL,_binary 'IIñ{–u2‡©†\íÛ±Àñƒ(†ò«\èP®õ\Ý\Î\è >KXœ1“<\ïR\Ü%\æ­£®3‹\å·U‘\ã¸\Ü\Í(2û',1,'2147483647',NULL,NULL,NULL,NULL,2);
+INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co',' ',aes_encrypt('$2b$10$yP9GmqkeTVDazns.qioexukfgN3BoAz61TRGzED6c2l8kBnXFIDnG','bd_secret_key'),1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary 'ï¿½Uï¿½ï¿½VJï¿½!)ï¿½ï¿½ggï¿½kï¿½$~Nï¿½Sr!Mz@[^oï¿½ï¿½Uï¿½Ì˜RHï¿½ï¿½ï¿½4ï¿½ï¿½(ï¿½Jï¿½%ï¿½',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,aes_encrypt('$2b$10$7QlSjD93a9RfPV.kNSfxmeuf3ZEda0cj3dmCFsy5Ivr2Q3rN1B6/y','bd_secret_key'),1,'2147483647',NULL,NULL,NULL,NULL,3);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
