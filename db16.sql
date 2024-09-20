@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: platea
 -- ------------------------------------------------------
@@ -150,7 +150,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Moda',NULL),(2,'Electrodometicos',NULL),(3,'Hogar',NULL),(4,'Religion',NULL),(5,'Juguetes',NULL),(6,'Belleza',NULL),(7,'Electr√≥nica',NULL),(8,'Libros',NULL),(9,'Comida',NULL),(10,'Salud',NULL),(11,'Oficina',NULL),(12,'Jard√≠n',NULL);
+INSERT INTO `categoria` VALUES (1,'Moda','http://localhost:4000/uploads/img/categoria/moda_1726827063879.jpg'),(2,'Electrodometicos','http://localhost:4000/uploads/img/categoria/electrodomesticos_1726827079713.jpg'),(3,'Hogar','http://localhost:4000/uploads/img/categoria/hogar_1726827091613.jpg'),(4,'Deportes','http://localhost:4000/uploads/img/categoria/deportes_1726827807855.jpg'),(5,'Juguetes','http://localhost:4000/uploads/img/categoria/juguetes_1726827817923.jpg'),(6,'Belleza','http://localhost:4000/uploads/img/categoria/belleza_1726827828251.jpg'),(7,'Electr√≥nica','http://localhost:4000/uploads/img/categoria/1_1726827838022.jpg'),(8,'Libros','http://localhost:4000/uploads/img/categoria/libros_1726827844567.avif'),(9,'Comida','http://localhost:4000/uploads/img/categoria/ham_1726827851007.jpg'),(10,'Salud','http://localhost:4000/uploads/img/categoria/med_1726827857165.jpg'),(11,'Oficina','http://localhost:4000/uploads/img/categoria/ofi_1726827862991.jpg');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -513,51 +513,9 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co','null',_binary 'C¶ä_IS+\ÊI˜\Í\Ôî^S\œ4x\Ëb[\rse\ ÚO6S∏\ÓO∞\ÿ\·\\ﬂîUg\ËP≤+\ÔüKd˙\Î8m∂',1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary 'êUó\‰VJ\Ï!)¢øggµkô$~NëSr!Mz@[^o\Õ\“U˝ÃòRH\„ÇÑ4ú\Ë(ΩJπ%\‰',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,_binary 'Oé®ú^Ù?ıöÛ\À\‰0Sªü\‡\‚&¯ÉKπˆ\Z˘a\‹f÷åÙ[Q6™]s£·ªíÖ{/ûx.ª93\”\Œº',1,'2147483647',NULL,NULL,NULL,NULL,3);
+INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co','null',_binary 'CÔøΩÔøΩ_ÔøΩIS+ÔøΩIÔøΩÔøΩÔøΩ^SÔøΩ4xÔøΩb[\rseÔøΩÔøΩO6SÔøΩÔøΩOÔøΩÔøΩÔøΩ\\ﬂîUgÔøΩPÔøΩ+ÔøΩKdÔøΩÔøΩ8mÔøΩ',1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary 'ÔøΩUÔøΩÔøΩVJÔøΩ!)ÔøΩÔøΩggÔøΩkÔøΩ$~NÔøΩSr!Mz@[^oÔøΩÔøΩUÔøΩÃòRHÔøΩÔøΩÔøΩ4ÔøΩÔøΩ(ÔøΩJÔøΩ%ÔøΩ',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,_binary 'OÔøΩÔøΩÔøΩ^ÔøΩ?ÔøΩÔøΩÔøΩÔøΩÔøΩ0SÔøΩÔøΩÔøΩÔøΩ&ÔøΩÔøΩKÔøΩÔøΩ\ZÔøΩaÔøΩf÷åÔøΩ[Q6ÔøΩ]sÔøΩ·ªíÔøΩ{/ÔøΩx.ÔøΩ93ÔøΩÔøΩÔøΩ',1,'2147483647',NULL,NULL,NULL,NULL,3);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER Mayusculas_Before_Insert
-BEFORE INSERT ON persona
-FOR EACH ROW
-BEGIN
-  SET NEW.NombrePersona = UPPER(NEW.NombrePersona);
-  SET NEW.ApellidoPersona = UPPER(NEW.ApellidoPersona);
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER Mayusculas_Before_Update
-BEFORE UPDATE ON persona
-FOR EACH ROW
-BEGIN
-  SET NEW.NombrePersona = UPPER(NEW.NombrePersona);
-  SET NEW.ApellidoPersona = UPPER(NEW.ApellidoPersona);
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `producto`
@@ -730,10 +688,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `BannerTienda`,
  1 AS `BannerTiendaURL`*/;
 SET character_set_client = @saved_cs_client;
-
---
--- Dumping events for database 'platea'
---
 
 --
 -- Dumping routines for database 'platea'
@@ -1697,4 +1651,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-20  5:05:44
+-- Dump completed on 2024-09-20  5:30:45
