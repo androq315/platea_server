@@ -14,6 +14,9 @@ router.post('/api/persona/', PersonaController.postPersona)
 router.put('/api/persona/:id', PersonaController.putPersona)
 router.patch('/api/persona/:id',  PersonaController.patchPersona)
 
+router.delete('/api/persona/:correo', PersonaController.deletePersona);
+
+
 // Rutas públicas (no requieren autenticación)
 router.post('/api/register/', registerPersona)
 router.post('/api/login/', loginController.login)
