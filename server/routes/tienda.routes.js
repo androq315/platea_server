@@ -16,5 +16,6 @@ router.get('/api/tienda/hogar', TiendaController.obtenerTiendasDeHogar);
 router.get('/api/tienda/deportes', TiendaController.obtenerTiendasDeDeportes);
 router.get('/api/tienda/juguetes', TiendaController.obtenerTiendasDeJuguetes);
 router.get('/api/tienda/belleza', TiendaController.obtenerTiendasDeBelleza);
+router.get('/api/tienda/obtenerPorCategoria/:id', TiendaController.obtenerPorCategoria);
 router.get('/api/tienda/:id', TiendaController.getTienda);
 export default router;

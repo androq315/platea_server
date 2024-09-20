@@ -203,10 +203,9 @@ class Tienda extends Model {
     }
   }
 
-  static async obtenerTiendaporCategoria() {
+  static async obtenerTiendaporCategoria(id) {
     try {
-      const [results] = await sequelize.query('SELECT * FROM Belleza;');
-      return results;
+      return await sequelize.query(`call platea.verTiendaCategoria(${id});`);
     } catch (error) {
       console.error(`Unable to execute ObtenerTiendasDeBelleza: ${error}`);
       throw error;

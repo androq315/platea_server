@@ -86,6 +86,15 @@ class TiendaController {
 			res.status(500).json({ message: 'Error al obtener tiendas de belleza: ' + error });
 		}
 	}
+	static async obtenerPorCategoria(req, res) {
+		try {
+			const id = req.params.id;
+			const tiendas = await Tienda.obtenerTiendaporCategoria(id);
+			res.status(200).json(tiendas);
+		} catch (error) {
+			res.status(500).json({ message: 'Error al obtener tiendas de belleza: ' + error });
+		}
+	}
 	static async putTienda(req, res) {
 		try {
 		  const id = req.params.id;
