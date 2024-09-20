@@ -34,7 +34,7 @@ CREATE TABLE `aprobacion` (
   KEY `FK_Producto_Calificacion` (`IdProductoFK`),
   CONSTRAINT `FK_Persona_Aprobacion` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`),
   CONSTRAINT `FK_Producto_Calificacion` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `aprobacion` (
 
 LOCK TABLES `aprobacion` WRITE;
 /*!40000 ALTER TABLE `aprobacion` DISABLE KEYS */;
-INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'awdwadawd',4.0,'2024-09-12 05:16:51',18,15),(9,'awjkdhkuawd',4.0,'2024-09-12 05:17:30',18,16),(10,'wdadawdawd',5.0,'2024-09-12 05:20:10',18,17),(11,'hola',5.0,'2024-09-13 09:56:20',18,7),(12,'dwadawd',5.0,'2024-09-13 09:56:34',18,31),(13,'dwadawdawd',5.0,'2024-09-13 09:56:59',18,23);
+INSERT INTO `aprobacion` VALUES (3,'hola',0.0,'2024-09-11 22:53:57',17,NULL),(4,'dwadwad',5.0,'2024-09-11 22:55:23',17,NULL),(5,'dw',3.0,'2024-09-11 22:55:28',17,NULL),(6,'dwadwasdaw',4.0,'2024-09-11 23:04:55',17,NULL),(7,'hola',5.0,'2024-09-11 23:07:59',17,NULL),(8,'awdwadawd',4.0,'2024-09-12 05:16:51',18,15),(9,'awjkdhkuawd',4.0,'2024-09-12 05:17:30',18,16),(10,'wdadawdawd',5.0,'2024-09-12 05:20:10',18,17),(11,'hola',5.0,'2024-09-13 09:56:20',18,7),(12,'dwadawd',5.0,'2024-09-13 09:56:34',18,31),(13,'dwadawdawd',5.0,'2024-09-13 09:56:59',18,23),(14,'2weqwdad',5.0,'2024-09-20 02:02:39',20,23),(15,'dwadawd',1.0,'2024-09-20 02:02:45',20,23),(16,'awdawd',2.0,'2024-09-20 02:02:55',20,23);
 /*!40000 ALTER TABLE `aprobacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +116,7 @@ CREATE TABLE `carrito` (
   PRIMARY KEY (`IdCarrito`),
   KEY `FK_Persona_Carrito` (`IdPersonaFK`),
   CONSTRAINT `FK_Persona_Carrito` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-INSERT INTO `carrito` VALUES (17,NULL,'2024-09-08 18:08:58'),(18,17,'2024-09-09 15:52:30');
+INSERT INTO `carrito` VALUES (17,NULL,'2024-09-08 18:08:58'),(18,17,'2024-09-09 15:52:30'),(19,20,'2024-09-20 02:55:41');
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,7 +223,7 @@ CREATE TABLE `detallecarrito` (
   KEY `FK_Carrito_DetalleCarrito` (`IdCarritoFK`),
   CONSTRAINT `FK_Carrito_DetalleCarrito` FOREIGN KEY (`IdCarritoFK`) REFERENCES `carrito` (`IdCarrito`),
   CONSTRAINT `FK_Producto_DetalleCarrito` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,7 +232,7 @@ CREATE TABLE `detallecarrito` (
 
 LOCK TABLES `detallecarrito` WRITE;
 /*!40000 ALTER TABLE `detallecarrito` DISABLE KEYS */;
-INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,3);
+INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,3),(10,19,7,1),(11,19,31,1),(12,19,23,1);
 /*!40000 ALTER TABLE `detallecarrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -513,7 +513,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co','null',_binary 'C¶ä_IS+\ÊI˜\Í\Ôî^S\œ4x\Ëb[\rse\ ÚO6S∏\ÓO∞\ÿ\·\\ﬂîUg\ËP≤+\ÔüKd˙\Î8m∂',1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',3),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary 'êUó\‰VJ\Ï!)¢øggµkô$~NëSr!Mz@[^o\Õ\“U˝ÃòRH\„ÇÑ4ú\Ë(ΩJπ%\‰',1,'2147483647',NULL,NULL,NULL,NULL,3);
+INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co','null',_binary 'C¶ä_IS+\ÊI˜\Í\Ôî^S\œ4x\Ëb[\rse\ ÚO6S∏\ÓO∞\ÿ\·\\ﬂîUg\ËP≤+\ÔüKd˙\Î8m∂',1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary 'êUó\‰VJ\Ï!)¢øggµkô$~NëSr!Mz@[^o\Õ\“U˝ÃòRH\„ÇÑ4ú\Ë(ΩJπ%\‰',1,'2147483647',NULL,NULL,NULL,NULL,2);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1169,6 +1169,39 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `navbar` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `navbar`(in usuario_Id INT)
+BEGIN
+	DECLARE Id INT;
+	DECLARE num INT;
+    
+	SELECT IdCarrito INTO Id
+    FROM carrito
+    WHERE IdPersonaFK = usuario_Id
+    ORDER BY fecha_creacion DESC
+    LIMIT 1;
+
+	SELECT COUNT(*) INTO num
+    FROM detallecarrito dc
+    JOIN carrito c ON c.IdCarrito = dc.IdCarritoFK
+    WHERE c.IdCarrito = Id;
+
+	SELECT FotoPersonaURL ,idRolFK, num from Persona where IdPersona = usuario_Id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ObtenerProductoPedido` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1258,9 +1291,9 @@ BEGIN
 
     -- Selecciona los productos que pertenecen a la misma categor√≠a
     SELECT IdProducto, NombreProducto, DescripcionProducto, StockProducto, PrecioProducto, FotoProducto, FotoProductoURL
-    FROM producto
+    FROM producto 
     WHERE IdCategoriaFK = v_IdCategoria
-      AND IdProducto <> p_IdProducto; -- Excluye el producto original
+      AND IdProducto <> p_IdProducto;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1615,4 +1648,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-19 17:48:16
+-- Dump completed on 2024-09-19 23:09:38

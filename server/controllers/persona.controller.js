@@ -29,6 +29,20 @@ class PersonaController {
 			res.status(500).json({ message: 'Error al obtener la persona: ' + error });
 		}
 	}
+
+	static async Navbar(req, res) {
+		try {
+			const id = req.params.id;
+			const persona = await Persona.Nav(id);
+			if (persona) {
+				res.status(200).json(persona);
+			} else {
+				res.status(404).json({ message: 'Persona no encontrada' });
+			}
+		} catch (error) {
+			res.status(500).json({ message: 'Error al obtener la persona: ' + error });
+		}
+	}
 	static async TiendaPersona(req, res){
 		try	{
 			const id =  req.params.id;
