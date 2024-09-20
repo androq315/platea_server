@@ -177,6 +177,23 @@ class PersonaController {
 			res.status(500).json({ message: 'Error al actualizar el estado de la persona: ' + error });
 		}
 	}
+	static async deletePersona(req, res) {
+		try {
+			const correo = req.params.correo; // Cambia esto si usas un ID diferente
+			const persona = await Persona.findOne({ where: { CorreoPersona: correo } });
+	
+			if (!persona) {
+				return res.status(404).json({ message: 'Persona no encontrada' });
+			}
+	
+			await persona.destroy(); // Elimina la persona de la base de datos
+			res.status(200).json({ message: 'Persona eliminada correctamente' });
+		} catch (error) {
+			res.status(500).json({ message: 'Error al eliminar la persona: ' + error });
+		}
+	}
+	
+
 }
 
 export default PersonaController;
