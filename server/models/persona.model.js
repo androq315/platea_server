@@ -66,6 +66,15 @@ class Persona extends Model {
     return await bcrypt.compare(clave, this.ClavePersona);
   }
 
+  static async Nav(id) {
+    try {
+      const [result] = await sequelize.query(`call platea.navbar(${id});`);
+      return result
+    } catch (error) {
+      console.error(`Unable to find persona by id: ${error}`);
+      throw error;
+    }
+  }
 }
 
 
