@@ -8,6 +8,7 @@ import aprobacionRoutes  from './routes/aprobacion.routes.js';
 import carritoRoutes from  './routes/carrito.routes.js';
 import pedidoRoutes from  './routes/pedido.routes.js';
 import categoriaRoutes  from './routes/categoria.routes.js';
+import passwordRoutes from './routes/password.routes.js';
 
 
 
@@ -31,6 +32,6 @@ app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Usar las rutas de la aplicación
-app.use(personaRoutes, tiendaRoutes, productosRoutes, aprobacionRoutes, carritoRoutes, pedidoRoutes, categoriaRoutes);
+app.use(personaRoutes, tiendaRoutes, productosRoutes, aprobacionRoutes, carritoRoutes, pedidoRoutes, categoriaRoutes, passwordRoutes);
 
 export default app;

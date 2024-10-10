@@ -40,6 +40,16 @@ class Persona extends Model {
     }
   }
 
+  static async updatePassword(id, newPassword) {
+    try {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      return await this.update({ ClavePersona: hashedPassword }, { where: { IdPersona: id } });
+    } catch (error) {
+      console.error(`Unable to update password: ${error}`);
+      throw error;
+    }
+  }
+
   static async TiendaPersona(id) {
     try {
       const tiendas = await sequelize.query(`CALL ObtenerTiendasPorPersona(${id})`);
