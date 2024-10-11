@@ -1,12 +1,15 @@
 // controllers/password.controller.js
 import { Persona } from '../models/persona.model.js';
 import crypto from 'crypto';
+import dotenv from "dotenv";
 import nodemailer from 'nodemailer';
 
+dotenv.config();
 class PasswordController {
   static async requestReset(req, res) {
     const { correo } = req.body;
     const user = await Persona.findOne({ where: { CorreoPersona: correo } });
+
 
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -46,9 +49,9 @@ class PasswordController {
 
     // Aquí deberías verificar el token y encontrar el usuario asociado
     // Suponiendo que el usuario se ha encontrado:
-    const userId = 25; // Reemplaza esto con la lógica real para obtener el ID del usuario
+    const gmail = 'androq315@gmail.com'; 
 
-    await Persona.updatePassword(userId, newPassword);
+    await Persona.updatePassword(gmail, newPassword,process.env.DB_CLAVE);
     res.status(200).json({ message: 'Contraseña actualizada correctamente' });
   }
 }
