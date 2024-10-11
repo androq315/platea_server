@@ -26,11 +26,11 @@ class PasswordController {
     });
 
     const mailOptions = {
-      from: 'platteaonline@gmail.com',
+      from: 'aorostegui2@gmail.com',
       to: correo,
       subject: 'Restablecimiento de Contraseña',
       text: `Para restablecer tu contraseña, haz clic en el siguiente enlace: 
-      http://localhost:4000/reset-password/${token}`
+      http://localhost:/reset-password/${token}`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -46,7 +46,7 @@ class PasswordController {
 
     // Aquí deberías verificar el token y encontrar el usuario asociado
     // Suponiendo que el usuario se ha encontrado:
-    const userId = 25; // Reemplaza esto con la lógica real para obtener el ID del usuario
+    const userId = 24; // Reemplaza esto con la lógica real para obtener el ID del usuario
 
     await Persona.updatePassword(userId, newPassword);
     res.status(200).json({ message: 'Contraseña actualizada correctamente' });
