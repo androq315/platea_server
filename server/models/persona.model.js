@@ -40,10 +40,24 @@ class Persona extends Model {
     }
   }
 
-  static async updatePassword(id, newPassword) {
+  static async updatePassword(Gmail, newPassword ,claveultrasecreta) {
     try {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      return await this.update({ ClavePersona: hashedPassword }, { where: { IdPersona: id } });
+      return await sequelize.query(
+        `CALL UPDATEPASSWORD(
+                    :Gmail,
+                    :hashedPassword,
+                    :claveultrasecreta
+                )`,
+        {
+          replacements: {
+            Gmail: Gmail,
+            hashedPassword: hashedPassword,
+            claveultrasecreta: claveultrasecreta
+          },
+          type: sequelize.QueryTypes.RAW,
+        }
+      );
     } catch (error) {
       console.error(`Unable to update password: ${error}`);
       throw error;
