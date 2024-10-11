@@ -21,20 +21,23 @@ class PasswordController {
 
     // Configurar el envío de correo (ejemplo usando nodemailer)
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'aorostegui2@gmail.com',
-        pass: 'czrv gqzd gmuh rzmm'
-      }
-    });
-
-    const mailOptions = {
-      from: 'aorostegui2@gmail.com',
-      to: correo,
-      subject: 'Restablecimiento de Contraseña',
-      text: `Para restablecer tu contraseña, haz clic en el siguiente enlace: 
-      http://localhost:/reset-password/${token}`
-    };
+        service: 'gmail',
+        auth: {
+          user: 'aorostegui2@gmail.com',
+          pass: 'czrv gqzd gmuh rzmm' // Cambia esto por una variable de entorno
+        }
+      });
+  
+  const mailOptions = {
+    from: 'aorostegui2@gmail.com',
+    to: correo,
+    subject: 'Restablecimiento de Contraseña',
+    html: `
+      <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
+      <a href="http://localhost:3000/cambiarcontra?token=${token}">Restablecer Contraseña</a>
+      <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+    `
+  };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
