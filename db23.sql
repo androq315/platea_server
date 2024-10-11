@@ -17,12 +17,7 @@
 
 --
 -- Table structure for table `aprobacion`
-
-
-drop database if exists platea;
-create database  platea;
-use platea;
--- Table structure for table `aprobacion`
+--
 
 DROP TABLE IF EXISTS `aprobacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -228,7 +223,7 @@ CREATE TABLE `detallecarrito` (
   KEY `FK_Carrito_DetalleCarrito` (`IdCarritoFK`),
   CONSTRAINT `FK_Carrito_DetalleCarrito` FOREIGN KEY (`IdCarritoFK`) REFERENCES `carrito` (`IdCarrito`),
   CONSTRAINT `FK_Producto_DetalleCarrito` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,7 +232,7 @@ CREATE TABLE `detallecarrito` (
 
 LOCK TABLES `detallecarrito` WRITE;
 /*!40000 ALTER TABLE `detallecarrito` DISABLE KEYS */;
-INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,3),(20,19,25,35),(21,19,10,1);
+INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,3);
 /*!40000 ALTER TABLE `detallecarrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -509,23 +504,18 @@ CREATE TABLE `persona` (
   UNIQUE KEY `CorreoPersona` (`CorreoPersona`),
   KEY `FK_Rol_Persona` (`idRolFK`),
   CONSTRAINT `FK_Rol_Persona` FOREIGN KEY (`idRolFK`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `persona`
 -- Dumping data for table `persona`
 --
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co',' ',aes_encrypt('$2b$10$yP9GmqkeTVDazns.qioexukfgN3BoAz61TRGzED6c2l8kBnXFIDnG','bd_secret_key'),1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary 'ÔøΩUÔøΩÔøΩVJÔøΩ!)ÔøΩÔøΩggÔøΩkÔøΩ$~NÔøΩSr!Mz@[^oÔøΩÔøΩUÔøΩÃòRHÔøΩÔøΩÔøΩ4ÔøΩÔøΩ(ÔøΩJÔøΩ%ÔøΩ',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,aes_encrypt('$2b$10$7QlSjD93a9RfPV.kNSfxmeuf3ZEda0cj3dmCFsy5Ivr2Q3rN1B6/y','bd_secret_key'),1,'2147483647',NULL,NULL,NULL,NULL,3);
+INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co',' ',_binary '\Ì\\ëVı\Œs\€-C)\·Wèê3yÉ<ÛöYò≥\\ºéÚŒä]™I(\„\—\ÊÅt∏z\ \ﬁ2©˚ªÙEîòS\ﬁ¡?ü\«',1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary 'ÔøΩUÔøΩÔøΩVJÔøΩ!)ÔøΩÔøΩggÔøΩkÔøΩ$~NÔøΩSr!Mz@[^oÔøΩÔøΩUÔøΩÃòRHÔøΩÔøΩÔøΩ4ÔøΩÔøΩ(ÔøΩJÔøΩ%ÔøΩ',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,_binary 'O\ﬁ÷Ø≥0\ËDåêUŒ∏	n[pV¢\”o7ˆ\ﬂ8[\…\ËU\"NvOMõ.+¿\Ó∫T\rùÇì-pı[\‚¶\◊œ°\Ë=åø\“\Á',1,'2147483647',NULL,NULL,NULL,NULL,3),(23,'Andres','Suarez','androq315@gmail.com',NULL,_binary 'v\ﬂ˚√©båá∞\ÊÆŸ¥ü’µ¡t*&.TÇÕâ8∫næºgﬂ´rªaõbk\ \ﬁH`Çe+{ÒÚ^\·ßÒ\¬c\‘\Z',1,'2147483647',NULL,NULL,NULL,NULL,3);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `producto`
---
 
 --
 -- Table structure for table `producto`
@@ -698,6 +688,10 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `BannerTienda`,
  1 AS `BannerTiendaURL`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping events for database 'platea'
+--
 
 --
 -- Dumping routines for database 'platea'
@@ -1194,11 +1188,11 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductosCarrito`(IN usuario_Id INT)
 BEGIN
@@ -1221,7 +1215,7 @@ BEGIN
     END IF;
 
     -- Lista los productos del carrito
-    SELECT dc.IdDetalleCarrito, p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto ,p.StockProducto, dc.cantidad, t.NombreTienda
+    SELECT dc.IdDetalleCarrito, p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , dc.cantidad, t.NombreTienda
     FROM detallecarrito dc
     JOIN producto p ON dc.IdProductoFK = p.IdProducto
     JOIN tienda t ON t.IdTienda = p.IdTiendaFK
@@ -1384,12 +1378,15 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATEPASSWORD`(IN __Gmail INT, in clavenueva blob , in claveultrasecreta VArchar(250))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATEPASSWORD`(
+    IN __Gmail VARCHAR(250), 
+    IN clavenueva VARCHAR(250), 
+    IN claveultrasecreta VARCHAR(250)
+)
 BEGIN
-UPDATE persona
-SET ClavePersona = AES_ENCRYPT(clavenueva, claveultrasecreta)
-WHERE CorreoPersona¬†=¬†__Gmail;
-
+    UPDATE persona
+    SET ClavePersona = AES_ENCRYPT(clavenueva, claveultrasecreta)
+    WHERE CorreoPersona = __Gmail;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1683,4 +1680,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-10 21:22:33
+-- Dump completed on 2024-10-11  1:45:44

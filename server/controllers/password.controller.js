@@ -3,7 +3,7 @@ import { Persona } from '../models/persona.model.js';
 import crypto from 'crypto';
 import dotenv from "dotenv";
 import nodemailer from 'nodemailer';
-
+import jwt from "jsonwebtoken";
 dotenv.config();
 class PasswordController {
   static async requestReset(req, res) {
@@ -16,9 +16,14 @@ class PasswordController {
     }
 
     // Generar un token único
-    const token = crypto.randomBytes(32).toString('hex');
     // Aquí deberías guardar el token en la base de datos asociado al usuario
-
+    const token = jwt.sign(
+      { 
+          Correo: correo// Incluyendo el rol en el token
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+  );
     // Configurar el envío de correo (ejemplo usando nodemailer)
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -34,7 +39,7 @@ class PasswordController {
     subject: 'Restablecimiento de Contraseña',
     html: `
       <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
-      <a href="http://localhost:3000/cambiarcontra?token=${token}">Restablecer Contraseña</a>
+      <a href="http://localhost:3000/cambiarcontra/${token}">Restablecer Contraseña</a>
       <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
     `
   };
@@ -48,11 +53,7 @@ class PasswordController {
   }
 
   static async resetPassword(req, res) {
-    const { token, newPassword } = req.body;
-
-    // Aquí deberías verificar el token y encontrar el usuario asociado
-    // Suponiendo que el usuario se ha encontrado:
-    const gmail = 'androq315@gmail.com'; 
+    const { gmail, newPassword } = req.body;
 
     await Persona.updatePassword(gmail, newPassword,process.env.DB_CLAVE);
     res.status(200).json({ message: 'Contraseña actualizada correctamente' });
