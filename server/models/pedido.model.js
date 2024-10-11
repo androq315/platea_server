@@ -11,7 +11,6 @@ class Pedido extends Model {
     } = pedido;
 
     try {
-      // Llamar al procedimiento almacenado para crear el pedido
       const resultSet = await sequelize.query(
         `CALL CrearPedido(
                     :IdPersonaFK,
