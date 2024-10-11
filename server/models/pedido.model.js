@@ -92,6 +92,17 @@ class Pedido extends Model {
       throw error;
     }
   }
+
+
+  static async GetPedidosPersona(id) {
+    try {
+      const pedidoFinal = await sequelize.query(`CALL platea.pedidopersona(${id})`);
+      return pedidoFinal
+    } catch (error) {
+      console.error(`Unable to create pedidoProducto: ${error}`);
+      throw error;
+    }
+  }
   static async GetPedido(id) {
     try {
       const pedidoFinal = await sequelize.query(`CALL platea.VerPedido(${id})`);

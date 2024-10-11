@@ -36,10 +36,29 @@ class PedidoController {
 			res.status(500).json({ message: 'Error al obtener tiendas de electrodomésticos: ' + error });
 		}
 	}
+
+  static async GetPedidoPersona(req, res) {
+		try {
+      const id = req.params.id;
+			const pedido = await Pedido.GetPedidosPersona(id);
+			res.status(200).json(pedido);
+		} catch (error) {
+			res.status(500).json({ message: 'Error al obtener tiendas de electrodomésticos: ' + error });
+		}
+	}
+
+  static async GetPedidoPersona(req, res) {
+		try {
+      const id = req.params.id;
+			const pedido = await Pedido.GetPedidosPersona(id);
+			res.status(200).json(pedido);
+		} catch (error) {
+			res.status(500).json({ message: 'Error al obtener tiendas de electrodomésticos: ' + error });
+		}
+	}
+
   static async ConfirmarCompra(req, res) {
     try {
-      
-
       await Pedido.actualizarPrecio(req.body.Total,req.body.IdPedido)
       await Pedido.StockProductoPedido(req.body.IdPedido)
       await Pedido.VaciarCarrito(req.body.IdPersona)
