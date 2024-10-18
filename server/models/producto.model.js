@@ -56,16 +56,19 @@ class Producto extends Model {
         }
     }
 
-    // Método para eliminar un producto
     static async deleteProducto(id) {
         try {
             const producto = await this.findByPk(id);
-            return producto.destroy();
+            if (!producto) {
+                throw new Error('Producto no encontrado');
+            }
+            return await producto.destroy(); // Elimina el producto
         } catch (error) {
             console.error(`Unable to delete producto: ${error}`);
             throw error;
         }
     }
+    
     static async ProductosTienda(id) {
         try {
             const tiendas = await sequelize.query(`CALL ObtenerProductosTienda(${id})`);
