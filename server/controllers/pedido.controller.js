@@ -60,7 +60,14 @@ class PedidoController {
   static async ConfirmarCompra(req, res) {
     try {
       await Pedido.actualizarPrecio(req.body.Total,req.body.IdPedido)
-      await Pedido.StockProductoPedido(req.body.IdPedido)
+      const productos = await Pedido.GetProductosPedido(req.body.IdPedido);
+
+      productos.forEach(producto => {
+        const total =  producto.StockProducto - producto.cantidad;
+
+       Pedido.StockProductoPedido(producto.IdProducto,total)
+      });
+      
       await Pedido.VaciarCarrito(req.body.IdPersona)
       res.status(200).json({ message: 'compra creada correctamente' });
     } catch (error) {

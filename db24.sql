@@ -15,6 +15,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+drop database if exists platea;
+create database  platea;
+use platea;
+-- Table structure for table `aprobacion`
+--
 --
 -- Table structure for table `aprobacion`
 --
@@ -33,7 +38,7 @@ CREATE TABLE `aprobacion` (
   KEY `FK_Persona_Aprobacion` (`IdPersonaFK`),
   KEY `FK_Producto_Calificacion` (`IdProductoFK`),
   CONSTRAINT `FK_Persona_Aprobacion` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`),
-  CONSTRAINT `FK_Producto_Calificacion` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
+  CONSTRAINT `FK_Producto_Calificacion` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -155,6 +160,31 @@ INSERT INTO `categoria` VALUES (1,'Moda','http://localhost:4000/uploads/img/cate
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ciudades`
+--
+
+DROP TABLE IF EXISTS `ciudades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ciudades` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `departamento` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ciudades`
+--
+
+LOCK TABLES `ciudades` WRITE;
+/*!40000 ALTER TABLE `ciudades` DISABLE KEYS */;
+INSERT INTO `ciudades` VALUES (1,'Bogotá','Bogotá D.C.'),(2,'Medellín','Antioquia'),(3,'Cali','Valle del Cauca'),(4,'Barranquilla','Atlántico'),(5,'Cartagena','Bolívar'),(6,'Bucaramanga','Santander'),(7,'Cúcuta','Norte de Santander'),(8,'Santa Marta','Magdalena'),(9,'Manizales','Caldas'),(10,'Pereira','Risaralda'),(11,'Villavicencio','Meta'),(12,'Montería','Córdoba'),(13,'Ibagué','Tolima'),(14,'Pasto','Nariño'),(15,'Popayán','Cauca'),(16,'Quibdó','Chocó');
+/*!40000 ALTER TABLE `ciudades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cliente`
 --
 
@@ -222,8 +252,8 @@ CREATE TABLE `detallecarrito` (
   KEY `FK_Producto_DetalleCarrito` (`IdProductoFK`),
   KEY `FK_Carrito_DetalleCarrito` (`IdCarritoFK`),
   CONSTRAINT `FK_Carrito_DetalleCarrito` FOREIGN KEY (`IdCarritoFK`) REFERENCES `carrito` (`IdCarrito`),
-  CONSTRAINT `FK_Producto_DetalleCarrito` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK_Producto_DetalleCarrito` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,7 +262,7 @@ CREATE TABLE `detallecarrito` (
 
 LOCK TABLES `detallecarrito` WRITE;
 /*!40000 ALTER TABLE `detallecarrito` DISABLE KEYS */;
-INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,3);
+INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,3),(38,19,36,1);
 /*!40000 ALTER TABLE `detallecarrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,6 +294,30 @@ CREATE TABLE `detallepago` (
 LOCK TABLES `detallepago` WRITE;
 /*!40000 ALTER TABLE `detallepago` DISABLE KEYS */;
 /*!40000 ALTER TABLE `detallepago` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `direccion`
+--
+
+DROP TABLE IF EXISTS `direccion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `direccion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Direccion` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `direccion`
+--
+
+LOCK TABLES `direccion` WRITE;
+/*!40000 ALTER TABLE `direccion` DISABLE KEYS */;
+INSERT INTO `direccion` VALUES (1,'Carrera 88a'),(2,''),(3,'Cra 2 #79-18 sur'),(4,''),(5,'Cra 2 #79-18 sur'),(6,'Cra 2 #79-18 sur'),(7,'Cra 2 #79-18 sur'),(8,'Cra 2 #79-18 sur'),(9,'Cra 2 #79-18 sur'),(10,'Cra 2 #79-18 sur'),(11,'Cra 2 #79-18 sur'),(12,'Cra 2 #79-18 sur'),(13,'Cra 2 #79-18 sur'),(14,'Cra 2 #79-18 sur');
+/*!40000 ALTER TABLE `direccion` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -430,8 +484,8 @@ DROP TABLE IF EXISTS `pedido`;
 CREATE TABLE `pedido` (
   `IdPedido` int(11) NOT NULL AUTO_INCREMENT,
   `IdPersonaFK` int(11) NOT NULL,
-  `Direccion` varchar(50) DEFAULT NULL,
-  `Ciudad` varchar(50) DEFAULT NULL,
+  `IdDireccionFK` int(11) DEFAULT NULL,
+  `IdCiudadFK` int(11) DEFAULT NULL,
   `FechaPedido` datetime DEFAULT current_timestamp(),
   `EstadoPedido` enum('Pendiente','Enviado','Entregado','Cancelado','En Proceso') DEFAULT 'Pendiente',
   `Total` decimal(10,2) NOT NULL,
@@ -439,8 +493,12 @@ CREATE TABLE `pedido` (
   `FechaEntrega` datetime DEFAULT NULL,
   PRIMARY KEY (`IdPedido`),
   KEY `IdPersonaFK` (`IdPersonaFK`),
-  CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `pedido_ibfk_2` (`IdDireccionFK`),
+  KEY `pedido_ibfk_3` (`IdCiudadFK`),
+  CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`) ON DELETE CASCADE,
+  CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`IdDireccionFK`) REFERENCES `direccion` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `pedido_ibfk_3` FOREIGN KEY (`IdCiudadFK`) REFERENCES `ciudades` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -449,6 +507,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+INSERT INTO `pedido` VALUES (1,20,1,2,'2024-10-17 22:02:06','Pendiente',0.00,NULL,NULL),(3,20,3,4,'2024-10-18 03:08:07','Pendiente',0.00,NULL,NULL),(7,20,7,1,'2024-10-18 04:46:38','Pendiente',1375000.00,NULL,NULL),(8,20,8,3,'2024-10-18 06:16:34','Pendiente',25000.00,NULL,NULL),(9,20,9,2,'2024-10-18 06:34:08','Pendiente',0.00,NULL,NULL),(10,20,10,2,'2024-10-18 06:50:36','Pendiente',2160000.00,NULL,NULL),(11,20,11,3,'2024-10-18 07:33:33','Pendiente',75000.00,NULL,NULL),(12,20,12,2,'2024-10-18 07:37:59','Pendiente',75000.00,NULL,NULL),(13,20,13,2,'2024-10-18 07:53:01','Pendiente',85000.00,NULL,NULL),(14,20,14,4,'2024-10-18 08:40:24','Pendiente',2605000.00,NULL,NULL);
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -476,6 +535,7 @@ CREATE TABLE `pedidoproducto` (
 
 LOCK TABLES `pedidoproducto` WRITE;
 /*!40000 ALTER TABLE `pedidoproducto` DISABLE KEYS */;
+INSERT INTO `pedidoproducto` VALUES (7,24,45),(7,32,1),(8,24,1),(9,26,67),(10,26,67),(10,33,1),(11,24,1),(11,25,1),(12,24,1),(12,25,1),(13,24,1),(13,26,1),(14,32,10),(14,36,1);
 /*!40000 ALTER TABLE `pedidoproducto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -504,18 +564,18 @@ CREATE TABLE `persona` (
   UNIQUE KEY `CorreoPersona` (`CorreoPersona`),
   KEY `FK_Rol_Persona` (`idRolFK`),
   CONSTRAINT `FK_Rol_Persona` FOREIGN KEY (`idRolFK`) REFERENCES `rol` (`idRol`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `persona`
 --
 
-LOCK TABLES `persona` WRITE;
-/*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuellAAA@info.co',' ',_binary '\�\\�V�\�s\�-C)\�W��3y�<��Y��\\���Ί]�I(\�\�\�t�z\�\�2����E��S\��?�\�',1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary '�U��VJ�!)��gg�k�$~N�Sr!Mz@[^o��U�̘RH���4��(�J�%�',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,_binary 'O\�֯�0\�D��Uθ	n[pV�\�o7�\�8[\�\�U\"NvOM�.+�\�T\r���-p�[\�\�ϡ\�=��\�\�',1,'2147483647',NULL,NULL,NULL,NULL,3),(23,'Andres','Suarez','androq315@gmail.com',NULL,_binary 'v\��éb���\�ٴ�յ��t*&.T�͉8�n��g߫r�a�bk\�\�H`�e+{��^\��\�c\�\Z',1,'2147483647',NULL,NULL,NULL,NULL,3);
-/*!40000 ALTER TABLE `persona` ENABLE KEYS */;
-UNLOCK TABLES;
+LOCK TABLES persona WRITE;
+/*!40000 ALTER TABLE persona DISABLE KEYS */;
+INSERT INTO persona VALUES (20,'ANDRES','SUAREZ','anuelaaa549@gmail.com',' ',aes_encrypt('$2b$10$yP9GmqkeTVDazns.qioexukfgN3BoAz61TRGzED6c2l8kBnXFIDnG','bd_secret_key'),1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary ' U  VJ !)  gg k $~N Sr!Mz@[^o  U ̘RH   4  ( J % ',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,aes_encrypt('$2b$10$7QlSjD93a9RfPV.kNSfxmeuf3ZEda0cj3dmCFsy5Ivr2Q3rN1B6/y','bd_secret_key'),1,'2147483647',NULL,NULL,NULL,NULL,3);
+/*!40000 ALTER TABLE persona ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `producto`
@@ -548,9 +608,35 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (6,'rey silente','¡Presentamos al Rey Silente, la figura suprema de los Necrones en Warhammer 40K! Este impresionante modelo captura a Szarekh en todo su poder, sentado en su trono y flanqueado por sus fieles Triarcas. Perfecto para cualquier coleccionista o jugador que desee comandar la galaxia.\r\n',1,750000,'uploads/img/producto/rey_1725009352229.jpg','http://localhost:4000/uploads/img/producto/rey_1725009352229.jpg',5,30),(7,'caballero del caos','¡Conoce al Caballero del Caos de Warhammer 40K! Este imponente modelo representa a un titánico Caballero al servicio de las fuerzas del Caos, con detalles siniestros y una apariencia amenazante que destaca en cualquier ejército. Equipado con armas devastadoras y adornado con iconografía caótica, es una pieza clave para los seguidores del Caos que buscan dominar el campo de batalla.\r\n',11,3500000,'uploads/img/producto/caballero_1725009396947.jpg','http://localhost:4000/uploads/img/producto/caballero_1725009396947.jpg',5,30),(8,'ultra marine','¡Presentamos al Ultramarine! Este modelo de Warhammer 40K captura la esencia de los famosos Marines Espaciales de los Ultramarines, conocidos por su disciplina y valentía. Perfecto para completar tu ejército o para cualquier colección, este soldado está detallado con el icónico esquema de color azul y el símbolo de los Ultramarines.\r\n\r\n',1,50000,'uploads/img/producto/marine_1725009458032.jpg','http://localhost:4000/uploads/img/producto/marine_1725009458032.jpg',5,30),(9,'fulgrim ','¡Conoce a Fulgrim, Príncipe Demonio de Warhammer 40K! Este impresionante modelo representa a Fulgrim, el Primarca caído de los Emperadores Hijos, transformado en un temible Príncipe Demonio del Caos. Con su diseño detallado y su aura de decadencia, es una figura central para cualquier ejército del Caos y un desafío formidable en el campo de batalla.\r\n',12,450000,'uploads/img/producto/fulgrim_1725009514488.jpg','http://localhost:4000/uploads/img/producto/fulgrim_1725009514488.jpg',5,30),(10,'rylanor','¡Conoce a Rylanor, el Despertado, de los Hijos del Emperador! Este modelo representa a uno de los legendarios Guerreros de los Emperadores Hijos, despertado de su largo letargo para unirse a la batalla. Con una estética impresionante y una historia rica en el lore de Warhammer 40K, Rylanor encarna la fuerza y el honor de su legión',122,120000,'uploads/img/producto/raylanor_1725009551908.jpg','http://localhost:4000/uploads/img/producto/raylanor_1725009551908.jpg',5,30),(11,'Lion ElJonson','¡Descubre a Lion ElJonson, el Primarca de los Ángeles Oscuros en Warhammer 40K! Este modelo representa al legendario líder de los Ángeles Oscuros, conocido por su habilidad en la batalla y su presencia imponente. Con su armadura detallada y su espada de energía, Lion ElJonson es una figura clave para cualquier ejército de los Ángeles Oscuros y un símbolo de la fuerza de su legión.\r\n',1,120000,'uploads/img/producto/lion_1725009606156.jpg','http://localhost:4000/uploads/img/producto/lion_1725009606156.jpg',5,30),(12,'Trazin el Infinito','¡Descubre a Trazin el Infinito, el inmortal Señor de la Colección de los Necrones en Warhammer 40K! Este modelo captura al enigmático y poderoso Necron, conocido por su obsesión con la recolección de artefactos y secretos del universo. Equipado con su icónica vara y una armadura intricada, Trazin el Infinito es una pieza clave para cualquier ejército Necron y un símbolo de su misterio y poder interminable.\r\n',4,150000,'uploads/img/producto/trazin_1725009643824.jpg','http://localhost:4000/uploads/img/producto/trazin_1725009643824.jpg',5,30),(13,'Ghazghkull Mag Uruk Thraka','¡Conoce a Ghazghkull Mag Uruk Thraka, el legendario Warboss Orko en Warhammer 40K! Este modelo representa al temido líder de los Orkos, conocido por su increíble poder y habilidad para liderar a sus huestes en la batalla. Con su impresionante armadura de guerra, su icónico kustom mega-blasta y su presencia imponente, Ghazghkull es un pilar central en cualquier ejército Orko y una figura clave en la lucha por la dominación del universo.\r\n',16,180000,'uploads/img/producto/mag_1725009686389.jpg','http://localhost:4000/uploads/img/producto/mag_1725009686389.jpg',5,30),(14,'Blazer Clásico','¡Eleva tu estilo con nuestro Blazer Clásico! Este blazer es la combinación perfecta de elegancia y versatilidad, ideal para cualquier ocasión, ya sea en el trabajo o en eventos formales. Confeccionado en tela de alta calidad, presenta un corte impecable, solapas de muesca y un ajuste cómodo. Disponible en una variedad de colores sofisticados, es una prenda esencial para el guardarropa de cualquier persona que busque un toque de distinción y profesionalismo en su vestimenta.\r\n',145,220000,'uploads/img/producto/blazer_1725009740549.jpg','http://localhost:4000/uploads/img/producto/blazer_1725009740549.jpg',1,27),(15,'Gaban Elegante','¡Mantente abrigado y a la moda con nuestro Gaban Elegante! Este gaban es perfecto para climas fríos, ofreciendo un diseño sofisticado y funcional. Confeccionado en tejido de alta calidad, cuenta con un corte moderno, cuello alto y botones detallados que aportan un toque de distinción. Ideal para ocasiones formales o para añadir un toque elegante a tu atuendo diario, este gaban es una pieza clave para tu armario durante la temporada de frío.\r\n',56,320000,'uploads/img/producto/gaban_1725009778264.jpg','http://localhost:4000/uploads/img/producto/gaban_1725009778264.jpg',1,27),(16,'Abrigo de Lana Refinado','¡Añade un toque de sofisticación a tu guardarropa con nuestro Abrigo de Lana Refinado! Confeccionado en lana de alta calidad, este abrigo ofrece una calidez excepcional y un ajuste elegante. Su diseño clásico incluye un corte entallado, botones forrados y un cuello de solapa, ideal para combinar con cualquier atuendo formal o casual. Perfecto para enfrentar el frío con estilo, este abrigo es una inversión en elegancia y confort durante la temporada de invierno.\r\n',12,450000,'uploads/img/producto/abrigo_1725009814020.jpg','http://localhost:4000/uploads/img/producto/abrigo_1725009814020.jpg',1,27),(17,'Gaban Clásico para Hombre','¡Mantén el estilo y el confort con nuestro Gaban Clásico para Hombre! Este gaban, confeccionado en un tejido de lana premium, ofrece una combinación perfecta de elegancia y funcionalidad. Con un corte ajustado y sofisticado, presenta un cuello alto y botones elegantes que brindan una protección adicional contra el frío. Ideal para ocasiones formales o para añadir un toque refinado a tu atuendo diario, este gaban es esencial para cualquier armario masculino durante la temporada de frío.\r\n',78,350000,'uploads/img/producto/gaban clasico_1725009859808.jpg','http://localhost:4000/uploads/img/producto/gaban clasico_1725009859808.jpg',1,27),(18,'Chaqueta Corta de Viento','¡Prepárate para cualquier aventura con nuestra Chaqueta Corta de Viento! Diseñada para ofrecer protección contra el viento y la lluvia ligera, esta chaqueta está confeccionada en un material ligero y resistente al agua. Su corte moderno y ajustado proporciona un estilo dinámico, mientras que la capucha ajustable y los bolsillos funcionales añaden comodidad y practicidad. Ideal para actividades al aire libre o para un look casual en días ventosos, esta chaqueta es tu compañera perfecta para el clima cambiante.\r\n',12,180000,'uploads/img/producto/corta_1725009898515.jpg','http://localhost:4000/uploads/img/producto/corta_1725009898515.jpg',1,27),(19,'Ropa Infantil Divertida y Cómoda','¡Haz que cada día sea una aventura con nuestra Ropa Infantil Divertida y Cómoda! Nuestra colección está diseñada pensando en la comodidad y el estilo de los más pequeños. Ofrecemos una variedad de prendas, desde coloridos conjuntos y camisetas con estampados alegres hasta pantalones y chaquetas resistentes y prácticos. Con tejidos suaves y duraderos, nuestras prendas garantizan libertad de movimiento y facilidad de uso para que los niños puedan jugar y explorar con total libertad. Perfecta para cualquier ocasión, nuestra ropa infantil combina funcionalidad con diversión.\r\n',1,80000,'uploads/img/producto/niÃ±o_1725010133032.jpg','http://localhost:4000/uploads/img/producto/niÃ±o_1725010133032.jpg',1,27),(20,'Blazer Slim para Hombre','¡Añade un toque de sofisticación a tu vestuario con nuestro Blazer Slim para Hombre! Este blazer, con un corte ajustado y moderno, está diseñado para realzar tu figura y proporcionar un look elegante y contemporáneo. Confeccionado en tejido de alta calidad, ofrece un acabado impecable y un ajuste cómodo. Ideal para eventos formales, reuniones de trabajo o una salida nocturna, su diseño versátil se adapta a cualquier ocasión. Disponible en una gama de colores clásicos, este blazer es una pieza esencial para cualquier armario masculino.\r\n',56,250000,'uploads/img/producto/slim_1725010173632.jpg','http://localhost:4000/uploads/img/producto/slim_1725010173632.jpg',1,27),(21,'Saco de Vestir para Hombre La Martina','¡Eleva tu estilo con el Saco de Vestir para Hombre La Martina! Con un diseño sofisticado y un corte impecable, este saco de vestir está confeccionado en tejidos de alta calidad que garantizan un ajuste cómodo y elegante. Ideal para ocasiones formales y eventos especiales, su diseño clásico incluye solapas de muesca y detalles refinados que realzan cualquier atuendo. Disponible en colores neutros y versátiles, es la elección perfecta para el hombre moderno que busca combinar estilo y distinción en cada ocasión.\r\n\r\n',21,320000,'uploads/img/producto/saco_1725010236615.jpg','http://localhost:4000/uploads/img/producto/saco_1725010236615.jpg',1,27),(22,'Hamburguesa Artesanal','¡Deléitate con nuestra Hamburguesa Artesanal! Preparada con ingredientes frescos y de alta calidad, esta hamburguesa ofrece un sabor auténtico y una textura jugosa que resalta la artesanía detrás de cada bocado. Con una carne de res seleccionada, cocida a la perfección y acompañada de pan artesanal, vegetales frescos y salsas caseras, cada hamburguesa está diseñada para brindar una experiencia gastronómica única. Personaliza tu hamburguesa con una variedad de ingredientes adicionales y disfruta de un plato que celebra la calidad y el sabor.\r\n\r\n',50,150000,'uploads/img/producto/comer_1725010333957.jpg','http://localhost:4000/uploads/img/producto/comer_1725010333957.jpg',9,28),(23,' Perro Caliente Clásico','¡Disfruta del sabor inconfundible de nuestro Perro Caliente Clásico! Preparado con una salchicha jugosa y cocida a la perfección, este perro caliente está servido en un pan suave y fresco. Complementado con tus condimentos favoritos, como mostaza, ketchup, cebolla crujiente y relish, es el bocadillo perfecto para cualquier ocasión. Ideal para un almuerzo rápido o una merienda informal, nuestro perro caliente combina simplicidad y sabor en cada bocado.\r\n',34,45000,'uploads/img/producto/perroc_1725010385955.jpg','http://localhost:4000/uploads/img/producto/perroc_1725010385955.jpg',9,28),(24,'Donas Gourmet','¡Déjate seducir por nuestras Donas Gourmet! Elaboradas con recetas artesanales, estas donas ofrecen una experiencia dulce y deliciosa en cada bocado. Disponibles en una variedad de sabores, desde glaseado clásico hasta combinaciones innovadoras, cada dona está hecha con ingredientes frescos y de alta calidad. Perfectas para acompañar tu café matutino o como un capricho dulce durante el día, nuestras donas son el toque perfecto para cualquier ocasión.',45,25000,'uploads/img/producto/donas_1725010490693.jpg','http://localhost:4000/uploads/img/producto/donas_1725010490693.jpg',9,28),(25,'Empanadas Caseras','¡Saborea nuestras Empanadas Caseras, el auténtico sabor en cada bocado! Hechas con una masa crujiente y dorada, estas empanadas están rellenas con ingredientes frescos y de alta calidad, como carne jugosa, pollo tierno o una mezcla deliciosa de vegetales y quesos. Perfectas para un aperitivo, un almuerzo rápido o una cena informal, nuestras empanadas ofrecen un equilibrio perfecto entre sabor y textura. Ven y disfruta de este clásico delicioso y reconfortante.\r\n',35,20000,'uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 01_1725010536040.jpg','http://localhost:4000/uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 01_1725010536040.jpg',9,28),(26,' Salchipapa Sabrosa','¡Descubre nuestra Salchipapa Sabrosa, una combinación irresistible de papas fritas crujientes y salchichas jugosas! Cada porción presenta papas recién fritas y doradas, acompañadas de salchichas de alta calidad, cocidas a la perfección. Puedes personalizar tu salchipapa con una variedad de salsas y condimentos, como ketchup, mayonesa, mostaza o salsa picante, para un toque adicional de sabor. Ideal para compartir con amigos o disfrutar como una comida rápida y deliciosa, nuestra salchipapa es un clásico que siempre satisface.\r\n',67,30000,'uploads/img/producto/salchipapa_1725010594259.jpg','http://localhost:4000/uploads/img/producto/salchipapa_1725010594259.jpg',9,28),(29,'Poppy, La Perrita Que Mueve La Cola','\r\n¡Conoce a Poppy, La Perrita Que Mueve La Cola, el juguete perfecto para tu amigo peludo! Diseñada para proporcionar horas de diversión, Poppy tiene un mecanismo interno que hace que su cola se mueva y suena con diferentes melodías, manteniendo a tu mascota entretenida y activa. Hecha de materiales resistentes y seguros, este juguete es ideal para fomentar el ejercicio y el juego interactivo. ¡Asegúrate de que tu mascota tenga su propia Poppy para una experiencia de juego divertida y estimulante!\r\n',13,50000,'uploads/img/producto/pero_1725010815942.jpg','http://localhost:4000/uploads/img/producto/pero_1725010815942.jpg',5,29),(31,'Muñeca Baby Alive Bebidas de Frutas Manzana 30 cm','¡Descubre la magia de la Muñeca Baby Alive Bebidas de Frutas Manzana de 30 cm! Esta encantadora muñeca está lista para jugar y simular la hora del té con su botella de jugo de manzana y su funcionalidad de bebida. Con una apariencia realista y una actitud adorable, Baby Alive puede \"beber\" su jugo y tener una experiencia interactiva que encantará a los más pequeños. Perfecta para juegos de simulación y cuidado, esta muñeca fomenta la imaginación y el juego creativo.\r\n',1,85000,'uploads/img/producto/MUÃECA_1725011017473.jpg','http://localhost:4000/uploads/img/producto/MUÃECA_1725011017473.jpg',5,29),(32,'Set City Ultimate Garage','¡Prepárate para una aventura emocionante con el Set City Ultimate Garage! Este impresionante set de garaje de la ciudad ofrece un mundo de diversión con múltiples niveles, estaciones de servicio, y una pista de carreras increíble. Equipado con rampas, ascensores y varios accesorios, el Ultimate Garage permite a los niños crear sus propias historias de acción y aventura mientras juegan con sus coches y camiones favoritos. Ideal para fomentar la creatividad y el juego interactivo, este set es perfecto para pequeños entusiastas de los vehículos y constructores en ciernes.\r\n',24,250000,'uploads/img/producto/CARROS_1725011075634.jpg','http://localhost:4000/uploads/img/producto/CARROS_1725011075634.jpg',5,29),(33,'Juego Laboratorio de Ciencia - Clementoni','¡Explora el fascinante mundo de la ciencia con el Juego Laboratorio de Ciencia - Clementoni! Este completo set ofrece a los jóvenes científicos una variedad de experimentos y actividades educativas que estimulan la curiosidad y el aprendizaje. Incluye herramientas y materiales seguros para realizar experimentos como mezclas químicas, reacciones y proyectos divertidos. Con instrucciones claras y fáciles de seguir, el laboratorio permite a los niños desarrollar habilidades científicas mientras se divierten descubriendo los secretos de la ciencia. Ideal para fomentar el interés en la investigación y la experimentación desde una edad temprana.\r\n',56,120000,'uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 02_1725011157776.jpg','http://localhost:4000/uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 02_1725011157776.jpg',5,29),(34,' Figura Spawn Mortal Kombat 11 Articulada de 18 cm','¡Añade a tu colección la increíble Figura Spawn Mortal Kombat 11! Esta figura articulada de 18 cm captura la esencia del icónico personaje de Mortal Kombat con un nivel impresionante de detalle. Diseñada con múltiples puntos de articulación, permite poseer y exhibir a Spawn en una variedad de posiciones dinámicas. Incluye accesorios exclusivos que realzan su apariencia, como su capa característica y armas emblemáticas, para una experiencia de colección completa. Perfecta para fanáticos y coleccionistas de Mortal Kombat, esta figura es una pieza imprescindible para cualquier estante de figuras.\r\n',7,150000,'uploads/img/producto/FIGUA_1725011242330.jpg','http://localhost:4000/uploads/img/producto/FIGUA_1725011242330.jpg',5,29),(35,' Star Wars The Child Baby Yoda The Mandalorian con','¡Sumérgete en el universo de Star Wars con la adorable figura de Baby Yoda de The Mandalorian! Este detallado juguete de 12 pulgadas captura la ternura y el encanto del icónico personaje con una alta calidad de acabado. Incluye 4 accesorios exclusivos que permiten recrear momentos memorables de la serie, como su manta y su cúpula de transporte. Con una construcción robusta y detalles precisos, esta figura es perfecta para coleccionistas y fanáticos de todas las edades. ¡No te pierdas la oportunidad de tener a este pequeño y querido personaje en tu colección!\r\n',456,120000,'uploads/img/producto/BABY_1725011334387.jpg','http://localhost:4000/uploads/img/producto/BABY_1725011334387.jpg',5,29),(36,'Figura de Acción Buzz Lightyear | Soriana','\r\n¡Haz que la aventura despegue con la Figura de Acción Buzz Lightyear! Basada en el querido personaje de Toy Story, esta figura de acción presenta a Buzz Lightyear en toda su gloria espacial con detalles auténticos y accesorios interactivos. Con una altura aproximada de 15 cm, Buzz está equipado con alas extensibles, un casco removible y una variedad de articulaciones que permiten múltiples poses y movimientos. Ideal para recrear emocionantes escenas del espacio o para exhibir en tu colección, esta figura captura la esencia del intrépido guardián estelar. Perfecta para fans de todas las edades.\r\n',1,75000,'uploads/img/producto/BUZZ_1725011717323.jpg','http://localhost:4000/uploads/img/producto/BUZZ_1725011717323.jpg',5,29);
+INSERT INTO `producto` VALUES (6,'rey silente','¡Presentamos al Rey Silente, la figura suprema de los Necrones en Warhammer 40K! Este impresionante modelo captura a Szarekh en todo su poder, sentado en su trono y flanqueado por sus fieles Triarcas. Perfecto para cualquier coleccionista o jugador que desee comandar la galaxia.\r\n',1,750000,'uploads/img/producto/rey_1725009352229.jpg','http://localhost:4000/uploads/img/producto/rey_1725009352229.jpg',5,30),(7,'caballero del caos','¡Conoce al Caballero del Caos de Warhammer 40K! Este imponente modelo representa a un titánico Caballero al servicio de las fuerzas del Caos, con detalles siniestros y una apariencia amenazante que destaca en cualquier ejército. Equipado con armas devastadoras y adornado con iconografía caótica, es una pieza clave para los seguidores del Caos que buscan dominar el campo de batalla.\r\n',11,3500000,'uploads/img/producto/caballero_1725009396947.jpg','http://localhost:4000/uploads/img/producto/caballero_1725009396947.jpg',5,30),(8,'ultra marine','¡Presentamos al Ultramarine! Este modelo de Warhammer 40K captura la esencia de los famosos Marines Espaciales de los Ultramarines, conocidos por su disciplina y valentía. Perfecto para completar tu ejército o para cualquier colección, este soldado está detallado con el icónico esquema de color azul y el símbolo de los Ultramarines.\r\n\r\n',1,50000,'uploads/img/producto/marine_1725009458032.jpg','http://localhost:4000/uploads/img/producto/marine_1725009458032.jpg',5,30),(9,'fulgrim ','¡Conoce a Fulgrim, Príncipe Demonio de Warhammer 40K! Este impresionante modelo representa a Fulgrim, el Primarca caído de los Emperadores Hijos, transformado en un temible Príncipe Demonio del Caos. Con su diseño detallado y su aura de decadencia, es una figura central para cualquier ejército del Caos y un desafío formidable en el campo de batalla.\r\n',12,450000,'uploads/img/producto/fulgrim_1725009514488.jpg','http://localhost:4000/uploads/img/producto/fulgrim_1725009514488.jpg',5,30),(10,'rylanor','¡Conoce a Rylanor, el Despertado, de los Hijos del Emperador! Este modelo representa a uno de los legendarios Guerreros de los Emperadores Hijos, despertado de su largo letargo para unirse a la batalla. Con una estética impresionante y una historia rica en el lore de Warhammer 40K, Rylanor encarna la fuerza y el honor de su legión',122,120000,'uploads/img/producto/raylanor_1725009551908.jpg','http://localhost:4000/uploads/img/producto/raylanor_1725009551908.jpg',5,30),(11,'Lion ElJonson','¡Descubre a Lion ElJonson, el Primarca de los Ángeles Oscuros en Warhammer 40K! Este modelo representa al legendario líder de los Ángeles Oscuros, conocido por su habilidad en la batalla y su presencia imponente. Con su armadura detallada y su espada de energía, Lion ElJonson es una figura clave para cualquier ejército de los Ángeles Oscuros y un símbolo de la fuerza de su legión.\r\n',1,120000,'uploads/img/producto/lion_1725009606156.jpg','http://localhost:4000/uploads/img/producto/lion_1725009606156.jpg',5,30),(12,'Trazin el Infinito','¡Descubre a Trazin el Infinito, el inmortal Señor de la Colección de los Necrones en Warhammer 40K! Este modelo captura al enigmático y poderoso Necron, conocido por su obsesión con la recolección de artefactos y secretos del universo. Equipado con su icónica vara y una armadura intricada, Trazin el Infinito es una pieza clave para cualquier ejército Necron y un símbolo de su misterio y poder interminable.\r\n',4,150000,'uploads/img/producto/trazin_1725009643824.jpg','http://localhost:4000/uploads/img/producto/trazin_1725009643824.jpg',5,30),(13,'Ghazghkull Mag Uruk Thraka','¡Conoce a Ghazghkull Mag Uruk Thraka, el legendario Warboss Orko en Warhammer 40K! Este modelo representa al temido líder de los Orkos, conocido por su increíble poder y habilidad para liderar a sus huestes en la batalla. Con su impresionante armadura de guerra, su icónico kustom mega-blasta y su presencia imponente, Ghazghkull es un pilar central en cualquier ejército Orko y una figura clave en la lucha por la dominación del universo.\r\n',16,180000,'uploads/img/producto/mag_1725009686389.jpg','http://localhost:4000/uploads/img/producto/mag_1725009686389.jpg',5,30),(14,'Blazer Clásico','¡Eleva tu estilo con nuestro Blazer Clásico! Este blazer es la combinación perfecta de elegancia y versatilidad, ideal para cualquier ocasión, ya sea en el trabajo o en eventos formales. Confeccionado en tela de alta calidad, presenta un corte impecable, solapas de muesca y un ajuste cómodo. Disponible en una variedad de colores sofisticados, es una prenda esencial para el guardarropa de cualquier persona que busque un toque de distinción y profesionalismo en su vestimenta.\r\n',145,220000,'uploads/img/producto/blazer_1725009740549.jpg','http://localhost:4000/uploads/img/producto/blazer_1725009740549.jpg',1,27),(15,'Gaban Elegante','¡Mantente abrigado y a la moda con nuestro Gaban Elegante! Este gaban es perfecto para climas fríos, ofreciendo un diseño sofisticado y funcional. Confeccionado en tejido de alta calidad, cuenta con un corte moderno, cuello alto y botones detallados que aportan un toque de distinción. Ideal para ocasiones formales o para añadir un toque elegante a tu atuendo diario, este gaban es una pieza clave para tu armario durante la temporada de frío.\r\n',56,320000,'uploads/img/producto/gaban_1725009778264.jpg','http://localhost:4000/uploads/img/producto/gaban_1725009778264.jpg',1,27),(16,'Abrigo de Lana Refinado','¡Añade un toque de sofisticación a tu guardarropa con nuestro Abrigo de Lana Refinado! Confeccionado en lana de alta calidad, este abrigo ofrece una calidez excepcional y un ajuste elegante. Su diseño clásico incluye un corte entallado, botones forrados y un cuello de solapa, ideal para combinar con cualquier atuendo formal o casual. Perfecto para enfrentar el frío con estilo, este abrigo es una inversión en elegancia y confort durante la temporada de invierno.\r\n',12,450000,'uploads/img/producto/abrigo_1725009814020.jpg','http://localhost:4000/uploads/img/producto/abrigo_1725009814020.jpg',1,27),(17,'Gaban Clásico para Hombre','¡Mantén el estilo y el confort con nuestro Gaban Clásico para Hombre! Este gaban, confeccionado en un tejido de lana premium, ofrece una combinación perfecta de elegancia y funcionalidad. Con un corte ajustado y sofisticado, presenta un cuello alto y botones elegantes que brindan una protección adicional contra el frío. Ideal para ocasiones formales o para añadir un toque refinado a tu atuendo diario, este gaban es esencial para cualquier armario masculino durante la temporada de frío.\r\n',78,350000,'uploads/img/producto/gaban clasico_1725009859808.jpg','http://localhost:4000/uploads/img/producto/gaban clasico_1725009859808.jpg',1,27),(18,'Chaqueta Corta de Viento','¡Prepárate para cualquier aventura con nuestra Chaqueta Corta de Viento! Diseñada para ofrecer protección contra el viento y la lluvia ligera, esta chaqueta está confeccionada en un material ligero y resistente al agua. Su corte moderno y ajustado proporciona un estilo dinámico, mientras que la capucha ajustable y los bolsillos funcionales añaden comodidad y practicidad. Ideal para actividades al aire libre o para un look casual en días ventosos, esta chaqueta es tu compañera perfecta para el clima cambiante.\r\n',12,180000,'uploads/img/producto/corta_1725009898515.jpg','http://localhost:4000/uploads/img/producto/corta_1725009898515.jpg',1,27),(19,'Ropa Infantil Divertida y Cómoda','¡Haz que cada día sea una aventura con nuestra Ropa Infantil Divertida y Cómoda! Nuestra colección está diseñada pensando en la comodidad y el estilo de los más pequeños. Ofrecemos una variedad de prendas, desde coloridos conjuntos y camisetas con estampados alegres hasta pantalones y chaquetas resistentes y prácticos. Con tejidos suaves y duraderos, nuestras prendas garantizan libertad de movimiento y facilidad de uso para que los niños puedan jugar y explorar con total libertad. Perfecta para cualquier ocasión, nuestra ropa infantil combina funcionalidad con diversión.\r\n',1,80000,'uploads/img/producto/niÃ±o_1725010133032.jpg','http://localhost:4000/uploads/img/producto/niÃ±o_1725010133032.jpg',1,27),(20,'Blazer Slim para Hombre','¡Añade un toque de sofisticación a tu vestuario con nuestro Blazer Slim para Hombre! Este blazer, con un corte ajustado y moderno, está diseñado para realzar tu figura y proporcionar un look elegante y contemporáneo. Confeccionado en tejido de alta calidad, ofrece un acabado impecable y un ajuste cómodo. Ideal para eventos formales, reuniones de trabajo o una salida nocturna, su diseño versátil se adapta a cualquier ocasión. Disponible en una gama de colores clásicos, este blazer es una pieza esencial para cualquier armario masculino.\r\n',56,250000,'uploads/img/producto/slim_1725010173632.jpg','http://localhost:4000/uploads/img/producto/slim_1725010173632.jpg',1,27),(21,'Saco de Vestir para Hombre La Martina','¡Eleva tu estilo con el Saco de Vestir para Hombre La Martina! Con un diseño sofisticado y un corte impecable, este saco de vestir está confeccionado en tejidos de alta calidad que garantizan un ajuste cómodo y elegante. Ideal para ocasiones formales y eventos especiales, su diseño clásico incluye solapas de muesca y detalles refinados que realzan cualquier atuendo. Disponible en colores neutros y versátiles, es la elección perfecta para el hombre moderno que busca combinar estilo y distinción en cada ocasión.\r\n\r\n',21,320000,'uploads/img/producto/saco_1725010236615.jpg','http://localhost:4000/uploads/img/producto/saco_1725010236615.jpg',1,27),(22,'Hamburguesa Artesanal','¡Deléitate con nuestra Hamburguesa Artesanal! Preparada con ingredientes frescos y de alta calidad, esta hamburguesa ofrece un sabor auténtico y una textura jugosa que resalta la artesanía detrás de cada bocado. Con una carne de res seleccionada, cocida a la perfección y acompañada de pan artesanal, vegetales frescos y salsas caseras, cada hamburguesa está diseñada para brindar una experiencia gastronómica única. Personaliza tu hamburguesa con una variedad de ingredientes adicionales y disfruta de un plato que celebra la calidad y el sabor.\r\n\r\n',50,150000,'uploads/img/producto/comer_1725010333957.jpg','http://localhost:4000/uploads/img/producto/comer_1725010333957.jpg',9,28),(23,' Perro Caliente Clásico','¡Disfruta del sabor inconfundible de nuestro Perro Caliente Clásico! Preparado con una salchicha jugosa y cocida a la perfección, este perro caliente está servido en un pan suave y fresco. Complementado con tus condimentos favoritos, como mostaza, ketchup, cebolla crujiente y relish, es el bocadillo perfecto para cualquier ocasión. Ideal para un almuerzo rápido o una merienda informal, nuestro perro caliente combina simplicidad y sabor en cada bocado.\r\n',34,45000,'uploads/img/producto/perroc_1725010385955.jpg','http://localhost:4000/uploads/img/producto/perroc_1725010385955.jpg',9,28),(24,'Donas Gourmet','¡Déjate seducir por nuestras Donas Gourmet! Elaboradas con recetas artesanales, estas donas ofrecen una experiencia dulce y deliciosa en cada bocado. Disponibles en una variedad de sabores, desde glaseado clásico hasta combinaciones innovadoras, cada dona está hecha con ingredientes frescos y de alta calidad. Perfectas para acompañar tu café matutino o como un capricho dulce durante el día, nuestras donas son el toque perfecto para cualquier ocasión.',48,25000,'uploads/img/producto/donas_1725010490693.jpg','http://localhost:4000/uploads/img/producto/donas_1725010490693.jpg',9,28),(25,'Empanadas Caseras','¡Saborea nuestras Empanadas Caseras, el auténtico sabor en cada bocado! Hechas con una masa crujiente y dorada, estas empanadas están rellenas con ingredientes frescos y de alta calidad, como carne jugosa, pollo tierno o una mezcla deliciosa de vegetales y quesos. Perfectas para un aperitivo, un almuerzo rápido o una cena informal, nuestras empanadas ofrecen un equilibrio perfecto entre sabor y textura. Ven y disfruta de este clásico delicioso y reconfortante.\r\n',39,20000,'uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 01_1725010536040.jpg','http://localhost:4000/uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 01_1725010536040.jpg',9,28),(26,' Salchipapa Sabrosa','¡Descubre nuestra Salchipapa Sabrosa, una combinación irresistible de papas fritas crujientes y salchichas jugosas! Cada porción presenta papas recién fritas y doradas, acompañadas de salchichas de alta calidad, cocidas a la perfección. Puedes personalizar tu salchipapa con una variedad de salsas y condimentos, como ketchup, mayonesa, mostaza o salsa picante, para un toque adicional de sabor. Ideal para compartir con amigos o disfrutar como una comida rápida y deliciosa, nuestra salchipapa es un clásico que siempre satisface.\r\n',66,30000,'uploads/img/producto/salchipapa_1725010594259.jpg','http://localhost:4000/uploads/img/producto/salchipapa_1725010594259.jpg',9,28),(29,'Poppy, La Perrita Que Mueve La Cola','\r\n¡Conoce a Poppy, La Perrita Que Mueve La Cola, el juguete perfecto para tu amigo peludo! Diseñada para proporcionar horas de diversión, Poppy tiene un mecanismo interno que hace que su cola se mueva y suena con diferentes melodías, manteniendo a tu mascota entretenida y activa. Hecha de materiales resistentes y seguros, este juguete es ideal para fomentar el ejercicio y el juego interactivo. ¡Asegúrate de que tu mascota tenga su propia Poppy para una experiencia de juego divertida y estimulante!\r\n',13,50000,'uploads/img/producto/pero_1725010815942.jpg','http://localhost:4000/uploads/img/producto/pero_1725010815942.jpg',5,29),(31,'Muñeca Baby Alive Bebidas de Frutas Manzana 30 cm','¡Descubre la magia de la Muñeca Baby Alive Bebidas de Frutas Manzana de 30 cm! Esta encantadora muñeca está lista para jugar y simular la hora del té con su botella de jugo de manzana y su funcionalidad de bebida. Con una apariencia realista y una actitud adorable, Baby Alive puede \"beber\" su jugo y tener una experiencia interactiva que encantará a los más pequeños. Perfecta para juegos de simulación y cuidado, esta muñeca fomenta la imaginación y el juego creativo.\r\n',1,85000,'uploads/img/producto/MUÃECA_1725011017473.jpg','http://localhost:4000/uploads/img/producto/MUÃECA_1725011017473.jpg',5,29),(32,'Set City Ultimate Garage','¡Prepárate para una aventura emocionante con el Set City Ultimate Garage! Este impresionante set de garaje de la ciudad ofrece un mundo de diversión con múltiples niveles, estaciones de servicio, y una pista de carreras increíble. Equipado con rampas, ascensores y varios accesorios, el Ultimate Garage permite a los niños crear sus propias historias de acción y aventura mientras juegan con sus coches y camiones favoritos. Ideal para fomentar la creatividad y el juego interactivo, este set es perfecto para pequeños entusiastas de los vehículos y constructores en ciernes.\r\n',14,250000,'uploads/img/producto/CARROS_1725011075634.jpg','http://localhost:4000/uploads/img/producto/CARROS_1725011075634.jpg',5,29),(33,'Juego Laboratorio de Ciencia - Clementoni','¡Explora el fascinante mundo de la ciencia con el Juego Laboratorio de Ciencia - Clementoni! Este completo set ofrece a los jóvenes científicos una variedad de experimentos y actividades educativas que estimulan la curiosidad y el aprendizaje. Incluye herramientas y materiales seguros para realizar experimentos como mezclas químicas, reacciones y proyectos divertidos. Con instrucciones claras y fáciles de seguir, el laboratorio permite a los niños desarrollar habilidades científicas mientras se divierten descubriendo los secretos de la ciencia. Ideal para fomentar el interés en la investigación y la experimentación desde una edad temprana.\r\n',50,120000,'uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 02_1725011157776.jpg','http://localhost:4000/uploads/img/producto/Imagen de WhatsApp 2024-08-30 a las 02_1725011157776.jpg',5,29),(34,' Figura Spawn Mortal Kombat 11 Articulada de 18 cm','¡Añade a tu colección la increíble Figura Spawn Mortal Kombat 11! Esta figura articulada de 18 cm captura la esencia del icónico personaje de Mortal Kombat con un nivel impresionante de detalle. Diseñada con múltiples puntos de articulación, permite poseer y exhibir a Spawn en una variedad de posiciones dinámicas. Incluye accesorios exclusivos que realzan su apariencia, como su capa característica y armas emblemáticas, para una experiencia de colección completa. Perfecta para fanáticos y coleccionistas de Mortal Kombat, esta figura es una pieza imprescindible para cualquier estante de figuras.\r\n',7,150000,'uploads/img/producto/FIGUA_1725011242330.jpg','http://localhost:4000/uploads/img/producto/FIGUA_1725011242330.jpg',5,29),(35,' Star Wars The Child Baby Yoda The Mandalorian con','¡Sumérgete en el universo de Star Wars con la adorable figura de Baby Yoda de The Mandalorian! Este detallado juguete de 12 pulgadas captura la ternura y el encanto del icónico personaje con una alta calidad de acabado. Incluye 4 accesorios exclusivos que permiten recrear momentos memorables de la serie, como su manta y su cúpula de transporte. Con una construcción robusta y detalles precisos, esta figura es perfecta para coleccionistas y fanáticos de todas las edades. ¡No te pierdas la oportunidad de tener a este pequeño y querido personaje en tu colección!\r\n',456,120000,'uploads/img/producto/BABY_1725011334387.jpg','http://localhost:4000/uploads/img/producto/BABY_1725011334387.jpg',5,29),(36,'Figura de Acción Buzz Lightyear | Soriana','\r\n¡Haz que la aventura despegue con la Figura de Acción Buzz Lightyear! Basada en el querido personaje de Toy Story, esta figura de acción presenta a Buzz Lightyear en toda su gloria espacial con detalles auténticos y accesorios interactivos. Con una altura aproximada de 15 cm, Buzz está equipado con alas extensibles, un casco removible y una variedad de articulaciones que permiten múltiples poses y movimientos. Ideal para recrear emocionantes escenas del espacio o para exhibir en tu colección, esta figura captura la esencia del intrépido guardián estelar. Perfecta para fans de todas las edades.\r\n',0,75000,'uploads/img/producto/BUZZ_1725011717323.jpg','http://localhost:4000/uploads/img/producto/BUZZ_1725011717323.jpg',5,29);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER actualizar_detallecarrito_stock
+AFTER UPDATE ON producto
+FOR EACH ROW
+BEGIN
+    -- Verifica si el stock ha cambiado
+    IF OLD.StockProducto != NEW.StockProducto THEN
+        -- Actualiza las cantidades en detallecarrito
+        UPDATE detallecarrito
+        SET Cantidad = NEW.StockProducto
+        WHERE IdProductoFK = NEW.IdProducto AND Cantidad > NEW.StockProducto;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Temporary view structure for view `promedio_calificacion_tienda`
@@ -881,13 +967,17 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `CrearPedido`(
     IN p_IdPersonaFK INT,
-    IN p_Direccion VARCHAR(50),
-    IN p_Ciudad VARCHAR(50)
+    IN p_Direccion varchar(240),
+    IN p_Ciudad INT
 
 )
 BEGIN
-    INSERT INTO Pedido (IdPersonaFK, Direccion, Ciudad, Total)
-    VALUES (p_IdPersonaFK, p_Direccion, p_Ciudad, 0);
+
+	insert into direccion (Direccion)
+    values (p_Direccion);
+
+    INSERT INTO Pedido (IdPersonaFK, IdDireccionFK,IdCiudadFK , Total)
+    VALUES (p_IdPersonaFK, LAST_INSERT_ID(), p_Ciudad, 0);
     
     -- Retornar el ID del pedido recién creado
     SELECT LAST_INSERT_ID() AS IdPedidoCreado;
@@ -1160,6 +1250,49 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `nuevoStock` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `nuevoStock`(IN p_IdProdcuto INT,in P_stock  int)
+BEGIN
+     Update Producto set StockProducto = P_stock where IdProducto = p_IdProdcuto;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ObtenerDireccionPersona` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerDireccionPersona`(IN p_IdPersona INT)
+BEGIN
+    SELECT DISTINCT  d.direccion
+    FROM pedido p
+    JOIN direccion d ON d.id = p.IdDireccionFK
+    JOIN persona p2 ON p2.IdPersona = p.IdPersonaFK
+    WHERE p2.IdPersona = p_IdPersona;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ObtenerProductoPedido` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1172,7 +1305,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductoPedido`(IN p_IdPedido INT)
 BEGIN
-    SELECT p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , pp.cantidad
+    SELECT p.IdProducto,p.StockProducto ,p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , pp.cantidad
     FROM pedidoproducto pp
     JOIN producto p ON pp.IdProductoFK = p.IdProducto
     JOIN pedido p2 ON p2.IdPedido = pp.IdPedidoFK
@@ -1215,7 +1348,7 @@ BEGIN
     END IF;
 
     -- Lista los productos del carrito
-    SELECT dc.IdDetalleCarrito, p.IdProducto, p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , dc.cantidad, t.NombreTienda
+    SELECT dc.IdDetalleCarrito, p.IdProducto,p.StockProducto ,p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , dc.cantidad, t.NombreTienda
     FROM detallecarrito dc
     JOIN producto p ON dc.IdProductoFK = p.IdProducto
     JOIN tienda t ON t.IdTienda = p.IdTiendaFK
@@ -1312,6 +1445,42 @@ BEGIN
         Persona AS P ON A.IdPersonaFK = P.IdPersona
     WHERE 
         P.IdPersona = p_IdPersona AND T.EstadoTienda = true;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `pedidopersona` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidopersona`(in _Id INT)
+BEGIN
+    SELECT 
+        P.IdPedido,
+        P.Direccion,
+        P.Ciudad,
+        P.FechaPedido,
+        P.EstadoPedido,
+        P.Total,
+        GROUP_CONCAT(CONCAT(Pr.NombreProducto) SEPARATOR ', ') AS articulos
+    FROM 
+        pedido P
+    LEFT JOIN 
+        pedidoproducto PP ON P.IdPedido = PP.IdPedidoFK
+    LEFT JOIN 
+        producto Pr ON PP.IdProductoFK = Pr.IdProducto
+    WHERE 
+        P.IdPersonaFK = _Id
+    GROUP BY 
+        P.IdPedido;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1680,4 +1849,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-11  1:45:44
+-- Dump completed on 2024-10-18  3:45:51

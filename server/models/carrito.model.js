@@ -19,6 +19,38 @@ class Carrito extends Model {
     }
   }
 
+  static async DireccionesPersona(id) {
+    try {
+      const [results, metadata] = await sequelize.query(
+        `CALL platea.ObtenerDireccionPersona(:id);`,
+        {
+          replacements: { id },
+          type: sequelize.QueryTypes.SELECT
+        }
+      );
+      return results; 
+    } catch (error) {
+      console.error(`Unable to find comments: ${error}`);
+      throw error;
+    }
+  }
+
+  static async getCiudades(id) {
+    try {
+      const results = await sequelize.query(
+        `SELECT id,concat(nombre," -- ",departamento) as "ciudad" FROM platea.ciudades`,
+        {
+          replacements: { id },
+          type: sequelize.QueryTypes.SELECT
+        }
+      );
+      return results; 
+    } catch (error) {
+      console.error(`Unable to find comments: ${error}`);
+      throw error;
+    }
+  }
+
   static async AgregarProductoCarrito(producto) {
     const {
       IdPersonaFK,

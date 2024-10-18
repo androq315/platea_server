@@ -81,10 +81,10 @@ class Pedido extends Model {
       throw error;
     }
   }
-  static async StockProductoPedido(Id) {
+  static async StockProductoPedido(p_IdProdcuto,P_stock) {
     try {
       await sequelize.query(
-        `call platea.ActualizarStockProductoPedido(${Id});`,
+        `call platea.nuevoStock(${p_IdProdcuto},${P_stock});`,
 
       );
     } catch (error) {
