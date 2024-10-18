@@ -16,7 +16,6 @@ class PasswordController {
     }
 
     // Generar un token único
-    // Aquí deberías guardar el token en la base de datos asociado al usuario
     const token = jwt.sign(
       { 
           Correo: correo// Incluyendo el rol en el token
@@ -28,13 +27,13 @@ class PasswordController {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'aorostegui2@gmail.com',
-          pass: 'czrv gqzd gmuh rzmm' // Cambia esto por una variable de entorno
+          user: 'platteaonline@gmail.com',
+          pass: 'wnvy erst cony surb' // Cambia esto por una variable de entorno
         }
       });
   
   const mailOptions = {
-    from: 'aorostegui2@gmail.com',
+    from: 'platteaonline@gmail.com',
     to: correo,
     subject: 'Restablecimiento de Contraseña',
     html: `

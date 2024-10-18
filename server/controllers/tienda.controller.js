@@ -367,6 +367,23 @@ static async TiendasDestacadas(req, res) {
 		res.status(500).json({ message: 'Error al obtener los productos destacados: ' + error });
 	}
 }  
+static async deleteTienda(req, res) {
+	try {
+	  const id = req.params.id;
+	  const tienda = await Tienda.findByPk(id);
+	  
+	  if (!tienda) {
+		return res.status(404).json({ message: 'Tienda no encontrada' });
+	  }
+  
+	  await tienda.destroy(); // Eliminar la tienda
+	  res.status(200).json({ message: 'Tienda eliminada correctamente' });
+	} catch (error) {
+	  console.error(`Error al eliminar la tienda: ${error}`);
+	  res.status(500).json({ message: 'Error al eliminar la tienda' });
+	}
+  }
+  
 
 
 
