@@ -77,7 +77,9 @@ class PedidoController {
                 productosPorVendedor[idVendedor] = {
                     email: producto.correoPersona, // Correo del vendedor
                     productos: []
+                    
                 };
+                console.log("tastas: ",productosPorVendedor)
             }
 
             productosPorVendedor[idVendedor].productos.push(producto);
@@ -86,13 +88,13 @@ class PedidoController {
         // Actualizar el stock de los productos y enviar correos
         for (const [idVendedor, data] of Object.entries(productosPorVendedor)) {
             const { email, productos } = data;
-
+            console.log("tastas: ", email)
             // Actualizar el stock de los productos de este vendedor
             for (const producto of productos) {
                 const totalStock = producto.StockProducto - producto.cantidad;
                 await Pedido.StockProductoPedido(producto.IdProducto, totalStock);
             }
-
+            console.log("tas: ", email)
             // Enviar correo de confirmación con solo los productos del vendedor
             await PedidoController.enviarCorreo(email, productos, total);
         }
@@ -111,6 +113,7 @@ class PedidoController {
   static async enviarCorreo(correo, productos, total) {
 
     try {
+      console.log(correo)
       // Verifica que el correo no esté vacío
       if (!correo || typeof correo !== 'string' || !correo.includes('@')) {
         throw new Error('La dirección de correo es inválida.');
