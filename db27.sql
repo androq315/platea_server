@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: platea
 -- ------------------------------------------------------
@@ -15,7 +15,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
+
+
+drop database if exists platea;
+create database  platea;
+use platea;
+-- Table structure 
 -- Table structure for table `aprobacion`
 --
 
@@ -141,7 +146,7 @@ CREATE TABLE `categoria` (
   `NombreCategoria` varchar(50) NOT NULL,
   `FotoCategoria` text DEFAULT NULL,
   PRIMARY KEY (`IdCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +199,7 @@ CREATE TABLE `cliente` (
   PRIMARY KEY (`IdCliente`),
   KEY `FK_Persona_Cliente` (`IdPersonaFK`),
   CONSTRAINT `FK_Persona_Cliente` FOREIGN KEY (`IdPersonaFK`) REFERENCES `persona` (`IdPersona`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,36 +267,6 @@ INSERT INTO `detallecarrito` VALUES (1,17,6,1),(7,18,25,1),(8,18,15,4),(9,18,23,
 UNLOCK TABLES;
 
 --
--- Table structure for table `detallepago`
---
-
-DROP TABLE IF EXISTS `detallepago`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detallepago` (
-  `IdDetallePago` int(11) NOT NULL AUTO_INCREMENT,
-  `IdPagoFK` int(11) DEFAULT NULL,
-  `IdCompraFK` int(11) DEFAULT NULL,
-  `DescripcionDetalle` text DEFAULT NULL,
-  `MontoDetalle` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`IdDetallePago`),
-  KEY `FK_Compra_Pago` (`IdCompraFK`),
-  KEY `FK_Pago_DetallePago` (`IdPagoFK`),
-  CONSTRAINT `FK_Compra_Pago` FOREIGN KEY (`IdCompraFK`) REFERENCES `compra` (`IdCompra`),
-  CONSTRAINT `FK_Pago_DetallePago` FOREIGN KEY (`IdPagoFK`) REFERENCES `pago` (`IdPago`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `detallepago`
---
-
-LOCK TABLES `detallepago` WRITE;
-/*!40000 ALTER TABLE `detallepago` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detallepago` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `direccion`
 --
 
@@ -339,35 +314,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `IdCategoriaFK`,
  1 AS `IdArrendatarioFK`*/;
 SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `favorito`
---
-
-DROP TABLE IF EXISTS `favorito`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `favorito` (
-  `IdFavorito` int(11) NOT NULL AUTO_INCREMENT,
-  `IdClienteFK` int(11) DEFAULT NULL,
-  `IdProductoFK` int(11) DEFAULT NULL,
-  `FechaAgregado` datetime DEFAULT current_timestamp(),
-  PRIMARY KEY (`IdFavorito`),
-  KEY `FK_Cliente_Favorito` (`IdClienteFK`),
-  KEY `FK_Producto_Favorito` (`IdProductoFK`),
-  CONSTRAINT `FK_Cliente_Favorito` FOREIGN KEY (`IdClienteFK`) REFERENCES `cliente` (`IdCliente`),
-  CONSTRAINT `FK_Producto_Favorito` FOREIGN KEY (`IdProductoFK`) REFERENCES `producto` (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `favorito`
---
-
-LOCK TABLES `favorito` WRITE;
-/*!40000 ALTER TABLE `favorito` DISABLE KEYS */;
-/*!40000 ALTER TABLE `favorito` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Temporary view structure for view `hogar`
@@ -443,31 +389,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `IdCategoriaFK`,
  1 AS `IdArrendatarioFK`*/;
 SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `pago`
---
-
-DROP TABLE IF EXISTS `pago`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pago` (
-  `IdPago` int(11) NOT NULL AUTO_INCREMENT,
-  `MontoPago` decimal(10,2) NOT NULL,
-  `FechaPago` datetime DEFAULT current_timestamp(),
-  `MetodoPago` varchar(50) NOT NULL,
-  PRIMARY KEY (`IdPago`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pago`
---
-
-LOCK TABLES `pago` WRITE;
-/*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pago` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `pedido`
@@ -567,11 +488,7 @@ CREATE TABLE `persona` (
 -- Dumping data for table `persona`
 --
 
-LOCK TABLES `persona` WRITE;
-/*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (20,'ANDRES','SUAREZ','anuelaaa549@gmail.com',' ',_binary 'ï¿½\\ï¿½Vï¿½ï¿½sï¿½-C)ï¿½Wï¿½ï¿½3yï¿½<ï¿½ï¿½Yï¿½ï¿½\\ï¿½ï¿½ï¿½ÎŠ]ï¿½I(ï¿½ï¿½ï¿½tï¿½zï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½Sï¿½ï¿½?ï¿½ï¿½',1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary ' U  VJ !)  gg k $~N Sr!Mz@[^o  U Ì˜RH   4  ( J % ',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,_binary 'Oï¿½Ö¯ï¿½0ï¿½Dï¿½ï¿½UÎ¸	n[pVï¿½ï¿½o7ï¿½ï¿½8[ï¿½ï¿½U\"NvOMï¿½.+ï¿½ï¿½T\rï¿½ï¿½ï¿½-pï¿½[ï¿½ï¿½Ï¡ï¿½=ï¿½ï¿½ï¿½ï¿½',1,'2147483647',NULL,NULL,NULL,NULL,3),(23,'Alexix  Johan','Orostegui Audor','aorostegui2@gmail.com',NULL,_binary '­Rf/2\\Œ•õf£…K¨4l‹¾®±p¹J÷¢	E\Î§\éZ\î\î7mU÷¤²8\Z<\ág¸\âQ®o<s\ÓB\Þ',1,'2147483647',NULL,NULL,NULL,NULL,3);
-/*!40000 ALTER TABLE `persona` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO persona VALUES (20,'ANDRES','SUAREZ','anuelaaa549@gmail.com',' ',aes_encrypt('$2b$10$yP9GmqkeTVDazns.qioexukfgN3BoAz61TRGzED6c2l8kBnXFIDnG','bd_secret_key'),1,'2147483647','./uploads/img/persona_avatar/descarga_1726785209057.jpeg','http://localhost:4000/./uploads/img/persona_avatar/descarga_1726785209057.jpeg','./uploads/img/banner/gatito_1726785209061.gif','http://localhost:4000/./uploads/img/banner/gatito_1726785209061.gif',2),(21,'ANDRES','MEZA','andresf@gmail.com',NULL,_binary ' U  VJ !)  gg k $~N Sr!Mz@[^o  U Ì˜RH   4  ( J % ',1,'2147483647',NULL,NULL,NULL,NULL,2),(22,'DANNER','ARIAS','danner@info.com',NULL,aes_encrypt('$2b$10$7QlSjD93a9RfPV.kNSfxmeuf3ZEda0cj3dmCFsy5Ivr2Q3rN1B6/y','bd_secret_key'),1,'2147483647',NULL,NULL,NULL,NULL,3);
 
 --
 -- Table structure for table `producto`
@@ -595,7 +512,7 @@ CREATE TABLE `producto` (
   KEY `FK_Tienda_Producto` (`IdTiendaFK`),
   CONSTRAINT `FK_Categoria_Producto` FOREIGN KEY (`IdCategoriaFK`) REFERENCES `categoria` (`IdCategoria`),
   CONSTRAINT `FK_Tienda_Producto` FOREIGN KEY (`IdTiendaFK`) REFERENCES `tienda` (`IdTienda`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -746,6 +663,10 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Dumping events for database 'platea'
+--
+
+--
 -- Dumping routines for database 'platea'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `ActualizarCantidad` */;
@@ -831,44 +752,6 @@ BEGIN
 
     -- Cerrar el cursor
     CLOSE cur;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `AgregarProductoCarrito` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarProductoCarrito`(IN usuario_Id INT, IN producto_id INT)
-BEGIN
-    DECLARE Id INT;
-    
-    -- Verifica si el usuario ya tiene un carrito
-    SELECT IdCarrito INTO Id
-    FROM carrito
-    WHERE IdPersonaFK = usuario_Id
-    ORDER BY fecha_creacion DESC
-    LIMIT 1;
-
-    -- Si no hay carrito, crea uno nuevo
-    IF Id IS NULL THEN
-        INSERT INTO Carrito (IdPersonaFK, fecha_creacion)
-        VALUES (usuario_Id, NOW());
-        
-        -- ObtÃ©n el ID del nuevo carrito
-        SELECT LAST_INSERT_ID() INTO Id;
-    END IF;
-
-	INSERT INTO detallecarrito (IdCarritoFK, IdProductoFK) VALUES
-    (Id,producto_id);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1817,4 +1700,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-19 21:31:32
+-- Dump completed on 2024-10-24  1:08:23

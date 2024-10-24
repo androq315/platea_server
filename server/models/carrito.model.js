@@ -72,6 +72,7 @@ class Carrito extends Model {
           type: sequelize.QueryTypes.INSERT // Ajusta esto según sea necesario
         }
       );
+      return result;
     } catch (error) {
       console.error(`Unable to add product to cart: ${error}`);
       throw error;
