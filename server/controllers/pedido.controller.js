@@ -111,13 +111,14 @@ class PedidoController {
   static async enviarCorreo(correo, productos, total) {
 
     try {
-      // Verifica que el correo no esté vacío
-      if (!correo || typeof correo !== 'string' || !correo.includes('@')) {
-        throw new Error('La dirección de correo es inválida.');
-        
+      // Validar correo con expresión regular
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!correo || typeof correo !== 'string' || !emailRegex.test(correo)) {
+          throw new Error('La dirección de correo es inválida.');
       }
 
-      console.log('Enviando correo a:', correo); // Para depuración
+      console.log('Enviando correo a:', correo);
+
 
       const transporter = nodemailer.createTransport({
         service: 'gmail',
