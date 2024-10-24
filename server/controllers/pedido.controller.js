@@ -120,7 +120,8 @@ class PedidoController {
         
       }
 
-      console.log('Enviando correo a:', correo); // Para depuración
+      console.log('Enviando correo a:', correo);
+
 
       const transporter = nodemailer.createTransport({
         service: 'gmail',

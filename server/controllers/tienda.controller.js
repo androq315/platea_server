@@ -278,15 +278,16 @@ class TiendaController {
 	}
 }
 
-	static async patchTienda(req, res) {
+static async patchTienda(req, res) {
 	try {
-		const id = req.params.id;
-		await Tienda.toggleTiendaState(id);
-		res.status(200).json({ message: 'Estado actualizado correctamente' });
+	  const id = req.params.id;
+	  const tiendaActualizada = await Tienda.toggleTiendaState(id);
+	  res.status(200).json(tiendaActualizada); // Devuelve la tienda actualizada
 	} catch (error) {
-		res.status(500).json({ message: 'Error al actualizar el estado de la tienda: ' + error });
+	  res.status(500).json({ message: 'Error al actualizar el estado de la tienda: ' + error });
 	}
-}
+  }
+  
 
 // Asegúrate de que esto esté importado
 
