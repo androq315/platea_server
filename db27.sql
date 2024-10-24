@@ -1151,17 +1151,33 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerProductoPedido`(IN p_IdPedido INT)
 BEGIN
-    SELECT p.IdProducto,p.StockProducto ,p.FotoProductoURL, p.NombreProducto, p.PrecioProducto , pp.cantidad
-    FROM pedidoproducto pp
-    JOIN producto p ON pp.IdProductoFK = p.IdProducto
-    JOIN pedido p2 ON p2.IdPedido = pp.IdPedidoFK
-    WHERE p2.IdPedido = p_IdPedido;
-
-END ;;
-DELIMITER ;
+    SELECT 
+        p.IdProducto,
+        p.StockProducto,
+        p.FotoProductoURL,
+        p.NombreProducto,
+        p.PrecioProducto,
+        pp.cantidad,
+        a.IdArrendatario,
+        pe.correoPersona, 
+        t.NombreTienda
+    FROM 
+        pedidoproducto pp
+    JOIN 
+        producto p ON pp.IdProductoFK = p.IdProducto
+    JOIN 
+        pedido p2 ON p2.IdPedido = pp.IdPedidoFK
+    JOIN 
+        tienda t ON t.IdTienda = p.IdTiendaFK
+    JOIN 
+        arrendatario a ON a.IdArrendatario = t.IdArrendatarioFK
+    JOIN 
+        persona pe ON pe.IdPersona = a.IdPersonaFK 
+    WHERE 
+        p2.IdPedido = p_IdPedido;
+END
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
