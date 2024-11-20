@@ -8,9 +8,6 @@
 
 
 
-drop database if exists platea;
-create database  platea;
-use platea;
 -- Table structure 
 -- Table structure for table aprobacion
 --
