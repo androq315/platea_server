@@ -64,6 +64,9 @@ class Persona extends Model {
     }
   }
 
+
+
+  
   static async TiendaPersona(id) {
     try {
       const tiendas = await sequelize.query(`CALL ObtenerTiendasPorPersona(${id})`);

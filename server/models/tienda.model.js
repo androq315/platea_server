@@ -91,6 +91,8 @@ class Tienda extends Model {
     }
   }
 
+
+
   static async getTiendaById(id) {
     try {
       const [result] = await sequelize.query(`call platea.verTienda(${id});`);
@@ -211,6 +213,25 @@ class Tienda extends Model {
       throw error;
     }
   }
+  static async pedidosTienda(id) {
+    try {
+      return await sequelize.query(`call platea.pedidosTienda(${id});`);
+    } catch (error) {
+      console.error(`Unable to execute ObtenerTiendasDeBelleza: ${error}`);
+      throw error;
+    }
+  }
+
+
+  static async productospedidosTienda(IdTienda,IdPedido) {
+    try {
+      return await sequelize.query(`call platea.ProductoPedidoTienda(${IdTienda},${IdPedido});`);
+    } catch (error) {
+      console.error(`Unable to execute :b: ${IdTienda, IdPedido}`);
+      throw error;
+    }
+  }
+
 }
 
 // Definición del modelo Tienda en Sequelize

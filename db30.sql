@@ -1443,6 +1443,40 @@ BEGIN
     GROUP BY 
         P.IdPedido;  -- Agrupamos por el ID del pedido
 END ;;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ProductoPedidoTienda`(in _IdTienda int, in _IdPedido int)
+Begin
+SELECT Pr.IdProducto, Pr.NombreProducto, PP.Cantidad,(PP.Cantidad * Pr.PrecioProducto) as Total
+from Tienda AS T
+Inner join Producto as Pr
+ON  Pr.IdTiendaFK = T.IdTienda
+inner join pedidoproducto as pp
+on Pr.IdProducto = PP.IdProductoFK
+inner join Pedido as Pe
+on Pe.IdPedido = pp.IdPedidoFK
+Where IdPedido = _IdPedido and IdTienda = _IdTienda;
+end;;
+
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidosTienda`(IN _idTienda INT)
+BEGIN
+SELECT Pe.IdPedido,concat(P.NombrePersona," ",P.ApellidoPersona )AS Nombre,P.CorreoPersona,P.TelefonoPersona,D.Direccion, SUM(PP.cantidad) as Cantidad, Pe.FechaPedido
+from Tienda AS T
+Inner join Producto as Pr
+ON  Pr.IdTiendaFK = T.IdTienda
+inner join pedidoproducto as pp
+on Pr.IdProducto = PP.IdProductoFK
+inner join Pedido as Pe
+on Pe.IdPedido = pp.IdPedidoFK
+inner join Persona as P
+on P.IdPersona = Pe.IdPersonaFK
+inner join Direccion as D
+on Pe.IdDireccionFK = D.id
+Where IdTienda = _idTienda
+Group by Pe.IdPedido;
+
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;

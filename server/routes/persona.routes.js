@@ -14,7 +14,6 @@ router.get('/api/persona/tienda/:id', PersonaController.TiendaPersona)
 router.post('/api/persona/', PersonaController.postPersona)
 router.put('/api/persona/:id', PersonaController.putPersona)
 router.patch('/api/persona/:id',  PersonaController.patchPersona)
-
 router.delete('/api/persona/:correo', PersonaController.deletePersona);
 
 
