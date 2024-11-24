@@ -164,7 +164,7 @@ Persona.init({
   }
 }, {
   sequelize,
-  tableName: 'persona',
+  tableName: 'Persona',
   timestamps: false,
   underscored: false,
 });
