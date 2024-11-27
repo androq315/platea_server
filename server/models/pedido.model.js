@@ -84,11 +84,11 @@
     static async StockProductoPedido(p_IdProdcuto,P_stock) {
       try {
         await sequelize.query(
-          `call platea.nuevoStock(${p_IdProdcuto},${P_stock});`,
+          `call platea.NuevoStock(${p_IdProdcuto},${P_stock});`,
 
         );
       } catch (error) {
-        console.error(`Unable to create pedidoProducto: ${error}`);
+        console.error(`Unable to update stock: ${error}`);
         throw error;
       }
     }

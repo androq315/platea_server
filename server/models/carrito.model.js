@@ -38,7 +38,7 @@ class Carrito extends Model {
   static async getCiudades(id) {
     try {
       const results = await sequelize.query(
-        `SELECT id,concat(nombre," -- ",departamento) as "ciudad" FROM platea.ciudades`,
+        `SELECT id,concat(nombre," -- ",departamento) as "ciudad" FROM platea.Ciudades`,
         {
           replacements: { id },
           type: sequelize.QueryTypes.SELECT
@@ -146,7 +146,7 @@ Carrito.init({
     }
   }, {
     sequelize,
-    tableName: 'carrito',
+    tableName: 'Carrito',
     timestamps: false,
     underscored: false,
   });

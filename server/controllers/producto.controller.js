@@ -69,7 +69,7 @@ class ProductoController {
             const uploadedFile = req.files.FotoProducto;
             const timestamp = Date.now();
             const uniqueFileName = `${uploadedFile.name.split('.')[0]}_${timestamp}.${uploadedFile.name.split('.').pop()}`;
-            const uploadPath = path.join(__dirname, '../uploads/img/producto/', uniqueFileName);
+            const uploadPath = path.join(__dirname, './uploads/img/producto/', uniqueFileName);
             const fotoProductoUrl = `http://localhost:4000/uploads/img/producto/${uniqueFileName}`;
 
             uploadedFile.mv(uploadPath, async (err) => {
@@ -110,7 +110,7 @@ class ProductoController {
                     const uploadedFile = req.files.FotoProducto;
                     const timestamp = Date.now();
                     const uniqueFileName = `${uploadedFile.name.split('.')[0]}_${timestamp}.${uploadedFile.name.split('.').pop()}`;
-                    const uploadPath = path.join(__dirname, '../uploads/img/producto/', uniqueFileName);
+                    const uploadPath = path.join(__dirname, './uploads/img/producto/', uniqueFileName);
                     const fotoProductoUrl = `http://localhost:4000/uploads/img/producto/${uniqueFileName}`;
                     
                 uploadedFile.mv(uploadPath, async (err) => {

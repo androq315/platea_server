@@ -74,7 +74,7 @@ Categoria.init({
 }, {
     sequelize,
     modelName: 'Categoria',
-    tableName: 'categoria',
+    tableName: 'Categoria',
     timestamps: false,
     underscored: false,
 });

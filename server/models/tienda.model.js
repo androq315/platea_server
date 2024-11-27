@@ -83,7 +83,7 @@ class Tienda extends Model {
 
   static async getTiendas() {
     try {
-    const [results]  = await sequelize.query(`SELECT * FROM platea.vertienda;`);
+    const [results]  = await sequelize.query(`SELECT * FROM platea.Tienda;`);
     return results;
     } catch (error) {
       console.error(`Unable to find all tiendas: ${error}`);

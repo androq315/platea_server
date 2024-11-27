@@ -43,7 +43,7 @@ class CategoriaController {
             const timestamp = Date.now();
             const uniqueFileName = `${uploadedFile.name.split('.')[0]}_${timestamp}.${uploadedFile.name.split('.').pop()}`;
             const uploadPath = path.join(__dirname, '../uploads/img/categoria/', uniqueFileName);
-            const fotoCategoriaUrl = `http://localhost:4000/uploads/img/categoria/${uniqueFileName}`;
+            const fotoCategoriaUrl = `uploads/img/categoria/${uniqueFileName}`;
 
             uploadedFile.mv(uploadPath, async (err) => {
                 if (err) {
@@ -79,7 +79,7 @@ class CategoriaController {
                 const timestamp = Date.now();
                 const uniqueFileName = `${uploadedFile.name.split('.')[0]}_${timestamp}.${uploadedFile.name.split('.').pop()}`;
                 const uploadPath = path.join(__dirname, '../uploads/img/categoria/', uniqueFileName);
-                const fotoCategoriaUrl = `http://localhost:4000/uploads/img/categoria/${uniqueFileName}`;
+                const fotoCategoriaUrl = `uploads/img/categoria/${uniqueFileName}`;
 
                 uploadedFile.mv(uploadPath, async (err) => {
                     if (err) return res.status(500).json({ message: 'Error al mover el archivo: ' + err });
